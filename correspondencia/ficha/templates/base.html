@@ -37,8 +37,15 @@
         <!-- Style -->
         <link rel="stylesheet" href="{% static 'css/style.css' %}">
         <link rel="stylesheet" href="{% static 'css/estilo.css' %}">
-    
-        <title>Correspondencia</title>
+
+        {% block css %}
+      
+        {% endblock css %}
+        <title>
+          {% block titulo %}
+              
+          {% endblock titulo %}
+      </title>
       </head>
   <body>
   
@@ -188,6 +195,9 @@
     <main>
       <div class="site-section">
         <div class="container">
+          {% block contenido %}
+    
+          {% endblock contenido %}
         </div>  
       </div>  
     </main>
@@ -199,5 +209,8 @@
     <script src="{% static 'js/global.min.js' %}"></script>
     <script src="{% static 'js/quixnav-init.js' %}"></script>
     <script src="{% static 'js/custom.min.js' %}"></script>
+    {% block js %}
+      
+    {% endblock js %}
   </body>
 </html>

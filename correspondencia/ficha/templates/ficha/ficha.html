@@ -1,0 +1,201 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block css %}
+    <link rel="stylesheet" href="{% static 'css/estilo_personal.css' %}">
+	<link href='https://fonts.googleapis.com/css?family=Roboto:400,100,300,700' rel='stylesheet' type='text/css'>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!-- <link rel="stylesheet" href="{% static 'css/style_2.css' %}"> -->
+{% endblock css %}
+
+{% block titulo %}
+    Correspondencias
+{% endblock titulo %}
+
+{% block contenido %}
+
+<h1 class="titulo">Fichas de control y seguimiento de correspondencias</h1>
+<h3 class="subtitulo">Fichas en proceso de confirmación</h3>
+<section class="ftco-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="table-wrap">
+                    <table class="table table-responsive-xl">
+                      <thead>
+                        <tr>
+                            <!-- <th>&nbsp;</th> -->
+                            <th>No. de ficha</th>
+                            <th>Fecha</th>
+                            <th>Numero de documento</th>
+                            <th>Fecha de documento</th>
+                            <th>Area a la que se turna</th>
+                            <th>Dependencia procedente</th>
+                            <th>Asunto</th>
+                            <th>Instruccion</th>
+                          <th>Resolucion</th>
+                          <th>Estatus</th>
+                          <th>&nbsp;</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr class="alert" role="alert">
+                            <td>
+                                430
+                            </td>
+                            <td>
+                                01/01/2020
+                            </td>
+                            <td>
+                                SFD/DCP-PC/253/2022
+                            </td>
+                            <td>
+                                29/05/2022
+                            </td>
+                            <td>
+                                ZigZag
+                            </td>
+                            <td>
+                                APP
+                            </td>
+                            <td>
+                                propuesto
+                            </td>
+                            <td>
+                                Ṕara que lo vean
+                            </td>
+                            <td>
+                                En proceso
+                            </td>        
+                                          
+                          <td class="status"><span class="active">Active</span></td>
+                          <td>
+                              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true"><i class="fa fa-close"></i></span>
+                          </button>
+                        </td>
+                        </tr>
+                        <tr class="alert" role="alert">
+                            <td>
+                                430
+                            </td>
+                            <td>
+                                01/01/2020
+                            </td>
+                            <td>
+                                SFD/DCP-PC/253/2022
+                            </td>
+                            <td>
+                                29/05/2022
+                            </td>
+                            <td>
+                                ZigZag
+                            </td>
+                            <td>
+                                APP
+                            </td>
+                            <td>
+                                propuesto
+                            </td>
+                            <td>
+                                Ṕara que lo vean
+                            </td>
+                            <td>
+                                En proceso
+                            </td>        
+                                          
+                          <td class="status"><span class="active">Active</span></td>
+                          <td>
+                              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true"><i class="fa fa-close"></i></span>
+                          </button>
+                        </td>
+                        </tr>
+                        <tr class="alert" role="alert">
+                            <td>
+                                430
+                            </td>
+                            <td>
+                                01/01/2020
+                            </td>
+                            <td>
+                                SFD/DCP-PC/253/2022
+                            </td>
+                            <td>
+                                29/05/2022
+                            </td>
+                            <td>
+                                ZigZag
+                            </td>
+                            <td>
+                                APP
+                            </td>
+                            <td>
+                                propuesto
+                            </td>
+                            <td>
+                                Ṕara que lo vean
+                            </td>
+                            <td>
+                                En proceso
+                            </td>        
+                                          
+                          <td class="status"><span class="active">Active</span></td>
+                          <td>
+                              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true"><i class="fa fa-close"></i></span>
+                          </button>
+                        </td>
+                        </tr>
+                        <tr class="alert" role="alert">
+                            <td>
+                                430
+                            </td>
+                            <td>
+                                01/01/2020
+                            </td>
+                            <td>
+                                SFD/DCP-PC/253/2022
+                            </td>
+                            <td>
+                                29/05/2022
+                            </td>
+                            <td>
+                                ZigZag
+                            </td>
+                            <td>
+                                APP
+                            </td>
+                            <td>
+                                propuesto
+                            </td>
+                            <td>
+                                Ṕara que lo vean
+                            </td>
+                            <td>
+                                En proceso
+                            </td>        
+                                          
+                          <td class="status"><span class="active">Active</span></td>
+                          <td>
+                              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true"><i class="fa fa-close"></i></span>
+                          </button>
+                        </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock contenido %}
+
+{% block js %}
+    <!-- <script src="{% static 'js/jquery.min.js' %}"></script>
+    <script src="{% static 'js/popper.js' %}"></script>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'js/main.js' %}"></script> -->
+{% endblock js %}

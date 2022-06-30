@@ -1,0 +1,12 @@
+.titulo{
+    text-align:center;
+    margin-left: auto;
+    /* margin-top: 100px; */
+}
+
+
+.subtitulo{
+    text-align:center;
+    color: rgb(189, 185, 185); /*#36304a*/
+    margin-left: auto;
+}
