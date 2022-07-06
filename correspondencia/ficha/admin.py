@@ -1,3 +1,8 @@
 from django.contrib import admin
+from .models import Ficha, Dependencia, Area
 
-# Register your models here.
+
+admin.site.register(Ficha)
+admin.site.register(Dependencia)
+admin.site.register(Area)
+

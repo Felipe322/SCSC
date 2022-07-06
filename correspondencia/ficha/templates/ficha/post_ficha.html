@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block contenido %}
+
+<h1>Agregar Ficha de control</h1>
+
+<style type="text/css">
+    #div_id_tags > div {
+        max-height: 100px;
+        overflow-y: scroll;
+        border: 1px solid #888;
+        padding: 5px;
+        border-radius: 10px;
+    }
+</style>
+
+<div class="main-container">
+    <h3>Formato de ficha</h3>
+
+    <form action="" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {% crispy form %}
+        <input class="btn btn-success" type="submit" value="Agregar">
+    </form>
+
+</div>
+{% endblock contenido %}
