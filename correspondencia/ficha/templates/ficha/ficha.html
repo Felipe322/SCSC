@@ -32,8 +32,8 @@
                             <th>Fecha de documento</th>
                             <th>Area a la que se turna</th>
                             <th>Dependencia procedente</th>
-                            <th>Asunto</th>
-                            <th>Instruccion</th>
+                            <!-- <th>Asunto</th>
+                            <th>Instruccion</th> -->
                           <th>Resolucion</th>
                           <th>Prioridad</th>
                           <th>Estatus</th>
@@ -41,36 +41,38 @@
                         </tr>
                       </thead>
                       <tbody>
+                        {% for ficha in fichas %}
                         <tr class="alert" role="alert">
                             <td>
-                                430
+                                {{ficha.id_ficha}}
                             </td>
                             <td>
-                                01/01/2020
+                                {{ficha.fecha}}
                             </td>
                             <td>
-                                SFD/DCP-PC/253/2022
+                                {{ficha.num_documento}}
                             </td>
                             <td>
-                                29/05/2022
+                                {{ficha.fecha_documento}}
                             </td>
                             <td>
-                                ZigZag
+                                {{ficha.area_turnada}}
                             </td>
                             <td>
-                                APP
+                                {{ficha.dependencia}}
+                            </td>
+                            <!-- <td>
+                                {{ficha.asunto}}
                             </td>
                             <td>
-                                propuesto
-                            </td>
+                                {{ficha.instruccion}}
+                            </td> -->
                             <td>
-                                Ṕara que lo vean
-                            </td>
-                            <td>
-                                En proceso
+                                {{ficha.resolucion}}
                             </td> 
                             <td>
                                 Alta
+                                <!-- {{ficha.prioridad}} -->
                             </td>        
                                           
                           <td class="status"><span class="active">Active</span></td>
@@ -80,123 +82,7 @@
                           </button>
                         </td>
                         </tr>
-                        <tr class="alert" role="alert">
-                            <td>
-                                430
-                            </td>
-                            <td>
-                                01/01/2020
-                            </td>
-                            <td>
-                                SFD/DCP-PC/253/2022
-                            </td>
-                            <td>
-                                29/05/2022
-                            </td>
-                            <td>
-                                ZigZag
-                            </td>
-                            <td>
-                                APP
-                            </td>
-                            <td>
-                                propuesto
-                            </td>
-                            <td>
-                                Ṕara que lo vean
-                            </td>
-                            <td>
-                                En proceso
-                            </td>  
-                            <td>
-                                Alta
-                            </td>        
-                                          
-                          <td class="status"><span class="active">Active</span></td>
-                          <td>
-                              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                            <span aria-hidden="true"><i class="fa fa-close"></i></span>
-                          </button>
-                        </td>
-                        </tr>
-                        <tr class="alert" role="alert">
-                            <td>
-                                430
-                            </td>
-                            <td>
-                                01/01/2020
-                            </td>
-                            <td>
-                                SFD/DCP-PC/253/2022
-                            </td>
-                            <td>
-                                29/05/2022
-                            </td>
-                            <td>
-                                ZigZag
-                            </td>
-                            <td>
-                                APP
-                            </td>
-                            <td>
-                                propuesto
-                            </td>
-                            <td>
-                                Ṕara que lo vean
-                            </td>
-                            <td>
-                                En proceso
-                            </td>   
-                            <td>
-                                Alta
-                            </td>       
-                                          
-                          <td class="status"><span class="active">Active</span></td>
-                          <td>
-                              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                            <span aria-hidden="true"><i class="fa fa-close"></i></span>
-                          </button>
-                        </td>
-                        </tr>
-                        <tr class="alert" role="alert">
-                            <td>
-                                430
-                            </td>
-                            <td>
-                                01/01/2020
-                            </td>
-                            <td>
-                                SFD/DCP-PC/253/2022
-                            </td>
-                            <td>
-                                29/05/2022
-                            </td>
-                            <td>
-                                ZigZag
-                            </td>
-                            <td>
-                                APP
-                            </td>
-                            <td>
-                                propuesto
-                            </td>
-                            <td>
-                                Ṕara que lo vean
-                            </td>
-                            <td>
-                                En proceso
-                            </td>   
-                            <td>
-                                Alta
-                            </td>       
-                                          
-                          <td class="status"><span class="active">Active</span></td>
-                          <td>
-                              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                            <span aria-hidden="true"><i class="fa fa-close"></i></span>
-                          </button>
-                        </td>
-                        </tr>
+                        {% endfor %}
                       </tbody>
                     </table>
                 </div>

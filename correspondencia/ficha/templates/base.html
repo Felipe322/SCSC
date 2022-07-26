@@ -53,14 +53,16 @@
     <aside class="sidebar">
       <div class="toggle">
         
-        <a href="#" class="burger js-menu-toggle" data-toggle="collapse" data-target="#main-navbar">
+        <a class="burger js-menu-toggle" data-toggle="collapse" data-target="#main-navbar">
               <span></span>
             </a>
       </div>
       <div class="side-inner">
 
         <div class="profile">
-          <img src="{% static 'images/cozcyt.jpg' %}" alt="Image" class="img-fluid">
+          <a href="{% url 'home' %}">
+            <img src="{% static 'images/cozcyt.jpg' %}" alt="Image" class="img-fluid">
+          </a>
           <h3 class="name">Sistema de Control y Seguimiento de Correspondencias</h3>
           <span class="country">Zacatecas</span>
         </div>
@@ -75,7 +77,7 @@
               <div id="collapseOne" class="collapse" aria-labelledby="headingOne">
                 <div>
                   <ul>
-                    <li><a href="crear_ficha">Agregar ficha de control</a></li>
+                    <li><a href="{% url 'crear-ficha' %}">Agregar ficha de control</a></li>
                     <li><a href="#">Modificar ficha de control</a></li>
                     <li><a href="#">Mostrar fichas de control</a></li>
                   </ul>
@@ -128,18 +130,7 @@
             <div class="header-content">
                 <nav class="navbar navbar-expand">
                     <div class="collapse navbar-collapse justify-content-between">
-                        <div class="header-left">
-                            <div class="search_bar dropdown">
-                                <span class="search_icon p-3 c-pointer" data-toggle="dropdown">
-                                    <i class="mdi mdi-magnify"></i>
-                                </span>
-                                <div class="dropdown-menu p-0 m-0">
-                                    <form>
-                                        <input class="form-control" type="search" placeholder="Buscar" aria-label="Search">
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
+                        <div class="header-left"></div>
 
                         <ul class="navbar-nav header-right">
                             <li class="nav-item dropdown notification_dropdown">
