@@ -10,23 +10,22 @@ class FichaForm(forms.ModelForm):
     class Meta:
         model = Ficha
 
-        fecha = forms.TimeField()
-        fecha_documento = forms.TimeField()
+        # fecha = forms.TimeField()
+        # fecha_documento = forms.TimeField()
         dependencia = forms.ModelMultipleChoiceField(queryset=Dependencia.objects.all(), required=True, widget=forms.CheckboxSelectMultiple)
         area_turnada = forms.ModelMultipleChoiceField(queryset=Area.objects.all(), required=True, widget=forms.CheckboxSelectMultiple)
 
-        fields = '__all__'
+        fields = ['id_ficha','fecha', 'num_documento', 'fecha_documento', 'dependencia','nombre_firma', 'asunto', 'area_turnada', 'instruccion','prioridad']
 
         widgets = {
             'id_ficha' : forms.TextInput(attrs={'class':'form-control'}),
-            'fecha' : forms.DateField(label=('Fecha')),
+            'fecha' : forms.DateInput(attrs={'type':'date'}),
             'num_documento' : forms.TextInput(attrs={'class':'form-control'}),
-            'fecha_documento' : forms.TextInput(attrs={'class':'form-control'}),
+            'fecha_documento' : forms.DateInput(attrs={'type':'date'}),
             'dependencia' : forms.Select(attrs={'class':'form-control'}),
-            'nombre_firma' : forms.Textarea(attrs={'class':'form-control','rows': 5}),
-            'asunto' : forms.Textarea(attrs={'class':'form-control','rows': 6}),
+            'nombre_firma' : forms.Textarea(attrs={'class':'form-control','rows': 2}),
+            'asunto' : forms.Textarea(attrs={'class':'form-control','rows': 3}),
             'area_turnada' : forms.Select(attrs={'class':'form-control'}),
-            'instruccion' : forms.Textarea(attrs={'class':'form-control','rows': 6}),
-            'resolucion' : forms.Textarea(attrs={'class':'form-control','rows': 6}),
-            'fecha_recibido' : forms.TextInput(attrs={'class':'form-control'}),
+            'instruccion' : forms.Textarea(attrs={'class':'form-control','rows': 3}),
+            'prioridad' : forms.Select(attrs={'class':'form-control'}),
         }

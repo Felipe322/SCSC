@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block titulo %}
+    Editar Ficha
+{% endblock titulo %}
+
+{% block css %}
+{% endblock css %}
+
+{% block contenido %}
+    <h1>
+        <center>Editar Ficha</center> </h1>
+    <div style='
+        padding-left: 1%; padding-right: 1%; padding-top: 2%; padding-bottom: 5%;
+        column-count: 2; '>
+        <form method="post">
+            {% csrf_token %}
+            {{form.as_p}}
+            <button type="submit" class="btn btn-success">Guardar</button>
+        </form>
+    </div>
+{% endblock contenido %}
+
+{% block js %}
+{% endblock js %}

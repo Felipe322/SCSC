@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block contenido %}
+
+<h1>Agregar Ficha de control</h1>
+
+<div class="main-container">
+
+    <div style='
+        padding-left: 1%; padding-right: 1%; padding-top: 2%; padding-bottom: 5%;
+        column-count: 2; '>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p}}
+        <!-- {% if form.errors %}
+       {% for field in form %}
+           {% for error in field.errors %} 
+              <div class="alert alert-danger">
+                   <strong>{{ error|escape }}</strong>
+              </div>
+           {% endfor %}
+       {% endfor %}
+    {% endif %} -->
+        <button type="submit" class="btn btn-success">Agregar</button>
+    </form>
+    </div>
+
+</div>
+{% endblock contenido %}

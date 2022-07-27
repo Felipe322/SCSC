@@ -20,7 +20,7 @@
 <section class="ftco-section">
     <div class="container">
         <div class="row">
-            <div class="col-md-12">
+            <div class="col-md-2">
                 <div class="table-wrap">
                     <table class="table table-responsive-xl">
                       <thead>
@@ -28,13 +28,8 @@
                             <!-- <th>&nbsp;</th> -->
                             <th>No. de ficha</th>
                             <th>Fecha</th>
-                            <th>Numero de documento</th>
-                            <th>Fecha de documento</th>
                             <th>Area a la que se turna</th>
-                            <th>Dependencia procedente</th>
-                            <!-- <th>Asunto</th>
-                            <th>Instruccion</th> -->
-                          <th>Resolucion</th>
+                            <th>Asunto</th>
                           <th>Prioridad</th>
                           <th>Estatus</th>
                           <th>&nbsp;</th>
@@ -50,29 +45,13 @@
                                 {{ficha.fecha}}
                             </td>
                             <td>
-                                {{ficha.num_documento}}
-                            </td>
-                            <td>
-                                {{ficha.fecha_documento}}
-                            </td>
-                            <td>
                                 {{ficha.area_turnada}}
                             </td>
                             <td>
-                                {{ficha.dependencia}}
-                            </td>
-                            <!-- <td>
                                 {{ficha.asunto}}
                             </td>
                             <td>
-                                {{ficha.instruccion}}
-                            </td> -->
-                            <td>
-                                {{ficha.resolucion}}
-                            </td> 
-                            <td>
-                                Alta
-                                <!-- {{ficha.prioridad}} -->
+                                {{ficha.prioridad}}
                             </td>        
                                           
                           <td class="status"><span class="active">Active</span></td>
@@ -85,6 +64,27 @@
                         {% endfor %}
                       </tbody>
                     </table>
+                    <nav aria-label="...">
+                        <ul class="pagination">
+                          <li class="page-item disabled"><span class="step-links"></li>
+                            {% if page_obj.has_previous %}
+                              <span><a class="page-link" href="?page=1">&laquo; Primera</a></span>
+                              <span><a class="page-link" href="?page={{ page_obj.previous_page_number }}">Anterior</a></span>
+                            {% endif %}
+                            {% for page_actual in  page_obj.paginator.page_range %}
+                              {% if page_actual == page_obj.number %}
+                                <span class="page-item active" aria-current="page" ><a class="page-link" href="?page={{ page_actual }}">{{ page_actual }}</a></span>
+                              {% else %}
+                                <span><a class="page-link" href="?page={{ page_actual }}">{{ page_actual }}</a></span>
+                              {% endif %}
+                            {% endfor %}
+                            {% if page_obj.has_next %}
+                                <span><a class="page-link" href="?page={{ page_obj.next_page_number }}">Siguiente</a></span>
+                                <span><a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">Última &raquo;</a></span>
+                            {% endif %}
+                        </span>
+                        </ul>
+                      </nav>
                 </div>
             </div>
         </div>

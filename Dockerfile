@@ -22,4 +22,4 @@ COPY ./correspondencia/ /app/
 EXPOSE 8000
 
 # Comando ejecutado por defecto.
-# CMD ["python3", "manage.py", "runserver", "0.0.0.0:8000"]
+CMD ["python3", "manage.py", "runserver", "0.0.0.0:8000"]
