@@ -1,3 +1,4 @@
+from dataclasses import field
 from django import forms
 
 from django.forms import ModelForm
@@ -28,4 +29,18 @@ class FichaForm(forms.ModelForm):
             'area_turnada' : forms.Select(attrs={'class':'form-control'}),
             'instruccion' : forms.Textarea(attrs={'class':'form-control','rows': 3}),
             'prioridad' : forms.Select(attrs={'class':'form-control'}),
+        }
+
+class AreaForm(forms.ModelForm):
+    
+    class Meta:
+        model = Area
+
+        fields = '__all__'
+
+        widgets = {
+            'nombre' : forms.TextInput(attrs={'class':'form-control'}),
+            'siglas' : forms.TextInput(attrs={'class':'form-control'}),
+            'encargado' : forms.TextInput(attrs={'class':'form-control'}),
+            'puesto' : forms.TextInput(attrs={'class':'form-control'})
         }

@@ -1,8 +1,8 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 
 
-from .forms import FichaForm
-from .models import Ficha
+from .forms import AreaForm, FichaForm
+from .models import Area, Ficha
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.views.generic import ListView, DetailView, TemplateView
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
@@ -27,6 +27,8 @@ def home(request):
         fichas = paginator.page(paginator.num_pages)
     context = {'fichas':fichas, 'page_obj':page_obj}
     return render(request, 'home.html', context)
+
+#CRUD de Ficha
 
 # Muestra el listado de las Fichas en la BD.
 def lista(request):
@@ -63,3 +65,31 @@ class FichaModificar(UpdateView):
 #     # ]
 #     pdf_attachment = False
 #     pdf_filename = 'ficha.pdf'
+
+# CRUD  de Area
+
+class AreaList(ListView):
+    model = Area
+    paginate_by = 5
+    template_name = 'area/list_area.html'
+
+class AreaCrear(CreateView):
+    model = Area
+    form_class = AreaForm
+    template_name = 'area/crear_area.html'
+    success_url = reverse_lazy('lista_area')
+
+class AreaEditar(UpdateView):
+    model = Area
+    form_class = AreaForm
+    template_name = 'area/editar_area.html'
+    success_url = reverse_lazy('lista_area')
+
+def elimina_area(request, pk):
+    area = get_object_or_404(Area, id=pk)
+    area.delete()
+    return redirect('lista_area')
+
+class AreaDetalle(DetailView):
+    model = Area
+    template_name = 'area/detalle_area.html'

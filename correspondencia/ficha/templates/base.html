@@ -77,8 +77,8 @@
               <div id="collapseOne" class="collapse" aria-labelledby="headingOne">
                 <div>
                   <ul>
-                    <li><a href="{% url 'crear' %}">Agregar ficha de control</a></li>
                     <li><a href="{% url 'lista' %}">Mostrar fichas de control</a></li>
+                    <li><a href="{% url 'crear' %}">Agregar ficha de control</a></li>
                   </ul>
                 </div>
               </div>
@@ -93,8 +93,8 @@
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingOne">
                   <div>
                     <ul>
-                      <li><a href="#">Agregar area</a></li>
-                      <li><a href="#">Mostrar areas</a></li>
+                      <li><a href="{% url 'lista_area' %}">Mostrar areas</a></li>
+                      <li><a href="{% url 'crear_area' %}">Agregar area</a></li>
                     </ul>
                   </div>
                 </div>
@@ -107,8 +107,8 @@
                 <div id="collapseTree" class="collapse" aria-labelledby="headingOne">
                   <div>
                     <ul>
-                      <li><a href="#">Agregar dependencia</a></li>
                       <li><a href="#">Mostrar dependencias</a></li>
+                      <li><a href="#">Agregar dependencia</a></li>
                     </ul>
                   </div>
                 </div>
