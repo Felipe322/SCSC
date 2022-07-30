@@ -59,12 +59,13 @@
       </div>
       <div class="side-inner">
 
-        <div class="profile">
+        <div styles="width: 65px; 
+        object-fit: fill;" class="profile">
           <a href="{% url 'home' %}">
-            <img src="{% static 'images/cozcyt.jpg' %}" alt="Image" class="img-fluid">
+            <img src="{{logo.url}} "alt="Image" class="img-fluid">
           </a>
-          <h3 class="name">Sistema de Control y Seguimiento de Correspondencias</h3>
-          <span class="country">Zacatecas</span>
+          <h3 class="name">{{titulo}}</h3>
+          <span class="country">{{subtitulo}}</span>
         </div>
 
         
@@ -88,7 +89,7 @@
             <br>
             <li class="accordion">
                 <a href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo" class="collapsible">
-                  <span  class="icon-user-o mr-3"></span>Administración areas de COZCYT
+                  <span  class="icon-user-o mr-3"></span>Administración de areas
                 </a>
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingOne">
                   <div>
@@ -114,7 +115,10 @@
                 </div>
               </li>
               <br>
-              <li><a href="#"><span class="icon-settings_applications mr-3"></span>Ajustes</a></li>
+              <li><a href="{% url 'usuarios:lista' %}"><span class="icon-settings_applications mr-3"></span>Usuarios</a></li>
+              <br>
+
+              <li><a href="{% url 'usuarios:ajustes' 1 %}"><span class="icon-settings_applications mr-3"></span>Ajustes</a></li>
           </ul>
         </div>
       </div>

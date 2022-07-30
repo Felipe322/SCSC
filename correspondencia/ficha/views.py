@@ -1,17 +1,22 @@
+from multiprocessing import context
 from django.shortcuts import render, redirect, get_object_or_404
 
-
+from usuarios.models import Ajustes
 from .forms import AreaForm, FichaForm
 from .models import Area, Ficha
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.views.generic import ListView, DetailView, TemplateView
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
 from django.urls import reverse_lazy
-# from django_weasyprint import WeasyTemplateResponseMixin
-# from django_weasyprint.views import WeasyTemplateResponse
 
-from django.conf import settings
 
+def ajustes():
+    ajustes = Ajustes.objects.filter()[:1].get()
+    titulo = ajustes
+    subtitulo = ajustes.subtitulo
+    logo = ajustes.logo
+    context = {'titulo':titulo, 'subtitulo':subtitulo, 'logo':logo}
+    return context
 
 # @login_required(login_url="home")
 def home(request):
@@ -26,6 +31,7 @@ def home(request):
     except EmptyPage:
         fichas = paginator.page(paginator.num_pages)
     context = {'fichas':fichas, 'page_obj':page_obj}
+    context.update(ajustes())
     return render(request, 'home.html', context)
 
 #CRUD de Ficha
@@ -37,6 +43,7 @@ def lista(request):
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
     context = {'fichas':fichas, 'page_obj':page_obj}
+    context.update(ajustes())
     return render(request, 'ficha/lista_fichas.html', context)
 
 # @login_required(login_url="home")
@@ -47,13 +54,20 @@ def crear(request):
         if form.is_valid():
             form.save()
             return redirect('home')
-    return render(request, 'ficha/crear_ficha.html', {'form':form})
+    context = {'form':form}
+    context.update(ajustes())
+    return render(request, 'ficha/crear_ficha.html', context)
 
 class FichaModificar(UpdateView):
     model = Ficha
     form_class = FichaForm
     template_name = 'ficha/editar_ficha.html'
     success_url = reverse_lazy('lista')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update(ajustes())
+        return context
 
 # class FichaPDF(ListView):
 #     model = Ficha
@@ -73,17 +87,32 @@ class AreaList(ListView):
     paginate_by = 5
     template_name = 'area/list_area.html'
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update(ajustes())
+        return context
+
 class AreaCrear(CreateView):
     model = Area
     form_class = AreaForm
     template_name = 'area/crear_area.html'
     success_url = reverse_lazy('lista_area')
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update(ajustes())
+        return context
+
 class AreaEditar(UpdateView):
     model = Area
     form_class = AreaForm
     template_name = 'area/editar_area.html'
     success_url = reverse_lazy('lista_area')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update(ajustes())
+        return context
 
 def elimina_area(request, pk):
     area = get_object_or_404(Area, id=pk)
@@ -93,3 +122,8 @@ def elimina_area(request, pk):
 class AreaDetalle(DetailView):
     model = Area
     template_name = 'area/detalle_area.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update(ajustes())
+        return context

@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block titulo %}
+    Crear usuario
+{% endblock titulo %}
+
+{% block css %}
+{% endblock css %}
+    
+
+{% block contenido %}
+    <h1>Crear usuario</h1>
+    <form method="post" enctype="multipart/form-data" >
+        {% csrf_token %}
+        {{form.as_p}}
+        <button type="submit" class="btn btn-success">Agregar</button>
+    </form>
+{% endblock contenido %}
+
+{% block js %}
+    <script src="{% static 'js/funciones.js' %}"></script>
+{% endblock js %}

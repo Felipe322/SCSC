@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block titulo %}
+    Editar usuario
+{% endblock titulo %}
+
+{% block contenido %}
+    <h1>Editar usuario</h1>
+    <form method="post" enctype="multipart/form-data" >
+        {% csrf_token %}
+        {{form.as_p}}
+        <button type="submit" class="btn btn-success">Editar</button>
+    </form>
+{% endblock contenido %}
