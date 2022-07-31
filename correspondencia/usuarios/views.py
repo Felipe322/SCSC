@@ -7,7 +7,13 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from usuarios.models import Ajustes, Usuario
+from django.contrib.auth.views import LoginView
+from django.contrib.auth.forms import AuthenticationForm
 
+
+class Login(LoginView):
+    template_name = 'login.html'
+    form_class = AuthenticationForm
 
 #CRUD de usuarios.
 @method_decorator(login_required, name='dispatch')

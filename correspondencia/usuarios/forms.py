@@ -1,4 +1,5 @@
 from django import forms
+from django.contrib.auth.forms import AuthenticationForm
 from .models import Ajustes, Usuario
 
 
@@ -33,3 +34,4 @@ class AjustesForm(forms.ModelForm):
             'subtitulo': forms.TextInput(attrs={'class':'form-control', 'placeholder':'Apellido'}),
             # 'logo': forms.ImageField()
         }
+
