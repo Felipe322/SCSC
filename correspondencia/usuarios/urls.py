@@ -6,7 +6,7 @@ app_name = 'usuarios'
 
 
 urlpatterns = [
-    path('login/', views.LoginUsuario.as_view(), name="login"),
+    # path('login/', views.LoginUsuario.as_view(), name="login"),
     path('', views.UsuarioLista.as_view(), name="lista"),
     path('crear/', views.UsuarioCrear.as_view(), name="crear"),
     path('editar/<int:pk>', views.UsuarioEditar.as_view(), name="editar"),

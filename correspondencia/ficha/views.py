@@ -8,6 +8,8 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.views.generic import ListView, DetailView, TemplateView
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
 from django.urls import reverse_lazy
+from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
 
 
 def ajustes():
@@ -18,7 +20,7 @@ def ajustes():
     context = {'titulo':titulo, 'subtitulo':subtitulo, 'logo':logo}
     return context
 
-# @login_required(login_url="home")
+@login_required(login_url="login")
 def home(request):
     fichas = Ficha.objects.all().order_by("-id_ficha") #TODO Order by time and priority.
     paginator = Paginator(fichas, 4)
@@ -37,6 +39,7 @@ def home(request):
 #CRUD de Ficha
 
 # Muestra el listado de las Fichas en la BD.
+@login_required(login_url="login")
 def lista(request):
     fichas = Ficha.objects.all().order_by("-id_ficha") #TODO Order by time and priority.
     paginator = Paginator(fichas, 10)
@@ -46,7 +49,7 @@ def lista(request):
     context.update(ajustes())
     return render(request, 'ficha/lista_fichas.html', context)
 
-# @login_required(login_url="home")
+@login_required(login_url="login")
 def crear(request):
     form = FichaForm()
     if request.method == 'POST':
@@ -58,6 +61,7 @@ def crear(request):
     context.update(ajustes())
     return render(request, 'ficha/crear_ficha.html', context)
 
+@method_decorator(login_required, name='dispatch')
 class FichaModificar(UpdateView):
     model = Ficha
     form_class = FichaForm
@@ -80,8 +84,10 @@ class FichaModificar(UpdateView):
 #     pdf_attachment = False
 #     pdf_filename = 'ficha.pdf'
 
+
 # CRUD  de Area
 
+@method_decorator(login_required, name='dispatch')
 class AreaList(ListView):
     model = Area
     paginate_by = 5
@@ -92,6 +98,7 @@ class AreaList(ListView):
         context.update(ajustes())
         return context
 
+@method_decorator(login_required, name='dispatch')
 class AreaCrear(CreateView):
     model = Area
     form_class = AreaForm
@@ -103,6 +110,7 @@ class AreaCrear(CreateView):
         context.update(ajustes())
         return context
 
+@method_decorator(login_required, name='dispatch')
 class AreaEditar(UpdateView):
     model = Area
     form_class = AreaForm
@@ -114,11 +122,13 @@ class AreaEditar(UpdateView):
         context.update(ajustes())
         return context
 
+@login_required(login_url="login")
 def elimina_area(request, pk):
     area = get_object_or_404(Area, id=pk)
     area.delete()
     return redirect('lista_area')
 
+@method_decorator(login_required, name='dispatch')
 class AreaDetalle(DetailView):
     model = Area
     template_name = 'area/detalle_area.html'

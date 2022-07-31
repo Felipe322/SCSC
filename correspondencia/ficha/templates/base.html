@@ -54,7 +54,7 @@
       <div class="toggle">
         
         <a class="burger js-menu-toggle" data-toggle="collapse" data-target="#main-navbar">
-              <span></span>
+              <span>{{user.username}}</span>
             </a>
       </div>
       <div class="side-inner">
@@ -157,7 +157,9 @@
                                 </div>
                             </li>
                             <li class="nav-item dropdown header-profile">
-                                <a class="nav-link" href="#" role="button" data-toggle="dropdown">
+                              <a href="{% url 'logout' %}">
+                                Logout
+                                <a class="nav-link" href="{% url 'logout' %}" role="button" data-toggle="dropdown">
                                     <i class="mdi mdi-account"></i>
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-right">
@@ -169,11 +171,12 @@
                                         <i class="icon-envelope-open"></i>
                                         <span class="ml-2">Inbox </span>
                                     </a>
-                                    <a href="#" class="dropdown-item">
+                                    <a href="{% url 'logout' %}" class="dropdown-item">
                                         <i class="icon-key"></i>
                                         <span class="ml-2">Logout </span>
                                     </a>
                                 </div>
+                              </a>
                             </li>
                         </ul>
                     </div>
