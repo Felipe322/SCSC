@@ -12,5 +12,6 @@ urlpatterns = [
     path('', home, name="home"),
     path('fichas/', include('ficha.urls_ficha')),
     path('areas/', include('ficha.urls_area')),
+    path('dependencias/', include('ficha.urls_dependencia')),
     path('usuarios/', include('usuarios.urls')),
 ]

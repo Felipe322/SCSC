@@ -44,3 +44,16 @@ class AreaForm(forms.ModelForm):
             'encargado' : forms.TextInput(attrs={'class':'form-control'}),
             'puesto' : forms.TextInput(attrs={'class':'form-control'})
         }
+
+
+class DependenciaForm(forms.ModelForm):
+    
+    class Meta:
+        model = Dependencia
+
+        fields = '__all__'
+
+        widgets = {
+            'nombre' : forms.TextInput(attrs={'class':'form-control'}),
+            'siglas' : forms.TextInput(attrs={'class':'form-control'}),
+        }

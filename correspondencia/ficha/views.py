@@ -2,8 +2,8 @@ from multiprocessing import context
 from django.shortcuts import render, redirect, get_object_or_404
 
 from usuarios.models import Ajustes
-from .forms import AreaForm, FichaForm
-from .models import Area, Ficha
+from .forms import AreaForm, FichaForm, DependenciaForm
+from .models import Area, Ficha, Dependencia
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.views.generic import ListView, DetailView, TemplateView
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
@@ -137,3 +137,61 @@ class AreaDetalle(DetailView):
         context = super().get_context_data(**kwargs)
         context.update(ajustes())
         return context
+
+
+# CRUD  de dependencia
+
+@method_decorator(login_required, name='dispatch')
+class DependenciaList(ListView):
+    model = Dependencia
+    paginate_by = 5
+    template_name = 'dependencia/list_dependencia.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update(ajustes())
+        return context
+
+
+@method_decorator(login_required, name='dispatch')
+class DependenciaCrear(CreateView):
+    model = Dependencia
+    form_class = DependenciaForm
+    template_name = 'dependencia/crear_dependencia.html'
+    success_url = reverse_lazy('lista_dependencia')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update(ajustes())
+        return context
+
+
+@method_decorator(login_required, name='dispatch')
+class DependenciaEditar(UpdateView):
+    model = Dependencia
+    form_class = DependenciaForm
+    template_name = 'dependencia/editar_dependencia.html'
+    success_url = reverse_lazy('lista_dependencia')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update(ajustes())
+        return context
+
+
+@method_decorator(login_required, name='dispatch')
+class DependenciaDetalle(DetailView):
+    model = Dependencia
+    template_name = 'dependencia/detalle_dependencia.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update(ajustes())
+        return context
+
+
+@login_required(login_url="login")
+def elimina_dependencia(request, pk):
+    dependencia = get_object_or_404(Dependencia, id=pk)
+    dependencia.delete()
+    return redirect('lista_dependencia')
