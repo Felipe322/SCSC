@@ -2,11 +2,11 @@
 {% load static %}
 
 {% block titulo %}
-    Editar ajustes
+    Ajustes
 {% endblock titulo %}
 
 {% block contenido %}
-    <h1>Editar ajustes</h1>
+    <h1>Ajustes</h1>
     <form method="post" enctype="multipart/form-data" >
         {% csrf_token %}
         {{form.as_p}}

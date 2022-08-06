@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block titulo %}
+    Correspondencia
+{% endblock titulo %}
+
+{% block contenido %}
+<center><h1 class="app-page-title">Correspondencia</h1> </center>
+<div class="app-card app-card-orders-table shadow-sm mb-5">
+    <hr>
+    <br>
+    <table class="table">
+        <thead>
+            {% for area in object_list %}
+                <th>{{area.nombre}} ({{area.siglas}})</th>
+                <th></th>
+            {% endfor %}
+        </thead>
+        <tbody>
+            {% for area in object_list %}
+                {% for ficha in fichas %}
+                <tr>
+                <div>
+                    <td>{{ficha.id_ficha}}</td>
+                </div>
+                </tr>
+                {% endfor %}
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock contenido %}
+
+
+{% block js %}
+  <script src="{% static 'js/funciones.js' %}"></script>
+{% endblock js %}
+  

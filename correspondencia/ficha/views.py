@@ -1,3 +1,4 @@
+from ast import For
 from multiprocessing import context
 from django.shortcuts import render, redirect, get_object_or_404
 
@@ -195,3 +196,21 @@ def elimina_dependencia(request, pk):
     dependencia = get_object_or_404(Dependencia, id=pk)
     dependencia.delete()
     return redirect('lista_dependencia')
+
+@method_decorator(login_required, name='dispatch')
+class Correspondencia(ListView):
+    model = Area
+    fichas = Ficha.objects.all().filter(area_turnada="1")
+    # ficha_area = Area
+
+    # for area in areas:
+    #     ficha_area += area
+    # print(ficha_area)
+
+    template_name = 'correspondencia/list_correspondencia.html'
+    extra_context={'fichas': fichas}
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update(ajustes())
+        return context
