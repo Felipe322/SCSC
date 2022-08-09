@@ -50,16 +50,18 @@
                             <td>
                                 {{ficha.asunto}}
                             </td>
-                            <td>
-                                {{ficha.prioridad}}
+                            <td class="prioridad"> 
+                                {% if ficha.prioridad == "1" %}
+                                  <span class="alta">Alta</span>
+                                {% elif ficha.prioridad == "2" %}
+                                  <span class="media">Media</span>
+                                {% elif ficha.prioridad == "3" %}
+                                  <span class="baja">Baja</span>
+                                {% endif %}
+
                             </td>        
                                           
-                          <td class="status"><span class="active">Active</span></td>
-                          <td>
-                              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                            <span aria-hidden="true"><i class="fa fa-close"></i></span>
-                          </button>
-                        </td>
+                          <td class="status"><span class="active">Atendido</span></td>
                         </tr>
                         {% endfor %}
                       </tbody>

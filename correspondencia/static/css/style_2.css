@@ -47,7 +47,7 @@ h1, h2, h3, h4, h5,
   line-height: 1.5;
   font-weight: 400;
   font-family: "Poppins", Arial, sans-serif;
-  color: #284c72; }
+  color: #3a274a; }
 
 .table-wrap {
   min-width: 1080px !important;
@@ -104,7 +104,36 @@ h1, h2, h3, h4, h5,
     color: #cfa00c; }
     .table tbody td.status .waiting:after {
       background: #f2be1d; }
-  
+
+
+  .table tbody td.prioridad span {
+    position: relative;
+    border-radius: 30px;
+    padding: 4px 10px 4px 25px; }
+    .table tbody td.prioridad span:after {
+      position: absolute;
+      top: 9px;
+      left: 10px;
+      width: 10px;
+      height: 10px;
+      content: '';
+      border-radius: 50%; }
+  .table tbody td.prioridad .baja {
+    background: #cff6dd;
+    color: #1fa750; }
+    .table tbody td.prioridad .baja:after {
+      background: #23bd5a; }
+  .table tbody td.prioridad .media {
+    background: #fdf5dd;
+    color: #cfa00c; }
+    .table tbody td.prioridad .media:after {
+      background: #f2be1d; } 
+  .table tbody td.prioridad .alta {
+    background: #fddddd;
+    color: #f21d1d; }
+    .table tbody td.prioridad .alta:after {
+      background: #f21d1d; } 
+
   .table tbody td .email span {
     display: block; }
     .table tbody td .email span:last-child {
