@@ -41,6 +41,10 @@
     width: 25%;
  }
 
+tr.alert:hover {
+  color:#bb4423 !important;
+  cursor: pointer;
+}
 
 h1, h2, h3, h4, h5,
 .h1, .h2, .h3, .h4, .h5 {
@@ -105,6 +109,10 @@ h1, h2, h3, h4, h5,
     .table tbody td.status .waiting:after {
       background: #f2be1d; }
 
+  .table tbody tr.alert:hover {
+    color:#bb4423  !important;
+    cursor: pointer;
+  }
 
   .table tbody td.prioridad span {
     position: relative;

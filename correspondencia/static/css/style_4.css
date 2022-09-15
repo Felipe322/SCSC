@@ -86,6 +86,10 @@ p {
 h1, h2, h3, h4, h5, h6 {
   font-family: "mouse-500", Arial, Helvetica, sans-serif; }
 
+h1 {
+  color: #bb4433;
+}
+
 strong {
   font-family: "mouse-500", Arial, Helvetica, sans-serif; }
 
@@ -233,7 +237,7 @@ body {
   .log-det .small-logo {
     text-align: center;
     align-items: center;
-    color: #c82333;
+    color: #bb4433;
     font-size: 1.2rem; }
     .log-det .small-logo i {
       font-size: 32px;
@@ -301,7 +305,7 @@ body {
     margin-top: 10px;
     font-size: .9rem; }
     .log-det .forget-p span {
-      color: #c82333;
+      color: #bb4433;
       font-weight: 600;
       margin-left: 5px; }
 

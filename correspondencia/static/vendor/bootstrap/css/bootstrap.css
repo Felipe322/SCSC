@@ -2129,13 +2129,13 @@ fieldset[disabled] a.btn {
 
 .btn-danger {
   color: #fff;
-  background-color: #dc3545;
+  background-color: #bb4433 !important;
   border-color: #dc3545;
 }
 
 .btn-danger:hover {
   color: #fff;
-  background-color: #c82333;
+  background-color: #701005;
   border-color: #bd2130;
 }
 
@@ -2150,7 +2150,7 @@ fieldset[disabled] a.btn {
 
 .btn-danger:active, .btn-danger.active,
 .show > .btn-danger.dropdown-toggle {
-  background-color: #c82333;
+  background-color: #bb4433;
   background-image: none;
   border-color: #bd2130;
 }

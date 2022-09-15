@@ -4,9 +4,12 @@
     font-weight: 400;
     color: #eeeaea;
     background: #ffffff;
-    margin: 0 0 25px;
+    margin-left: auto;
+    margin-right: auto;
     overflow: visible;
     overflow: hidden;
     padding: 20px;
     text-align:center;
+    width: 1680px;
+    overflow:scroll;
     }

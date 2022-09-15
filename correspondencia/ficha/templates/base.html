@@ -47,22 +47,21 @@
           {% endblock titulo %}
       </title>
       </head>
-  <body>
+  <body class="show-sidebar">
   
     
     <aside class="sidebar">
       <div class="toggle">
         
         <a class="burger js-menu-toggle" data-toggle="collapse" data-target="#main-navbar">
-              <span>{{user.username}}</span>
+              <span></span>
             </a>
       </div>
       <div class="side-inner">
 
-        <div styles="width: 65px; 
-        object-fit: fill;" class="profile">
+        <div class="profile">
           <a href="{% url 'home' %}">
-            <img src="{{logo.url}} "alt="Image" class="img-fluid">
+            <img src=" {% static 'images/logo-cozcyt.png' %} "alt="Image" class="img-fluid">
           </a>
           <h3 class="name">{{titulo}}</h3>
           <span class="country">{{subtitulo}}</span>
@@ -121,6 +120,10 @@
               <li><a href="{% url 'usuarios:ajustes' 1 %}"><span class="icon-settings_applications mr-3"></span>Ajustes</a></li>
           </ul>
         </div>
+        <footer>
+          <img src=" {% static 'images/LABSOL.png' %} "alt="Image" class="img-labsol">
+        </footer>  
+        
       </div>
       
     </aside>

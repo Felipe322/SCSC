@@ -91,7 +91,8 @@ aside {
       padding-bottom: 30px;
       border-bottom: 1px solid #efefef; }
       aside .side-inner .profile img {
-        width: 80px;
+        max-width: 200%;
+        max-height: 200%;
         margin: 0 auto 20px auto;
         border-radius: 50%; }
       aside .side-inner .profile .name {
@@ -133,7 +134,7 @@ aside {
         top: 0;
         bottom: 0;
         width: 0px;
-        background-color: #ff7315;
+        background-color: #781005;
         opacity: 0;
         visibility: hidden;
         -webkit-transition: .3s opacity ease, .3s visibility ease, .3s width ease;
@@ -143,7 +144,7 @@ aside {
         outline: none; }
       aside .side-inner .nav-menu ul li a:hover {
         background: #fcfcfc;
-        color: #000; }
+        color: #bb4433; }
         aside .side-inner .nav-menu ul li a:hover:before {
           width: 4px;
           opacity: 1;
@@ -171,7 +172,7 @@ aside {
         transition: .3s transform ease; }
       aside .side-inner .nav-menu ul li .collapsible[aria-expanded="true"] {
         background: #fcfcfc;
-        color: #000; }
+        color: #bb4433; }
         aside .side-inner .nav-menu ul li .collapsible[aria-expanded="true"]:before {
           opacity: 1;
           visibility: visible;
@@ -269,3 +270,11 @@ main {
 
 .burger:focus {
   outline: none; }
+
+.img-labsol {
+  text-align : center;
+  max-width: 60%;
+  height: auto; 
+  position:absolute; 
+  bottom:0;
+}

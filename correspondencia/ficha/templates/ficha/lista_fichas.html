@@ -25,7 +25,7 @@
                       <thead>
                         <tr>
                             <!-- <th>&nbsp;</th> -->
-                            <th>Editar</th>
+                            
                             <th>No. de ficha</th>
                             <th>Fecha</th>
                             <th>Número de Documento</th>
@@ -38,22 +38,14 @@
                             <th>Resolución</th>
                             <th>Ficha y firma de quien recibe</th>
                             <th>Prioridad</th>
-                            <th>Estatus</th>                          
-                          <th>&nbsp;</th>
+                            <th>Estatus</th>
+                            <th>Editar</th> 
                         </tr>
                       </thead>
                       <tbody>
                         {% for ficha in fichas %}
                         <tr class="alert" role="alert">
-                            <td>
-                                 <a href="{% url 'editar' ficha.id_ficha %}" class="btn btn-warning">Editar</a>
-                                </td>
-                                <td>
-                                    <a href="{% url 'editar' ficha.id_ficha %}" class="btn btn-danger">Eliminar</a>
-                                   </td>
-                                <td>
-                                    <a href="{% url 'editar' ficha.id_ficha %}" class="btn btn-info">PDF</a>
-                                   </td>
+                            
                             <td>
                                 {{ficha.id_ficha}}
                             </td>
@@ -91,11 +83,18 @@
                                 {{ficha.prioridad}}
                             </td>
 
-                          <td class="status"><span class="active">Active</span></td>
-                          <td>
-                              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                            <span aria-hidden="true"><i class="fa fa-close"></i></span>
-                          </button>
+                          <td class="status"><span class="active">Activo</span></td>
+                          
+                        <td>
+                            <td>
+                                <a href="{% url 'editar' ficha.id_ficha %}" class="btn btn-warning">Editar</a>
+                            </td>
+                            <td>
+                                <a href="{% url 'editar' ficha.id_ficha %}" class="btn btn-danger">Eliminar</a>
+                            </td>
+                            <td>
+                                <a href="{% url 'editar' ficha.id_ficha %}" class="btn btn-info">PDF</a>
+                            </td>
                         </td>
                         </tr>
                         {% endfor %}
