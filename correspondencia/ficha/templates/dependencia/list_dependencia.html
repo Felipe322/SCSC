@@ -27,10 +27,10 @@
                   <a href="{% url 'editar_dependencia' dependencia.id %}" class="btn btn-info">Editar </a>
                   <a href="{% url 'detalle_dependencia' dependencia.id %}" class="btn btn-info">Detalles</a>             
                   <button 
-                  onclick="eliminaDependenciaModal(`{% url 'eliminar_dependencia' dependencia.id %}` , '{{dependencia.nombre}}', '{{dependencia.siglas}}')"
-                  type="button" class="btn btn-danger" data-toggle="modal"
-                  data-target="#eliminarDependenciaModal">
-                    Eliminar
+                      onclick="eliminaDependenciaModal(`{% url 'eliminar_dependencia' dependencia.id %}` , '{{dependencia.nombre}}', '{{dependencia.siglas}}')"
+                      type="button" class="btn btn-danger" data-toggle="modal"
+                      data-target="#eliminarDependenciaModal">
+                        Eliminar
                   </button>
               </td>
             </a>

@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.urls import path, include
 from django.contrib.auth.views import LogoutView
 from usuarios.views import Login
-from ficha.views import home, Correspondencia
+from ficha.views import home, correspondencia
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -12,6 +12,6 @@ urlpatterns = [
     path('fichas/', include('ficha.urls_ficha')),
     path('areas/', include('ficha.urls_area')),
     path('dependencias/', include('ficha.urls_dependencia')),
-    path('correspondencia/', Correspondencia.as_view(), name="correspondencia"),
+    path('correspondencia/', correspondencia, name="correspondencia"),
     path('usuarios/', include('usuarios.urls')),
 ]

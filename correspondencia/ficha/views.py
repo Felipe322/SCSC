@@ -1,5 +1,3 @@
-from ast import For
-from multiprocessing import context
 from django.shortcuts import render, redirect, get_object_or_404
 
 from usuarios.models import Ajustes
@@ -85,6 +83,21 @@ class FichaModificar(UpdateView):
 #     pdf_attachment = False
 #     pdf_filename = 'ficha.pdf'
 
+@method_decorator(login_required, name='dispatch')
+class FichaDetalle(DetailView):
+    model = Ficha
+    template_name = 'ficha/detalle_ficha.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update(ajustes())
+        return context
+
+@login_required(login_url="login")
+def elimina_ficha(request, pk):
+    ficha = get_object_or_404(Ficha, id_ficha=pk)
+    ficha.delete()
+    return redirect('lista')
 
 # CRUD  de Area
 
@@ -197,20 +210,13 @@ def elimina_dependencia(request, pk):
     dependencia.delete()
     return redirect('lista_dependencia')
 
-@method_decorator(login_required, name='dispatch')
-class Correspondencia(ListView):
-    model = Area
-    fichas = Ficha.objects.all().filter(area_turnada="1")
-    # ficha_area = Area
 
-    # for area in areas:
-    #     ficha_area += area
-    # print(ficha_area)
+# Listado de Correspondencia anual.
 
-    template_name = 'correspondencia/list_correspondencia.html'
-    extra_context={'fichas': fichas}
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context.update(ajustes())
-        return context
+@login_required(login_url="login")
+def correspondencia(request):
+    areas = Area.objects.all()
+    fichas = Ficha.objects.all()
+    context = {'areas': areas, 'fichas':fichas}
+    context.update(ajustes())
+    return render(request, 'correspondencia/list_correspondencia.html', context)

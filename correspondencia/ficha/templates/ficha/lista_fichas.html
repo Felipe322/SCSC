@@ -83,19 +83,23 @@
                                 {{ficha.prioridad}}
                             </td>
 
-                          <td class="status"><span class="active">Activo</span></td>
-                          
-                        <td>
+                          <td class="status"><span class="active">Activo</span></td>                          
                             <td>
-                                <a href="{% url 'editar' ficha.id_ficha %}" class="btn btn-warning">Editar</a>
+                                <td>
+                                    <a href="{% url 'editar' ficha.id_ficha %}" class="btn btn-warning">Editar</a>
+                                </td>
+                                <td>
+                                    <button 
+                                        onclick="eliminaFichaModal(`{% url 'eliminar' ficha.id_ficha %}` , '{{ficha.num_documento}}')"
+                                        type="button" class="btn btn-danger" data-toggle="modal"
+                                        data-target="#eliminarFichaModal">
+                                            Eliminar
+                                    </button>
+                                </td>
+                                <td>
+                                    <a href="{% url 'editar' ficha.id_ficha %}" class="btn btn-info">PDF</a>
+                                </td>
                             </td>
-                            <td>
-                                <a href="{% url 'editar' ficha.id_ficha %}" class="btn btn-danger">Eliminar</a>
-                            </td>
-                            <td>
-                                <a href="{% url 'editar' ficha.id_ficha %}" class="btn btn-info">PDF</a>
-                            </td>
-                        </td>
                         </tr>
                         {% endfor %}
                       </tbody>
@@ -127,6 +131,26 @@
     </div>
 </section>
 
+<div class="modal fade" id="eliminarFichaModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Confirmación</h5>
+          <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body" id="modalCuerpo">
+        </div>
+        <div class="modal-footer">
+          <form id="formEliminar" method="post">
+            {% csrf_token %}
+            <button class="btn btn-danger" type="submit">Sí, si quiero</button>
+          </form>
+          <button type="submit" class="btn btn-success" data-dismiss="modal">Mejor no</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
 {% endblock contenido %}
 
 {% block js %}
@@ -134,4 +158,5 @@
     <script src="{% static 'js/popper.js' %}"></script>
     <script src="{% static 'js/bootstrap.min.js' %}"></script>
     <script src="{% static 'js/main.js' %}"></script> -->
+    <script src="{% static 'js/funciones.js' %}"></script>
 {% endblock js %}

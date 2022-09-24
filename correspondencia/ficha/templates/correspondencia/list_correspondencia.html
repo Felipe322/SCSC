@@ -1,39 +1,47 @@
-{% extends 'base.html' %}
-{% load static %}
-
-{% block titulo %}
-    Correspondencia
-{% endblock titulo %}
-
-{% block contenido %}
-<center><h1 class="app-page-title">Correspondencia</h1> </center>
-<div class="app-card app-card-orders-table shadow-sm mb-5">
+    {% extends 'base.html' %}
+    {% load static %}
+    
+    {% block css %}
+      <link rel="stylesheet" href="{% static 'css/corres.css' %}">
+    {% endblock css%}
+    
+    {% block titulo %}
+        Correspondencia
+    {% endblock titulo %}
+    
+    {% block contenido %}
+    <center><h1 class="app-page-title">Correspondencia</h1> </center>
     <hr>
     <br>
-    <table class="table">
-        <thead>
-            {% for area in object_list %}
-                <th>{{area.nombre}} ({{area.siglas}})</th>
-                <th></th>
-            {% endfor %}
-        </thead>
-        <tbody>
-            {% for area in object_list %}
-                {% for ficha in fichas %}
-                <tr>
-                <div>
-                    <td>{{ficha.id_ficha}}</td>
+    <div class="row">
+      <div class="col">
+        <div class="tabs">
+            {% for area in areas %}
+                <div class="tab">
+                    <input type="checkbox" id="{{area.pk}}">
+                    <label class="tab-label" for="{{area.pk}}">{{area.nombre}} ({{area.siglas}})</label>
+                    {% for ficha in fichas %}
+                        {% if ficha.area_turnada.id == area.pk %}
+                        <div class="tab-content">
+                          <div class="row">
+                            <div class="col-xs-12 col-md-8">
+                              <button type="button" class="buton btn btn-lg">{{ficha.id_ficha}}</button>
+                            </div>
+                          </div>
+                        </div>
+                        {% endif  %}
+                    {% endfor %}
                 </div>
-                </tr>
-                {% endfor %}
             {% endfor %}
-        </tbody>
-    </table>
-</div>
-{% endblock contenido %}
-
-
-{% block js %}
-  <script src="{% static 'js/funciones.js' %}"></script>
-{% endblock js %}
-  
+        </div>
+      </div>
+    </div>
+    
+    {% endblock contenido %}
+    
+    
+    {% block js %}
+      <script src="{% static 'js/funciones.js' %}"></script>
+    {% endblock js %}
+      
+    </body>
