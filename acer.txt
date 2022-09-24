@@ -8,3 +8,4 @@ poner color a las letra conforme a la tablas de colores dados
 empezar con la limpieza de código
 acomodar imagen labsol para que cambie de tamaño conforme a la ventana
 
+el encargado y el puesto hace referencia a lo mismo arreglarlo
