@@ -11,8 +11,6 @@ services:
       MYSQL_USER: correspondenciauser
       MYSQL_PASSWORD: "C0rr3sp.5639#SCSC"
       MYSQL_ROOT_PASSWORD: passadmin56391255
-    volumes:
-      - db/:/var/lib/mysql
     ports:
       - 127.0.0.1:3320:3306
 
@@ -28,7 +26,3 @@ services:
       - 8000:8000
     volumes: 
       - ./correspondencia/:/app
-
-volumes:
-  db:
-  

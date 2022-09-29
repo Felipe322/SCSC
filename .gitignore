@@ -2,9 +2,10 @@
 *.log
 *.pot
 *.pyc
-__pycache__
+**/__pycache__/
 db.sqlite3
 media
+migrations
 
 # Backup files # 
 *.bak 
@@ -62,4 +63,4 @@ venv.bak/
 .history
 
 #db
-.db
+.db/
