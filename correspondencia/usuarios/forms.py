@@ -1,19 +1,25 @@
 from django import forms
 from django.contrib.auth.forms import AuthenticationForm
-from .models import Ajustes, Usuario
 
+from ficha.models import Area
+from .models import Ajustes, Usuario
 
 class UsuarioForm(forms.ModelForm):
     class Meta:
         model = Usuario
 
-        fields = ('first_name','last_name','username','email','password')
+        area = forms.ModelMultipleChoiceField(queryset=Area.objects.all(), required=True, widget=forms.CheckboxSelectMultiple)
+
+        fields = ('first_name','last_name','username','email','password','area','puesto')
 
         widgets = {
             'first_name': forms.TextInput(attrs={'class':'form-control', 'placeholder':'Nombre'}),
             'last_name': forms.TextInput(attrs={'class':'form-control', 'placeholder':'Apellido'}),
-            'username': forms.TextInput(attrs={'class':'form-control', 'placeholder':'Nombre de usuario'}),
+            'username': forms.TextInput(attrs={'class':'form-control', 'placeholder':'Usuario'}),
+            'email': forms.TextInput(attrs={'class':'form-control', 'placeholder':'Email'}),
             'password': forms.PasswordInput(attrs={'class':'form-control', 'placeholder':'Contraseña'}),
+            'area' : forms.Select(attrs={'class':'form-control', 'placeholder':'Area a la que pertenece el usuario'}),
+            'puesto' : forms.TextInput(attrs={'class':'form-control', 'placeholder':'Puesto del usuario'})
         }
 
     def save(self, commit=True):

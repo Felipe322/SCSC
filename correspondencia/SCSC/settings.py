@@ -141,3 +141,11 @@ USE_TZ = True
 LOGIN_URL = reverse_lazy('login')
 LOGIN_REDIRECT_URL = reverse_lazy('home')
 LOGOUT_REDIRECT_URL = reverse_lazy('login')
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'testing.uaz.is@gmail.com'
+EMAIL_HOST_PASSWORD = 'xkvtzfftujpoqvqh'
+EMAIL_PORT = 587

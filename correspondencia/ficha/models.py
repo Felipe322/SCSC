@@ -32,8 +32,8 @@ class Dependencia(models.Model):
 class Area(models.Model):
     nombre = models.CharField(max_length=200, verbose_name="Nombre")
     siglas = models.CharField(max_length=20, verbose_name="Siglas")
-    encargado = models.CharField(max_length=80, verbose_name="Encargado")
-    puesto = models.CharField(max_length=100, verbose_name="Puesto")
+    # encargado = models.CharField(max_length=80, verbose_name="Encargado")
+    # puesto = models.CharField(max_length=100, verbose_name="Puesto")
 
     def __str__(self):
         if self.siglas != None:

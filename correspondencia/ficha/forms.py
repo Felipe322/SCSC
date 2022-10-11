@@ -41,8 +41,8 @@ class AreaForm(forms.ModelForm):
         widgets = {
             'nombre' : forms.TextInput(attrs={'class':'form-control'}),
             'siglas' : forms.TextInput(attrs={'class':'form-control'}),
-            'encargado' : forms.TextInput(attrs={'class':'form-control'}),
-            'puesto' : forms.TextInput(attrs={'class':'form-control'})
+            # 'encargado' : forms.TextInput(attrs={'class':'form-control'}),
+            # 'puesto' : forms.TextInput(attrs={'class':'form-control'})
         }
 
 

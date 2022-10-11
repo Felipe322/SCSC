@@ -14,8 +14,6 @@
         <thead>
             <th>Nombre</th>
             <th>Siglas</th>
-            <th>Encargado</th>
-            <th>Puesto de encargado</th>
             <th></th>
         </thead>
         <tbody>
@@ -25,8 +23,6 @@
               <a href="{% url 'editar_area' area.id %}">
                 <td>{{area.nombre}}</td>
                 <td>{{area.siglas}}</td>
-                <td>{{area.encargado}}</td>
-                <td>{{area.puesto}}</td>
                 <td>
                   <a href="{% url 'editar_area' area.id %}" class="btn btn-info">Editar</a>
                   <a href="{% url 'detalle_area' area.id %}" class="btn btn-info">Detalles</a>

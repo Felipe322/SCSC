@@ -11,5 +11,6 @@ urlpatterns = [
     path('editar/<int:pk>', views.UsuarioEditar.as_view(), name="editar"),
     path('eliminar/<int:pk>', views.UsuarioEliminar.as_view(), name='eliminar'),
 
+    path('activar/<slug:uid64>/<slug:token>', views.ActivarCuenta.as_view(), name='activar'),
     path('ajustes/<int:id>', views.editar_ajustes, name='ajustes'),
 ]

@@ -1,5 +1,5 @@
 from django.http import HttpResponse
-from django.views.generic import ListView, CreateView, UpdateView, DeleteView
+from django.views.generic import ListView, CreateView, UpdateView, DeleteView, TemplateView
 from ficha.views import ajustes
 from usuarios.forms import AjustesForm, UsuarioForm
 from django.urls import reverse_lazy
@@ -9,6 +9,14 @@ from django.utils.decorators import method_decorator
 from usuarios.models import Ajustes, Usuario
 from django.contrib.auth.views import LoginView
 from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.sites.shortcuts import get_current_site
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.utils.encoding import force_bytes
+from .token import token_activacion
+from django.core.mail import EmailMessage
+from django.template.loader import render_to_string
+from django.contrib import messages
 
 
 class Login(LoginView):
@@ -28,11 +36,40 @@ class UsuarioLista(ListView):
         return context
 
 @method_decorator(login_required, name='dispatch')
-class UsuarioCrear(CreateView):
+class UsuarioCrear(LoginRequiredMixin, CreateView):
     model = Usuario
     form_class = UsuarioForm
     template_name = 'usuarios/crear_usuarios.html'
     success_url = reverse_lazy('usuarios:lista')
+
+    def form_valid(self, form):
+        user = form.save(commit=False)
+        user.is_active = False
+        user.save()
+
+        dominio = get_current_site(self.request)
+        uid = urlsafe_base64_encode(force_bytes(user.id))
+        token = token_activacion.make_token(user)
+        mensaje = render_to_string('confirmar_cuenta.html',
+            {
+                'usuario': user,
+                'dominio': dominio,
+                'uid': uid,
+                'token': token
+            }
+        )
+        asunto = 'Activación de cuenta'
+        to = user.email
+        email = EmailMessage(
+            asunto,
+            mensaje,
+            to=[to]
+        )
+        email.content_subtype = 'html'
+        email.send()
+
+
+        return super().form_valid(form)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -55,6 +92,24 @@ class UsuarioEditar(UpdateView):
 class UsuarioEliminar(DeleteView):
     model = Usuario
     success_url = reverse_lazy('usuarios:lista')
+
+class ActivarCuenta(TemplateView):
+    def get(self, request, *args, **kwargs):
+        try:
+            uid = urlsafe_base64_decode(kwargs['uid64'])
+            token = kwargs['token']
+            user = Usuario.objects.get(id=uid)
+        except:
+            user = None
+
+        if user and token_activacion.check_token(user, token):
+            user.is_active = True
+            user.save()
+            messages.success(self.request, 'Cuenta activada con éxito')
+        else:
+            messages.error(self.request, 'Token inválido, contacta al administrador')
+
+        return redirect('login')
 
 @login_required(login_url="login")
 def editar_ajustes(request, id):

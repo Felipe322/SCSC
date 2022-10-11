@@ -7,14 +7,16 @@
 
 {% block contenido %}
 <center><h1 class="app-page-title">Lista de usuarios</h1> </center>
+<br>
+
+<a href="{% url 'usuarios:crear' %}" class="btn btn-success">Crear usuario</a>
 <div class="app-card app-card-orders-table shadow-sm mb-5">
     <hr>
     <br>
     <table class="table">
         <thead>
-            <th>Nombre de usuario</th>
+            <th>Usuario</th>
             <th>Nombre</th>
-            <th>Apellido</th>
             <th>Email</th>
             <th>Area</th>
             <th>Ultima actividad</th>
@@ -26,10 +28,9 @@
               <div>
               <a href="{% url 'usuarios:editar' usuario.id %}">
                 <td>{{usuario.username}}</td>
-                <td>{{usuario.first_name}}</td>
-                <td>{{usuario.last_name}}</td>
+                <td>{{usuario.first_name}} {{usuario.last_name}}</td>
                 <td>{{usuario.email}}</td>
-                <td></td>
+                <td>{{usuario.area}}</td>
                 <td>{{usuario.last_login}}</td>
                 <td>
                   <a href="{% url 'usuarios:editar' usuario.id %}" class="btn btn-info">Editar</a>
