@@ -19,6 +19,7 @@ from django.views.generic.edit import CreateView, DeleteView, UpdateView
 from django.urls import reverse_lazy
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
+from reportlab.lib.pagesizes import letter, landscape
 
 
 def ajustes():
@@ -276,8 +277,72 @@ def elimina_dependencia(request, pk):
 
 @login_required(login_url="login")
 def correspondencia(request):
-    areas = Area.objects.all()
+    dependencias = Dependencia.objects.all()
     fichas = Ficha.objects.all()
-    context = {'areas': areas, 'fichas':fichas}
+    context = {'dependencias': dependencias, 'fichas':fichas}
     context.update(ajustes())
     return render(request, 'correspondencia/list_correspondencia.html', context)
+
+def pdf_correspondencia(request):
+    # Create a file-like buffer to receive PDF data.
+    buffer = io.BytesIO()
+
+    # dependencias = Dependencia.objects.all()
+    fichas = Ficha.objects.all()
+    
+    # Create the PDF object, using the buffer as its "file."
+    pdf = canvas.Canvas(buffer, pagesize=landscape(letter))
+
+    #Establecemos el tamaño de letra en 13 y el tipo de letra Helvetica
+    pdf.setFont("Helvetica", 20)
+    #Dibujamos una cadena en la ubicación X,Y especificada
+    pdf.drawString(250, 520, u"CORRESPONDENCIA 2022")
+
+    # Agrega imagen a PDF
+    imagen = os.path.join(os.path.dirname(os.path.abspath(__file__)), '../static/images/logo-cozcyt.png')
+    pdf.drawImage(imagen, 30, 500, width=200, preserveAspectRatio=True, mask='auto')
+
+
+    #Creamos una tupla de encabezados para neustra tabla
+    encabezados = [(dependencia.nombre) for dependencia in Dependencia.objects.all()]
+    #Creamos una lista de tuplas que van a contener a las personas
+    sub_encabezado = (("No. Ficha:") for dependencia in Dependencia.objects.all())
+    encabezados = [(dependencia.nombre) for dependencia in Dependencia.objects.all()]
+
+    detalles = [sub_encabezado]
+
+    #TODO NOT COMPLETED
+    fichas_dep = []
+    for dependencia in Dependencia.objects.all():
+        for ficha in Ficha.objects.all():
+            if dependencia.pk == ficha.dependencia.pk:
+                fichas_dep.append([ficha.id_ficha])
+        detalles += (fichas_dep)
+        fichas_dep = []
+    
+    #Establecemos el tamaño de cada una de las columnas de la tabla
+    detalle_orden = Table([encabezados] + detalles, colWidths=[3 * cm])
+    #Aplicamos estilos a las celdas de la tabla
+    detalle_orden.setStyle(TableStyle(
+        [
+            #La primera fila(encabezados) va a estar centrada
+            ('ALIGN',(0,0),(3,0),'CENTER'),
+            #Los bordes de todas las celdas serán de color negro y con un grosor de 1
+            ('GRID', (0, 0), (-1, -1), 1, colors.black), 
+            #El tamaño de las letras de cada una de las celdas será de 10
+            ('FONTSIZE', (0, 0), (-1, -1), 10)
+        ]
+    ))
+    # Establecemos el tamaño de la hoja que ocupará la tabla 
+    detalle_orden.wrapOn(pdf, 60, 390)
+    #Definimos la coordenada donde se dibujará la tabla
+    detalle_orden.drawOn(pdf, 60, 390)
+
+    # Close the PDF object cleanly, and we're done.
+    pdf.showPage()
+    pdf.save()
+
+    # FileResponse sets the Content-Disposition header so that browsers
+    # present the option to save the file.
+    buffer.seek(0)
+    return FileResponse(buffer, as_attachment=False, filename= f'correspondencia_2022.pdf')
