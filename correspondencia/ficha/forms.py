@@ -1,7 +1,5 @@
-from dataclasses import field
 from django import forms
 
-from django.forms import ModelForm
 
 from .models import Ficha, Dependencia, Area
 
@@ -16,7 +14,7 @@ class FichaForm(forms.ModelForm):
         dependencia = forms.ModelMultipleChoiceField(queryset=Dependencia.objects.all(), required=True, widget=forms.CheckboxSelectMultiple)
         area_turnada = forms.ModelMultipleChoiceField(queryset=Area.objects.all(), required=True, widget=forms.CheckboxSelectMultiple)
 
-        fields = ['id_ficha','fecha', 'num_documento', 'fecha_documento', 'dependencia','nombre_firma', 'asunto', 'area_turnada', 'instruccion','prioridad']
+        fields = ['id_ficha','fecha', 'num_documento', 'fecha_documento', 'dependencia','nombre_firma', 'asunto', 'area_turnada','instruccion', 'prioridad', 'resolucion']
 
         widgets = {
             'id_ficha' : forms.TextInput(attrs={'class':'form-control'}),
@@ -29,6 +27,8 @@ class FichaForm(forms.ModelForm):
             'area_turnada' : forms.Select(attrs={'class':'form-control'}),
             'instruccion' : forms.Textarea(attrs={'class':'form-control','rows': 3}),
             'prioridad' : forms.Select(attrs={'class':'form-control'}),
+            'resolucion' : forms.Textarea(attrs={'class':'form-control','rows': 2}),
+            # 'fecha_recibido' : forms.Textarea(attrs={'class':'form-control','rows': 2}),
         }
 
 class AreaForm(forms.ModelForm):
@@ -41,8 +41,6 @@ class AreaForm(forms.ModelForm):
         widgets = {
             'nombre' : forms.TextInput(attrs={'class':'form-control'}),
             'siglas' : forms.TextInput(attrs={'class':'form-control'}),
-            # 'encargado' : forms.TextInput(attrs={'class':'form-control'}),
-            # 'puesto' : forms.TextInput(attrs={'class':'form-control'})
         }
 
 

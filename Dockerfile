@@ -21,8 +21,12 @@ COPY ./correspondencia/ /app/
 
 EXPOSE 8000
 
+# Realiza migraciones de la base de datos.
 RUN python3 manage.py makemigrations usuarios
 RUN python3 manage.py makemigrations ficha
 
+# Crea un alias llamado run para correr Django.
+RUN echo 'alias run="echo python3 manage.py runserver 0.0.0.0:8001"' >> ~/.bashrc
+
 # Comando ejecutado por defecto.
-CMD ["python3", "manage.py", "runserver", "0.0.0.0:8000"]
+# CMD ["python3", "manage.py", "runserver", "0.0.0.0:8000"]

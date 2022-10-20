@@ -1,3 +1,4 @@
+from tabnanny import verbose
 from django.db import models
 from datetime import datetime
 
@@ -16,7 +17,7 @@ class Ficha(models.Model):
     instruccion = models.TextField(max_length=800, verbose_name="Instrucción")
     prioridad = models.CharField(max_length=6, choices=PRIORIDAD_CHOICES, verbose_name="Prioridad de la ficha", default="3")
     resolucion = models.TextField(max_length=800, verbose_name="Resolución")
-    fecha_recibido = models.DateField(default=datetime.now, verbose_name="Fecha de Atendido")
+    fecha_recibido = models.DateField(default=datetime.now, verbose_name="Fecha y Firma de quién recibe")
 
     def __str__(self):
         return self.num_documento
@@ -24,7 +25,6 @@ class Ficha(models.Model):
 class Dependencia(models.Model):
     nombre = models.CharField(max_length=200, verbose_name="Nombre")
     siglas = models.CharField(max_length=20, verbose_name="Siglas")
-    #encargado.
 
     def __str__(self):
         return self.nombre + ' (' + self.siglas +')'
@@ -32,11 +32,6 @@ class Dependencia(models.Model):
 class Area(models.Model):
     nombre = models.CharField(max_length=200, verbose_name="Nombre")
     siglas = models.CharField(max_length=20, verbose_name="Siglas")
-    # encargado = models.CharField(max_length=80, verbose_name="Encargado")
-    # puesto = models.CharField(max_length=100, verbose_name="Puesto")
 
     def __str__(self):
-        if self.siglas != None:
-            return self.siglas
-        else:
-            return self.nombre
+        return self.nombre + ' (' + self.siglas +')'

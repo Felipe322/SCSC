@@ -10,7 +10,7 @@ from reportlab.lib import colors
 from django.conf import settings
 from django.shortcuts import render, redirect, get_object_or_404
 
-from usuarios.models import Ajustes
+from usuarios.models import Ajustes, Usuario
 from .forms import AreaForm, FichaForm, DependenciaForm
 from .models import Area, Ficha, Dependencia
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
@@ -20,6 +20,9 @@ from django.urls import reverse_lazy
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from reportlab.lib.pagesizes import letter, landscape
+
+from django.core.mail import EmailMessage
+from django.template.loader import render_to_string
 
 
 def ajustes():
@@ -32,7 +35,7 @@ def ajustes():
 
 @login_required(login_url="login")
 def home(request):
-    fichas = Ficha.objects.all().order_by("-id_ficha") #TODO Order by time and priority.
+    fichas = Ficha.objects.all().order_by("-id_ficha").order_by("prioridad")
     paginator = Paginator(fichas, 4)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
@@ -51,7 +54,7 @@ def home(request):
 # Muestra el listado de las Fichas en la BD.
 @login_required(login_url="login")
 def lista(request):
-    fichas = Ficha.objects.all().order_by("-id_ficha") #TODO Order by time and priority.
+    fichas = Ficha.objects.all().order_by("-id_ficha").order_by("prioridad")
     paginator = Paginator(fichas, 10)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
@@ -66,10 +69,37 @@ def crear(request):
         form = FichaForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
+
+            ## Enviar correo
+            ficha = request.POST
+            ficha_fecha = ficha['fecha']
+            ficha_asunto= ficha['asunto']
+            ficha_instruccion= ficha['instruccion']
+            area = ficha['area_turnada']
+            usuario = Usuario.objects.get(area=area) #TODO válidar que solo sea uno!
+            mensaje = render_to_string('asignacion_ficha.html',
+                {
+                    'usuario': usuario,
+                    'ficha_fecha': ficha_fecha,
+                    'ficha_asunto': ficha_asunto,
+                    'ficha_instruccion': ficha_instruccion,
+                }
+            )
+            asunto = 'Asignación de nueva Ficha'
+            to = usuario.email
+            email = EmailMessage(
+                asunto,
+                mensaje,
+                to=[to]
+            )
+            email.content_subtype = 'html'
+            email.send()
+
             return redirect('home')
     context = {'form':form}
     context.update(ajustes())
     return render(request, 'ficha/crear_ficha.html', context)
+
 
 @method_decorator(login_required, name='dispatch')
 class FichaModificar(UpdateView):

@@ -1,0 +1,33 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/estilo.css' %}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <title>Se ha asignado una nueva ficha a su usuario</title>
+</head>
+<body>
+    <div>
+        <p>Hola, {{usuario.first_name}} {{usuario.last_name}}.</p>
+
+        <p>Se ha asignado una nueva ficha a tu usuario en el <b>Sistema de Control y Seguimiento de Correspondencias</b></p>
+
+        <p>Es necesario que revises y le des seguimiento a la ficha nueva.</p>
+        <p><b>Ficha asignada el:</b> {{ficha_fecha}}</p>
+        <p><b>Asunto:</b> {{ficha_asunto}}</p>
+        <p><b>Instruccion:</b> {{ficha_instruccion}}</p>
+        <br>
+        <p>
+        </p>
+        <hr>
+        <small>* Cualquier asunto favor de contactar al administrador o al correo testing.uaz.is@gmail.com.</small>
+        <br>
+
+        <img src=" {% static 'images/logo-cozcyt.png' %} " alt="Image" class="img-fluid">
+    </div>
+</body>
+</html>
