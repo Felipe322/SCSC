@@ -72,54 +72,56 @@
           <ul>
             <li><a href="{% url 'home' %}"><span class="icon-home2 mr-3"></span>Inicio</a></li>
             <br>
-            <li class="accordion">
-              <a href="#" data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne" class="collapsible">
-                <span class="icon-paperclip mr-3"></span>Fichas de control y seguimiento
-              </a>
-              <div id="collapseOne" class="collapse" aria-labelledby="headingOne">
-                <div>
-                  <ul>
-                    <li><a href="{% url 'lista' %}">Mostrar fichas de control</a></li>
-                    <li><a href="{% url 'crear' %}">Agregar ficha de control</a></li>
-                  </ul>
-                </div>
-              </div>
-            </li>
-            <br>
-            <li><a href="{% url 'correspondencia' %}"><span class="icon-table mr-3"></span>Correspondencia anual</a></li>
-            <br>
-            <li class="accordion">
-                <a href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo" class="collapsible">
-                  <span  class="icon-user-o mr-3"></span>Administración de areas
+            {% if perms.ficha.view_ficha %}
+              <li class="accordion">
+                <a href="#" data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne" class="collapsible">
+                  <span class="icon-paperclip mr-3"></span>Fichas de control y seguimiento
                 </a>
-                <div id="collapseTwo" class="collapse" aria-labelledby="headingOne">
+                <div id="collapseOne" class="collapse" aria-labelledby="headingOne">
                   <div>
                     <ul>
-                      <li><a href="{% url 'lista_area' %}">Mostrar areas</a></li>
-                      <li><a href="{% url 'crear_area' %}">Agregar area</a></li>
+                      <li><a href="{% url 'lista' %}">Mostrar fichas de control</a></li>
+                      <li><a href="{% url 'crear' %}">Agregar ficha de control</a></li>
                     </ul>
                   </div>
                 </div>
               </li>
+              <br>
+              <li><a href="{% url 'correspondencia' %}"><span class="icon-table mr-3"></span>Correspondencia anual</a></li>
               <br>
               <li class="accordion">
-                <a href="#" data-toggle="collapse" data-target="#collapseTree" aria-expanded="false" aria-controls="collapseTree" class="collapsible">
-                  <span  class="icon-users mr-3"></span>Administración de dependencias
-                </a>
-                <div id="collapseTree" class="collapse" aria-labelledby="headingOne">
-                  <div>
-                    <ul>
-                      <li><a href="{% url 'lista_dependencia' %}">Mostrar dependencias</a></li>
-                      <li><a href="{% url 'crear_dependencia' %}">Agregar dependencia</a></li>
-                    </ul>
+                  <a href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo" class="collapsible">
+                    <span  class="icon-user-o mr-3"></span>Administración de areas
+                  </a>
+                  <div id="collapseTwo" class="collapse" aria-labelledby="headingOne">
+                    <div>
+                      <ul>
+                        <li><a href="{% url 'lista_area' %}">Mostrar areas</a></li>
+                        <li><a href="{% url 'crear_area' %}">Agregar area</a></li>
+                      </ul>
+                    </div>
                   </div>
-                </div>
-              </li>
-              <br>
-              <li><a href="{% url 'usuarios:lista' %}"><span class="icon-settings_applications mr-3"></span>Usuarios</a></li>
-              <br>
+                </li>
+                <br>
+                <li class="accordion">
+                  <a href="#" data-toggle="collapse" data-target="#collapseTree" aria-expanded="false" aria-controls="collapseTree" class="collapsible">
+                    <span  class="icon-users mr-3"></span>Administración de dependencias
+                  </a>
+                  <div id="collapseTree" class="collapse" aria-labelledby="headingOne">
+                    <div>
+                      <ul>
+                        <li><a href="{% url 'lista_dependencia' %}">Mostrar dependencias</a></li>
+                        <li><a href="{% url 'crear_dependencia' %}">Agregar dependencia</a></li>
+                      </ul>
+                    </div>
+                  </div>
+                </li>
+                <br>
+                <li><a href="{% url 'usuarios:lista' %}"><span class="icon-settings_applications mr-3"></span>Usuarios</a></li>
+                <br>
 
-              <li><a href="{% url 'usuarios:ajustes' 1 %}"><span class="icon-settings_applications mr-3"></span>Ajustes</a></li>
+                <li><a href="{% url 'usuarios:ajustes' 1 %}"><span class="icon-settings_applications mr-3"></span>Ajustes</a></li>
+              {% endif %}
           </ul>
         </div>
         <footer>

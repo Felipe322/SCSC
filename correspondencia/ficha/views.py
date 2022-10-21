@@ -1,5 +1,6 @@
 import io
 import os.path
+from pickle import TRUE
 from django.http import FileResponse
 from reportlab.pdfgen import canvas
 
@@ -17,9 +18,11 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.views.generic import ListView, DetailView, TemplateView
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
 from django.urls import reverse_lazy
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, permission_required
 from django.utils.decorators import method_decorator
 from reportlab.lib.pagesizes import letter, landscape
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
+
 
 from django.core.mail import EmailMessage
 from django.template.loader import render_to_string
@@ -35,24 +38,42 @@ def ajustes():
 
 @login_required(login_url="login")
 def home(request):
-    fichas = Ficha.objects.all().order_by("-id_ficha").order_by("prioridad")
-    paginator = Paginator(fichas, 4)
-    page_number = request.GET.get('page')
-    page_obj = paginator.get_page(page_number)
-    try:
-        fichas = paginator.page(page_number)
-    except PageNotAnInteger:
-        fichas = paginator.page(1)
-    except EmptyPage:
-        fichas = paginator.page(paginator.num_pages)
-    context = {'fichas':fichas, 'page_obj':page_obj}
-    context.update(ajustes())
-    return render(request, 'home.html', context)
+    if request.user.is_superuser:
+        fichas = Ficha.objects.all().order_by("-id_ficha").order_by("prioridad")
+        paginator = Paginator(fichas, 4)
+        page_number = request.GET.get('page')
+        page_obj = paginator.get_page(page_number)
+        try:
+            fichas = paginator.page(page_number)
+        except PageNotAnInteger:
+            fichas = paginator.page(1)
+        except EmptyPage:
+            fichas = paginator.page(paginator.num_pages)
+        context = {'fichas':fichas, 'page_obj':page_obj}
+        context.update(ajustes())
+        return render(request, 'home.html', context)
+    else:
+        usuario = Usuario.objects.get(username=request.user)
+        area = Area.objects.get(nombre=usuario.area)
+        fichas = Ficha.objects.filter(area_turnada_id=area.id).order_by("-id_ficha").order_by("prioridad")
+        paginator = Paginator(fichas, 4)
+        page_number = request.GET.get('page')
+        page_obj = paginator.get_page(page_number)
+        try:
+            fichas = paginator.page(page_number)
+        except PageNotAnInteger:
+            fichas = paginator.page(1)
+        except EmptyPage:
+            fichas = paginator.page(paginator.num_pages)
+        context = {'fichas':fichas, 'page_obj':page_obj}
+        context.update(ajustes())
+        return render(request, 'home.html', context)
 
 #CRUD de Ficha
 
 # Muestra el listado de las Fichas en la BD.
 @login_required(login_url="login")
+@permission_required("ficha.views_ficha")
 def lista(request):
     fichas = Ficha.objects.all().order_by("-id_ficha").order_by("prioridad")
     paginator = Paginator(fichas, 10)
@@ -63,6 +84,7 @@ def lista(request):
     return render(request, 'ficha/lista_fichas.html', context)
 
 @login_required(login_url="login")
+@permission_required(["ficha.views_ficha", "ficha.add_ficha"])
 def crear(request):
     form = FichaForm()
     if request.method == 'POST':
@@ -100,9 +122,8 @@ def crear(request):
     context.update(ajustes())
     return render(request, 'ficha/crear_ficha.html', context)
 
-
-@method_decorator(login_required, name='dispatch')
-class FichaModificar(UpdateView):
+class FichaModificar(LoginRequiredMixin, PermissionRequiredMixin ,UpdateView):
+    permission_required = ('ficha.view_ficha', 'ficha.change_ficha')
     model = Ficha
     form_class = FichaForm
     template_name = 'ficha/editar_ficha.html'
@@ -113,6 +134,8 @@ class FichaModificar(UpdateView):
         context.update(ajustes())
         return context
 
+@login_required(login_url="login")
+@permission_required("ficha.views_ficha")
 def fichaPDF(request, pk):
     # Create a file-like buffer to receive PDF data.
     buffer = io.BytesIO()
@@ -175,8 +198,8 @@ def fichaPDF(request, pk):
     buffer.seek(0)
     return FileResponse(buffer, as_attachment=False, filename= f'ficha_{pk}.pdf')
 
-@method_decorator(login_required, name='dispatch')
-class FichaDetalle(DetailView):
+class FichaDetalle(LoginRequiredMixin, PermissionRequiredMixin, DetailView):
+    permission_required = ('ficha.view_ficha', 'ficha.change_ficha')
     model = Ficha
     template_name = 'ficha/detalle_ficha.html'
 
@@ -186,6 +209,7 @@ class FichaDetalle(DetailView):
         return context
 
 @login_required(login_url="login")
+@permission_required(["ficha.views_ficha", "ficha.delete_ficha"])
 def elimina_ficha(request, pk):
     ficha = get_object_or_404(Ficha, id_ficha=pk)
     ficha.delete()
@@ -193,8 +217,8 @@ def elimina_ficha(request, pk):
 
 # CRUD  de Area
 
-@method_decorator(login_required, name='dispatch')
-class AreaList(ListView):
+class AreaList(LoginRequiredMixin, PermissionRequiredMixin, ListView):
+    permission_required = 'ficha.view_area'
     model = Area
     paginate_by = 5
     template_name = 'area/list_area.html'
@@ -204,8 +228,8 @@ class AreaList(ListView):
         context.update(ajustes())
         return context
 
-@method_decorator(login_required, name='dispatch')
-class AreaCrear(CreateView):
+class AreaCrear(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
+    permission_required = ('ficha.view_area', 'ficha.add_area')
     model = Area
     form_class = AreaForm
     template_name = 'area/crear_area.html'
@@ -216,8 +240,8 @@ class AreaCrear(CreateView):
         context.update(ajustes())
         return context
 
-@method_decorator(login_required, name='dispatch')
-class AreaEditar(UpdateView):
+class AreaEditar(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
+    permission_required = ('ficha.view_area', 'ficha.change_area')
     model = Area
     form_class = AreaForm
     template_name = 'area/editar_area.html'
@@ -229,13 +253,14 @@ class AreaEditar(UpdateView):
         return context
 
 @login_required(login_url="login")
+@permission_required(["ficha.view_area", "ficha.delete_area"])
 def elimina_area(request, pk):
     area = get_object_or_404(Area, id=pk)
     area.delete()
     return redirect('lista_area')
 
-@method_decorator(login_required, name='dispatch')
-class AreaDetalle(DetailView):
+class AreaDetalle(LoginRequiredMixin, PermissionRequiredMixin, DetailView):
+    permission_required = 'ficha.view_area'
     model = Area
     template_name = 'area/detalle_area.html'
 
@@ -247,8 +272,8 @@ class AreaDetalle(DetailView):
 
 # CRUD  de dependencia
 
-@method_decorator(login_required, name='dispatch')
-class DependenciaList(ListView):
+class DependenciaList(LoginRequiredMixin, PermissionRequiredMixin, ListView):
+    permission_required = 'ficha.view_dependencia'
     model = Dependencia
     paginate_by = 5
     template_name = 'dependencia/list_dependencia.html'
@@ -259,8 +284,8 @@ class DependenciaList(ListView):
         return context
 
 
-@method_decorator(login_required, name='dispatch')
-class DependenciaCrear(CreateView):
+class DependenciaCrear(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
+    permission_required = ('ficha.view_dependencia', 'ficha.add_dependencia')
     model = Dependencia
     form_class = DependenciaForm
     template_name = 'dependencia/crear_dependencia.html'
@@ -272,8 +297,8 @@ class DependenciaCrear(CreateView):
         return context
 
 
-@method_decorator(login_required, name='dispatch')
-class DependenciaEditar(UpdateView):
+class DependenciaEditar(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
+    permission_required = ('ficha.view_dependencia', 'ficha.change_dependencia')
     model = Dependencia
     form_class = DependenciaForm
     template_name = 'dependencia/editar_dependencia.html'
@@ -285,8 +310,8 @@ class DependenciaEditar(UpdateView):
         return context
 
 
-@method_decorator(login_required, name='dispatch')
-class DependenciaDetalle(DetailView):
+class DependenciaDetalle(LoginRequiredMixin, PermissionRequiredMixin, DetailView):
+    permission_required = 'ficha.view_dependencia'
     model = Dependencia
     template_name = 'dependencia/detalle_dependencia.html'
 
@@ -297,6 +322,7 @@ class DependenciaDetalle(DetailView):
 
 
 @login_required(login_url="login")
+@permission_required(["ficha.view_dependencia", "ficha.delete_dependencia"])
 def elimina_dependencia(request, pk):
     dependencia = get_object_or_404(Dependencia, id=pk)
     dependencia.delete()
@@ -306,6 +332,7 @@ def elimina_dependencia(request, pk):
 # Listado de Correspondencia anual.
 
 @login_required(login_url="login")
+@permission_required("ficha.view_dependencia")
 def correspondencia(request):
     dependencias = Dependencia.objects.all()
     fichas = Ficha.objects.all()
@@ -313,6 +340,8 @@ def correspondencia(request):
     context.update(ajustes())
     return render(request, 'correspondencia/list_correspondencia.html', context)
 
+@login_required(login_url="login")
+@permission_required("ficha.view_dependencia")
 def pdf_correspondencia(request):
     # Create a file-like buffer to receive PDF data.
     buffer = io.BytesIO()

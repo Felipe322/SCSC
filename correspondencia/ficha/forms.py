@@ -1,10 +1,9 @@
 from django import forms
-
-
 from .models import Ficha, Dependencia, Area
 
 
 class FichaForm(forms.ModelForm):
+
 
     class Meta:
         model = Ficha
@@ -14,7 +13,7 @@ class FichaForm(forms.ModelForm):
         dependencia = forms.ModelMultipleChoiceField(queryset=Dependencia.objects.all(), required=True, widget=forms.CheckboxSelectMultiple)
         area_turnada = forms.ModelMultipleChoiceField(queryset=Area.objects.all(), required=True, widget=forms.CheckboxSelectMultiple)
 
-        fields = ['id_ficha','fecha', 'num_documento', 'fecha_documento', 'dependencia','nombre_firma', 'asunto', 'area_turnada','instruccion', 'prioridad', 'resolucion']
+        fields = ['id_ficha','fecha', 'num_documento', 'fecha_documento', 'dependencia','nombre_firma', 'asunto', 'area_turnada','resolucion','instruccion', 'prioridad']
 
         widgets = {
             'id_ficha' : forms.TextInput(attrs={'class':'form-control'}),
@@ -27,9 +26,10 @@ class FichaForm(forms.ModelForm):
             'area_turnada' : forms.Select(attrs={'class':'form-control'}),
             'instruccion' : forms.Textarea(attrs={'class':'form-control','rows': 3}),
             'prioridad' : forms.Select(attrs={'class':'form-control'}),
-            'resolucion' : forms.Textarea(attrs={'class':'form-control','rows': 2}),
+            'resolucion' : forms.Textarea(attrs={'class':'form-control','rows': 2, 'readonly':'readonly'}),
             # 'fecha_recibido' : forms.Textarea(attrs={'class':'form-control','rows': 2}),
         }
+
 
 class AreaForm(forms.ModelForm):
     

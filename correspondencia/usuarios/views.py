@@ -4,12 +4,12 @@ from ficha.views import ajustes
 from usuarios.forms import AjustesForm, UsuarioForm
 from django.urls import reverse_lazy
 from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, permission_required
 from django.utils.decorators import method_decorator
 from usuarios.models import Ajustes, Usuario
 from django.contrib.auth.views import LoginView
 from django.contrib.auth.forms import AuthenticationForm
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.contrib.sites.shortcuts import get_current_site
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import force_bytes
@@ -24,8 +24,8 @@ class Login(LoginView):
     form_class = AuthenticationForm
 
 #CRUD de usuarios.
-@method_decorator(login_required, name='dispatch')
-class UsuarioLista(ListView):
+class UsuarioLista(LoginRequiredMixin, PermissionRequiredMixin, ListView):
+    permission_required = 'usuarios.view_usuario'
     model = Usuario
     paginate_by = 5
     template_name = 'usuarios/lista_usuarios.html'
@@ -35,8 +35,8 @@ class UsuarioLista(ListView):
         context.update(ajustes())
         return context
 
-@method_decorator(login_required, name='dispatch')
-class UsuarioCrear(LoginRequiredMixin, CreateView):
+class UsuarioCrear(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
+    permission_required = ('usuarios.view_usuario', 'usuarios.add_usuario')
     model = Usuario
     form_class = UsuarioForm
     template_name = 'usuarios/crear_usuarios.html'
@@ -45,6 +45,7 @@ class UsuarioCrear(LoginRequiredMixin, CreateView):
     def form_valid(self, form):
         user = form.save(commit=False)
         user.is_active = False
+        user.is_staff = True
         user.save()
 
         dominio = get_current_site(self.request)
@@ -76,8 +77,8 @@ class UsuarioCrear(LoginRequiredMixin, CreateView):
         context.update(ajustes())
         return context
 
-@method_decorator(login_required, name='dispatch')
-class UsuarioEditar(UpdateView):
+class UsuarioEditar(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
+    permission_required = ('usuarios.view_usuario', 'usuarios.change_usuario')
     model = Usuario
     form_class = UsuarioForm
     template_name = 'usuarios/editar_usuarios.html'
@@ -88,8 +89,8 @@ class UsuarioEditar(UpdateView):
         context.update(ajustes())
         return context
 
-@method_decorator(login_required, name='dispatch')
-class UsuarioEliminar(DeleteView):
+class UsuarioEliminar(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
+    permission_required = ('usuarios.view_usuario', 'usuarios.delete_usuario')
     model = Usuario
     success_url = reverse_lazy('usuarios:lista')
 
@@ -112,6 +113,7 @@ class ActivarCuenta(TemplateView):
         return redirect('login')
 
 @login_required(login_url="login")
+@permission_required(["usuarios.change_ajustes", "usuarios.delete_ajustes", "usuarios.view_ajustes", "usuarios.add_ajustes"])
 def editar_ajustes(request, id):
     ajustes = get_object_or_404(Ajustes, id=id)
     form = AjustesForm(instance=ajustes)
