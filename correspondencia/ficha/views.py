@@ -1,25 +1,22 @@
 import io
 import os.path
-from pickle import TRUE
 from django.http import FileResponse
 from reportlab.pdfgen import canvas
 
-from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Image
+from reportlab.platypus import Table, TableStyle
 from reportlab.lib.units import cm
 from reportlab.lib import colors
 
-from django.conf import settings
 from django.shortcuts import render, redirect, get_object_or_404
 
 from usuarios.models import Ajustes, Usuario
-from .forms import AreaForm, FichaForm, DependenciaForm
+from .forms import AreaForm, FichaForm, DependenciaForm, FichaUserForm
 from .models import Area, Ficha, Dependencia
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.views.generic import ListView, DetailView, TemplateView
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
 from django.urls import reverse_lazy
 from django.contrib.auth.decorators import login_required, permission_required
-from django.utils.decorators import method_decorator
 from reportlab.lib.pagesizes import letter, landscape
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 
@@ -39,7 +36,7 @@ def ajustes():
 @login_required(login_url="login")
 def home(request):
     if request.user.is_superuser:
-        fichas = Ficha.objects.all().order_by("-id_ficha").order_by("prioridad")
+        fichas = Ficha.objects.all().order_by("-id_ficha").order_by("estatus").order_by("prioridad")
         paginator = Paginator(fichas, 4)
         page_number = request.GET.get('page')
         page_obj = paginator.get_page(page_number)
@@ -55,7 +52,7 @@ def home(request):
     else:
         usuario = Usuario.objects.get(username=request.user)
         area = Area.objects.get(nombre=usuario.area)
-        fichas = Ficha.objects.filter(area_turnada_id=area.id).order_by("-id_ficha").order_by("prioridad")
+        fichas = Ficha.objects.filter(area_turnada_id=area.id).order_by("-id_ficha").order_by("estatus").order_by("prioridad")
         paginator = Paginator(fichas, 4)
         page_number = request.GET.get('page')
         page_obj = paginator.get_page(page_number)
@@ -75,7 +72,7 @@ def home(request):
 @login_required(login_url="login")
 @permission_required("ficha.views_ficha")
 def lista(request):
-    fichas = Ficha.objects.all().order_by("-id_ficha").order_by("prioridad")
+    fichas = Ficha.objects.all().order_by("-id_ficha").order_by("estatus").order_by("prioridad")
     paginator = Paginator(fichas, 10)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
@@ -122,17 +119,49 @@ def crear(request):
     context.update(ajustes())
     return render(request, 'ficha/crear_ficha.html', context)
 
-class FichaModificar(LoginRequiredMixin, PermissionRequiredMixin ,UpdateView):
-    permission_required = ('ficha.view_ficha', 'ficha.change_ficha')
-    model = Ficha
-    form_class = FichaForm
-    template_name = 'ficha/editar_ficha.html'
-    success_url = reverse_lazy('lista')
+@login_required(login_url="login")
+def editar_ficha(request, pk):
+    ficha = get_object_or_404(Ficha, id_ficha=pk)
+    if request.user.is_superuser:
+        form = FichaForm(instance=ficha)
+        if request.method == 'POST':
+            form = FichaForm(request.POST, instance=ficha)
+            if form.is_valid():
+                form.save()
+                return redirect('lista')
+    else:
+        form = FichaUserForm(instance=ficha)
+        if request.method == 'POST':
+            form = FichaUserForm(request.POST, instance=ficha)    
+            if form.is_valid():
+                ficha.estatus = True
+                ficha.save()
+                request_ficha = request.POST
+                ##Enviar correo de notificación de firmado.
+                if request_ficha['resolucion'] != "" and request_ficha['resolucion'] != "Sin resolución" and request_ficha['fecha_recibido'] != None:
+                    area = request_ficha['area_turnada']
+                    usuario = Usuario.objects.get(area=area) #TODO válidar que solo sea uno!
+                    mensaje = render_to_string('ficha_recibida.html',
+                        {
+                            'usuario': usuario,
+                        }
+                    )
+                    asunto = 'Se ha recibido una ficha'
+                    to = 'scsc.labsol@gmail.com' #Change that no static
+                    email = EmailMessage(
+                        asunto,
+                        mensaje,
+                        to=[to]
+                    )
+                    email.content_subtype = 'html'
+                    email.send()
+                form.save()
+                return redirect('home')
+    context = {'form': form }
+    context.update(ajustes())
+    return render(request, 'ficha/editar_ficha.html', context)
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context.update(ajustes())
-        return context
+
 
 @login_required(login_url="login")
 @permission_required("ficha.views_ficha")

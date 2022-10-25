@@ -56,10 +56,14 @@
                                 {% elif ficha.prioridad == "3" %}
                                   <span class="baja">Baja</span>
                                 {% endif %}
-
-                            </td>        
-                                          
-                          <td class="status"><span class="active">Atendido</span></td>
+                            </td>
+                            <td class="prioridad">
+                              {% if ficha.estatus %}
+                                <span class="baja">Atendido</span>
+                              {% else %}
+                                <span class="alta">Sin atender</span>
+                              {% endif %}
+                          </td>     
                         </tr>
                         {% endfor %}
                       </tbody>

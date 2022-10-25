@@ -1,4 +1,3 @@
-from django.http import HttpResponse
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView, TemplateView
 from ficha.views import ajustes
 from usuarios.forms import AjustesForm, UsuarioForm
@@ -68,7 +67,6 @@ class UsuarioCrear(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
         )
         email.content_subtype = 'html'
         email.send()
-
 
         return super().form_valid(form)
 

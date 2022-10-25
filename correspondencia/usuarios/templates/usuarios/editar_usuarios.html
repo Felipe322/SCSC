@@ -6,7 +6,7 @@
 {% endblock titulo %}
 
 {% block contenido %}
-    <h1>Editar usuario</h1>
+<center><h1>Editar usuario</h1></center>
     <form method="post" enctype="multipart/form-data" >
         {% csrf_token %}
         {{form.as_p}}
