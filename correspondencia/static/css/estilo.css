@@ -508,7 +508,7 @@ h1, h2, h3, h4, h5, h6,
   margin-bottom: 0.5rem;
   font-weight: 500;
   line-height: 1.2;
-  color: #3d4465; }
+  color: #b43; }
 
 h1, .h1 {
   font-size: 2.25rem; }
@@ -654,8 +654,8 @@ pre {
   width: 100%;
   padding-right: 15px;
   padding-left: 15px;
-  margin-right: auto;
-  margin-left: auto; }
+  margin: auto;
+   }
   @media (min-width: 576px) {
     .container {
       max-width: 540px; } }
@@ -2080,11 +2080,15 @@ fieldset:disabled a.btn {
     .btn-success:not(:disabled):not(.disabled):active:focus, .btn-success:not(:disabled):not(.disabled).active:focus,
     .show > .btn-success.dropdown-toggle:focus {
       box-shadow: 0 0 0 0.2rem rgba(112, 185, 34, 0.5); }
-
+/*El boton .btn-info si se utiliza y es el boton pdf*/
 .btn-info {
   color: #fff;
   background-color: #bb4433;
-  border-color: #b43; }
+  border-color: #b43; 
+  -webkit-border-radius: 28;
+  -moz-border-radius: 28;
+  border-radius: 28px;
+}
   .btn-info:hover {
     color: #212529;
     background-color: #e2746e;
@@ -2104,10 +2108,16 @@ fieldset:disabled a.btn {
     .show > .btn-info.dropdown-toggle:focus {
       box-shadow: 0 0 0 0.2rem rgba(73, 199, 171, 0.5); }
 
+/* El boton btn-warning si se utiliza y es el boton editar*/
 .btn-warning {
   color: #ffffff;
   background-color: #bb4433;
-  border-color: #b43; }
+  border-color: #b43;
+
+  -webkit-border-radius: 28;
+  -moz-border-radius: 28;
+  border-radius: 28px;
+}
   .btn-warning:hover {
     color: #212529;
     background-color: #e2746e;
@@ -2126,11 +2136,15 @@ fieldset:disabled a.btn {
     .btn-warning:not(:disabled):not(.disabled):active:focus, .btn-warning:not(:disabled):not(.disabled).active:focus,
     .show > .btn-warning.dropdown-toggle:focus {
       box-shadow: 0 0 0 0.2rem rgba(222, 150, 25, 0.5); }
-
+/* El boton .btn-danger si se utiliza y es el boton eliminar*/
 .btn-danger {
   color: #fff;
   background-color: #FF1616;
-  border-color: #FF1616; }
+  border-color: #FF1616; 
+  -webkit-border-radius: 28;
+  -moz-border-radius: 28;
+  border-radius: 28px;
+}
   .btn-danger:hover {
     color: #fff;
     background-color: #ef0000;
@@ -4703,7 +4717,7 @@ a.close.disabled {
   padding: 0.5rem 0.75rem;
   margin-bottom: 0;
   font-size: 0.875rem;
-  color: #3d4465;
+  color: #bb4433;
   background-color: #f7f7f7;
   border-bottom: 1px solid #ebebeb;
   border-top-left-radius: calc(0.3rem - 1px);
