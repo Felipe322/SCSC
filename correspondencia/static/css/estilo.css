@@ -503,12 +503,12 @@ template {
 [hidden] {
   display: none !important; }
 
-h1, h2, h3, h4, h5, h6,
+/* h1, h2, h3, h4, h5, h6,
 .h1, .h2, .h3, .h4, .h5, .h6 {
   margin-bottom: 0.5rem;
   font-weight: 500;
   line-height: 1.2;
-  color: #b43; }
+  color: #b43; } */
 
 h1, .h1 {
   font-size: 2.25rem; }
@@ -646,9 +646,7 @@ pre {
     color: inherit;
     word-break: normal; }
 
-.pre-scrollable {
-  max-height: 340px;
-  overflow-y: scroll; }
+
 
 .container {
   width: 100%;
