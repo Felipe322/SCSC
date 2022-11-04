@@ -64,3 +64,8 @@ venv.bak/
 
 #db
 .db/
+
+
+#selenium
+.DS_Store
+geckodriver.log
