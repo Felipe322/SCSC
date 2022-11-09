@@ -26,7 +26,7 @@ RUN python3 manage.py makemigrations usuarios
 RUN python3 manage.py makemigrations ficha
 
 # Crea un alias llamado run para correr Django.
-RUN echo 'alias run="echo python3 manage.py runserver 0.0.0.0:8001"' >> ~/.bashrc
+RUN echo 'alias run="python3 manage.py runserver 0.0.0.0:8001"' >> ~/.bashrc
 
 # Comando ejecutado por defecto.
 CMD ["python3", "manage.py", "runserver", "0.0.0.0:8000"]

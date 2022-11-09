@@ -113,13 +113,13 @@ class ActivarCuenta(TemplateView):
 @login_required(login_url="login")
 @permission_required(["usuarios.change_ajustes", "usuarios.delete_ajustes", "usuarios.view_ajustes", "usuarios.add_ajustes"])
 def editar_ajustes(request, id):
-    ajustes = get_object_or_404(Ajustes, id=id)
-    form = AjustesForm(instance=ajustes)
+    ajustes_elemento = get_object_or_404(Ajustes, id=id)
+    form = AjustesForm(instance=ajustes_elemento)
     if request.method == 'POST':
-        form = AjustesForm(request.POST, instance=ajustes)
+        form = AjustesForm(request.POST, instance=ajustes_elemento)
         if form.is_valid():
             form.save()
             return redirect('home')
     context = {'form': form}
-    # context.update(ajustes())
+    context.update(ajustes())
     return render(request, 'editar_ajustes.html', context)
