@@ -8,7 +8,7 @@ from reportlab.lib.units import cm
 from reportlab.lib import colors
 
 from django.shortcuts import render, redirect, get_object_or_404
-
+from django.contrib.sites.shortcuts import get_current_site
 from usuarios.models import Ajustes, Usuario
 from .forms import AreaForm, FichaForm, DependenciaForm, FichaUserForm
 from .models import Area, Ficha, Dependencia
@@ -93,10 +93,12 @@ def crear(request):
             form.save()
 
             ## Enviar correo
+            dominio = get_current_site(request)
             ficha = request.POST
             ficha_fecha = ficha['fecha']
-            ficha_asunto= ficha['asunto']
-            ficha_instruccion= ficha['instruccion']
+            ficha_asunto = ficha['asunto']
+            ficha_instruccion = ficha['instruccion']
+            dependencia = ficha['dependencia']
             area = ficha['area_turnada']
             usuario = Usuario.objects.get(area=area) #TODO válidar que solo sea uno!
             mensaje = render_to_string('asignacion_ficha.html',
@@ -105,9 +107,11 @@ def crear(request):
                     'ficha_fecha': ficha_fecha,
                     'ficha_asunto': ficha_asunto,
                     'ficha_instruccion': ficha_instruccion,
+                    'dependencia': dependencia,
+                    'dominio' : dominio
                 }
             )
-            asunto = 'Asignación de nueva Ficha'
+            asunto = 'Nueva ficha asignada'
             to = usuario.email
             email = EmailMessage(
                 asunto,
