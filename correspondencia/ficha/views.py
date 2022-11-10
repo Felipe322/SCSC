@@ -95,6 +95,7 @@ def crear(request):
             ## Enviar correo
             dominio = get_current_site(request)
             ficha = request.POST
+            # id_ficha = str(ficha.pk)
             ficha_fecha = ficha['fecha']
             ficha_asunto = ficha['asunto']
             ficha_instruccion = ficha['instruccion']
@@ -104,6 +105,7 @@ def crear(request):
             mensaje = render_to_string('asignacion_ficha.html',
                 {
                     'usuario': usuario,
+                    # 'id_ficha': id_ficha,
                     'ficha_fecha': ficha_fecha,
                     'ficha_asunto': ficha_asunto,
                     'ficha_instruccion': ficha_instruccion,
@@ -144,6 +146,10 @@ def editar_ficha(request, pk):
                 ficha.estatus = True
                 ficha.save()
                 request_ficha = request.POST
+                id_ficha = str(ficha.pk)
+                num_documento = request_ficha['num_documento']
+                asunto_ficha = request_ficha['asunto']
+                dominio = get_current_site(request)
                 ##Enviar correo de notificación de firmado.
                 if request_ficha['resolucion'] != "" and request_ficha['resolucion'] != "Sin resolución" and request_ficha['fecha_recibido'] != None:
                     area = request_ficha['area_turnada']
@@ -151,9 +157,13 @@ def editar_ficha(request, pk):
                     mensaje = render_to_string('ficha_recibida.html',
                         {
                             'usuario': usuario,
+                            'dominio': dominio,
+                            'num_documento': num_documento,
+                            'asunto': asunto_ficha,
+                            'id_ficha': id_ficha,
                         }
                     )
-                    asunto = 'Se ha recibido una ficha'
+                    asunto = 'Se ha recibido la respuesta de la ficha ' + id_ficha
                     to = 'scsc.labsol@gmail.com' #Change that no static
                     email = EmailMessage(
                         asunto,
