@@ -12,7 +12,7 @@ class FichaForm(forms.ModelForm):
         dependencia = forms.ModelMultipleChoiceField(queryset=Dependencia.objects.all(), required=True, widget=forms.CheckboxSelectMultiple)
         area_turnada = forms.ModelMultipleChoiceField(queryset=Area.objects.all(), required=True, widget=forms.CheckboxSelectMultiple)
 
-        fields = ['id_ficha','fecha', 'num_documento', 'fecha_documento', 'dependencia','nombre_firma', 'asunto', 'area_turnada','resolucion','instruccion', 'prioridad']
+        fields = ['id_ficha', 'fecha', 'num_documento', 'fecha_documento', 'dependencia','nombre_firma', 'asunto', 'area_turnada','resolucion', 'instruccion', 'prioridad', 'pdf_dependencia']
 
         widgets = {
             'id_ficha' : forms.TextInput(attrs={'class':'form-control'}),
@@ -27,6 +27,7 @@ class FichaForm(forms.ModelForm):
             'prioridad' : forms.Select(attrs={'class':'form-control'}),
             'resolucion' : forms.Textarea(attrs={'class':'form-control','rows': 2, 'readonly':'readonly'}),
             # 'fecha_recibido' : forms.Textarea(attrs={'class':'form-control','rows': 2}),
+            # 'pdf_dependencia': forms.FileField()
         }
 
 class FichaUserForm(forms.ModelForm):
@@ -39,7 +40,7 @@ class FichaUserForm(forms.ModelForm):
         dependencia = forms.ModelMultipleChoiceField(queryset=Dependencia.objects.all(), required=True, widget=forms.CheckboxSelectMultiple)
         area_turnada = forms.ModelMultipleChoiceField(queryset=Area.objects.all(), required=True, widget=forms.CheckboxSelectMultiple)
 
-        fields = ['id_ficha','fecha', 'num_documento', 'fecha_documento', 'dependencia','nombre_firma', 'asunto', 'area_turnada','resolucion','instruccion', 'prioridad', 'fecha_recibido']
+        fields = ['id_ficha','fecha', 'num_documento', 'fecha_documento', 'dependencia','nombre_firma', 'asunto', 'area_turnada','resolucion','instruccion', 'prioridad', 'fecha_recibido', 'pdf_dependencia']
 
         widgets = {
             'id_ficha' : forms.TextInput(attrs={'class':'form-control', 'readonly':'readonly'}),

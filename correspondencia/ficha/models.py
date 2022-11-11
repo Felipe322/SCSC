@@ -22,6 +22,7 @@ class Ficha(models.Model):
     resolucion = models.TextField(max_length=800, verbose_name="Resolución", default="Sin resolución")
     fecha_recibido = models.DateField(default=datetime.now, verbose_name="Fecha y Firma de quién recibe")
     estatus = models.BooleanField(default=False, verbose_name="Estátus")
+    pdf_dependencia = models.FileField(upload_to='pdfs/')
 
     def __str__(self):
         return self.num_documento
