@@ -35,15 +35,6 @@ jobs:
         
         options: --health-cmd="mysqladmin ping" --health-interval=5s --health-timeout=2s --health-retries=3
 
-    steps:
-      - uses: actions/checkout@v1
-
-      - name: Verificando coneción a la DB
-        run: |
-          while ! mysqladmin ping -h"127.0.0.1" -P"${{ secrets.SQL_PORT_HOST }}" --silent; do
-            sleep 1
-          done 
-
       - uses: actions/checkout@v3.1.0
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v4.3.0
