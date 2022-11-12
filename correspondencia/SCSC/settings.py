@@ -133,8 +133,13 @@ LOGOUT_REDIRECT_URL = reverse_lazy('login')
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
+# We have to read the email and password for external files.
+# It is for security.
+with open(os.path.join(BASE_DIR, 'user_email.txt')) as file:
+	EMAIL_HOST_USER = file.read().strip()
+with open(os.path.join(BASE_DIR, 'pass_email.txt')) as file:
+	EMAIL_HOST_PASSWORD = file.read().strip()
+
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = 'bladimir122020@gmail.com'
-EMAIL_HOST_PASSWORD = 'qxcggpssvzyleohx'
 EMAIL_PORT = 587

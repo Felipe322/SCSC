@@ -69,3 +69,7 @@ venv.bak/
 #selenium
 .DS_Store
 geckodriver.log
+
+#Email
+user_email.txt
+pass_email.txt
