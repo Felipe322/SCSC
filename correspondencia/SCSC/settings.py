@@ -2,6 +2,10 @@ import os
 from pathlib import Path
 from django.urls import reverse_lazy
 
+from dotenv import load_dotenv
+
+load_dotenv()
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -9,7 +13,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-(wco@)6*o#v12vxgmp84p&re1bj_ce2e49(bj&6v2crtd*&2q='
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get("DEBUG", default=True)
 
 ALLOWED_HOSTS = ['*']
 
@@ -30,9 +34,6 @@ INSTALLED_APPS = [
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
-# DATE_INPUT_FORMATS = (
-#     '%d/%m/%Y',
-# )
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -70,12 +71,12 @@ WSGI_APPLICATION = 'SCSC.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'correspondencia',                
-        'USER': 'correspondenciauser',                    
-        'PASSWORD': 'C0rr3sp.5639#SCSC',             
-        'HOST': 'db',               
-        'PORT': 3306,
+        'ENGINE': f'{os.environ.get("SQL_ENGINE")}',
+        'NAME': f'{os.environ.get("DATABASE")}',                
+        'USER': f'{os.environ.get("SQL_USER")}',                   
+        'PASSWORD': f'{os.environ.get("SQL_PASSWORD")}',           
+        'HOST': f'{os.environ.get("SQL_HOST")}',              
+        'PORT': f'{os.environ.get("SQL_PORT")}',
     }
 }
 
@@ -133,13 +134,10 @@ LOGOUT_REDIRECT_URL = reverse_lazy('login')
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
-# We have to read the email and password for external files.
+# We have to read the email and password from .env file.
 # It is for security.
-with open(os.path.join(BASE_DIR, 'user_email.txt')) as file:
-	EMAIL_HOST_USER = file.read().strip()
-with open(os.path.join(BASE_DIR, 'pass_email.txt')) as file:
-	EMAIL_HOST_PASSWORD = file.read().strip()
-
+EMAIL_HOST_USER = f'{os.environ.get("USER_EMAIL")}'
+EMAIL_HOST_PASSWORD = f'{os.environ.get("PASS_EMAIL")}'
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587

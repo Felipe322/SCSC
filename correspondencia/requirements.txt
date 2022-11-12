@@ -18,3 +18,4 @@ tinycss2==1.1.1
 webencodings==0.5.1
 zopfli==0.2.1
 reportlab==3.6.11
+python-dotenv==0.21.0
