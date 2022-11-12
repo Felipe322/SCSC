@@ -11,10 +11,9 @@
 - Instalamos Docker. La manera recomendada para implementar este sistema es utilizando [Docker](https://www.docker.com/), para instalarlo puedes seguir las instrucciones para cada sistema operativo haciendo clic [aquí](https://docs.docker.com/install/). Antes de continuar con los siguientes comandos es necesario tomar en cuenta que las pruebas se realizaron bajo la versión 20.10.18 de Docker y Docker Compose version v2.10.2. 
 
 
-- Una vez instalado docker debemos ejecutar los siguientes comandos en la consola para que se descarguen las imágenes necesarias y se ejecuten (verificar que el servicio de Docker se encuentra corriendo):
+- Una vez instalado docker debemos ejecutar el siguiente comando en la consola para que se descarguen las imágenes necesarias y se ejecuten (verificar que el servicio de Docker se encuentra corriendo):
 
    ```shell
-   $ sudo docker compose up -d db
    $ sudo docker compose up -d
    ```
 
@@ -33,15 +32,28 @@ Para trabajar con la aplicación en modo desarrollador, realizamos los siguiente
    root@4946b745b45d:/app# python3 manage.py makemigrations ficha
    root@4946b745b45d:/app# python3 manage.py migrate
    ```
+   O puedes correr los el siguiente aleas:
+   ```shell
+   root@4946b745b45d:/app# mig
+   ```
+
 - Para crear un usuario administrador y poder entrar al sistema, ejecutamos el siguiente comando:
 
   ```shell
    $ python3 manage.py createsuperuser
    ```
+   O puedes correr los el siguiente aleas:
+   ```shell
+   root@4946b745b45d:/app# cs
+   ```
 
 - Por ultimo ejecutamos el siguiente comando para iniciar la aplicación de Django:
   ```shell
    $ python3 manage.py runserver 0.0.0.0:8000
+   ```
+   O puedes correr los el siguiente aleas:
+   ```shell
+   root@4946b745b45d:/app# run
    ```
 
 - Si los comandos fueron exitosos, podremos ingresar a nuestro navegador y verificar que el sistema se ha iniciado con éxito, para esto, ingresamos a la siguiente url: 
@@ -50,6 +62,10 @@ Para trabajar con la aplicación en modo desarrollador, realizamos los siguiente
 
    > http://127.0.0.1:8000
  
+#### Deberas ser capaz de ver la siguiente pestaña
+![alt text](correspondencia/static/images/previsualizacion-sistema.png)
+
+
 ### Comandos para desarrollo
 
 
@@ -78,7 +94,7 @@ Puedes consultar más información sobre los comando de docker [aquí](https://d
 
 ### Versión
 
-1.0.1 - Octubre 2022
+1.1.3 - Octubre 2022
 
 ### Autores
 * **Felipe de Jesús Delgado Troncoso**
