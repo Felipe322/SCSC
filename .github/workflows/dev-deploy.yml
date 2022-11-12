@@ -57,6 +57,7 @@ jobs:
           export DEBUG=${{ secrets.DEBUG }}
           export ALLOWED_HOSTS=localhost
           export GITHUB_WORKFLOW=True
+          cd ..
           python manage.py makemigrations
           python manage.py migrate
           python manage.py migrate --run-syncdb
