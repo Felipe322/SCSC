@@ -17,8 +17,49 @@ jobs:
     name: Deployment
     runs-on: ubuntu-latest
     environment: dev
+    # strategy:
+    #   max-parallel: 4
+    #   matrix:
+    #     python-version: [3.9]
+
+    # services:
+      # db:
+      #   image: mariadb:latest
+      #   env:
+      #     MYSQL_USER: ${{ secrets.SQL_USER }}
+      #     MYSQL_PASSWORD: ${{ secrets.SQL_PASSWORD }}
+      #     MYSQL_DATABASE: ${{ secrets.DATABASE }}
+      #     MYSQL_ROOT_PASSWORD: ${{ secrets.MYSQL_ROOT_PASSWORD }}
+      #   ports:
+      #     - 3320:3306
 
     steps:
+      # - uses: actions/checkout@v3.1.0
+      # - name: Set up Python ${{ matrix.python-version }}
+      #   uses: actions/setup-python@v4.3.0
+      #   with:
+      #     python-version: ${{ matrix.python-version }}
+
+      # - name: Install dependencies
+      #   run: |
+      #     cd correspondencia
+      #     python -m pip install --upgrade pip
+      #     pip install -r requirements.txt
+
+      # - name: Run migrations
+      #   run: |
+      #     cd correspondencia
+      #     echo "----------------------------------"
+      #     sudo service mysql restart
+      #     echo "----------------------------------"
+      #     echo "----------------------------------"
+      #     sudo service mysql status
+      #     echo "----------------------------------"
+      #     python manage.py makemigrations
+      #     python manage.py migrate
+      #     python manage.py migrate --run-syncdb
+      #     python manage.py check
+      #     ls -la 
       - uses: actions/checkout@v3.1.0
       - name: Build the images and start the containers
         run: |
