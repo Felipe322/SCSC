@@ -66,15 +66,11 @@ jobs:
       - name: Build the images and start the containers
         run: |
           ls -la
-          docker-compose up -d db
-          sleep 4
-          docker-compose ps
           docker-compose up -d
           docker-compose ps
-          winpty docker exec -it correspondencia_app bash
-          mig
-          sleep 2
           echo "-------------------------------------"
+          sleep 5
+          docker-compose ps
 
       - name: Stop containers
         if: always()
