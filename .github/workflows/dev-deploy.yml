@@ -30,7 +30,6 @@ jobs:
           MYSQL_PASSWORD: ${{ secrets.SQL_PASSWORD }}
           MYSQL_DATABASE: ${{ secrets.DATABASE }}
           MYSQL_ROOT_PASSWORD: ${{ secrets.MYSQL_ROOT_PASSWORD }}
-          MYSQL_HOST: db
         ports:
           - 3320
 
@@ -48,8 +47,13 @@ jobs:
           pip install -r requirements.txt
 
       - name: Setup test database
-        run: |
-          export DEBUG=${{ secrets.DEBUG }}
+        env: 
+          DATABASE: ${{ secrets.DATABASE }}
+          SQL_USER: ${{ secrets.SQL_USER }}
+          SQL_PASSWORD: ${{ secrets.SQL_PASSWORD }}
+          SQL_HOST: ${{ secrets.SQL_HOST }}
+          SQL_PORT: ${{ secrets.SQL_PORT }}
+          MYSQL_ROOT_PASSWORD: ${{ secrets.MYSQL_ROOT_PASSWORD }}
 
       - name: Run migrations
         run: |
