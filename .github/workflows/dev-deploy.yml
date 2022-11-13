@@ -23,6 +23,8 @@ jobs:
       - name: Build the images and start the containers
         run: |
           ls -la
+          docker-compose down
+          docker system prune --force --volumes
           docker-compose up -d
           docker-compose ps
           echo "-------------------------------------"
