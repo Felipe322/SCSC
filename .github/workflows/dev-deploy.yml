@@ -42,18 +42,18 @@ jobs:
 
       - name: Install dependencies
         run: |
-          echo "----------------------------------"
-          sudo service mysql restart
-          echo "----------------------------------"
-          echo "----------------------------------"
-          sudo service mysql status
-          echo "----------------------------------"
           cd correspondencia
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
       - name: Run migrations
         run: |
+          echo "----------------------------------"
+          sudo service mysql restart
+          echo "----------------------------------"
+          echo "----------------------------------"
+          sudo service mysql status
+          echo "----------------------------------"
           cd correspondencia
           export DEBUG=${{ secrets.DEBUG }}
           python manage.py makemigrations
