@@ -17,60 +17,55 @@ jobs:
     name: Deployment
     runs-on: ubuntu-latest
     environment: dev
-    strategy:
-      max-parallel: 4
-      matrix:
-        python-version: [3.9]
+    # strategy:
+    #   max-parallel: 4
+    #   matrix:
+    #     python-version: [3.9]
 
-    services:
-      db:
-        image: mariadb:latest
-        env:
-          MYSQL_USER: ${{ secrets.SQL_USER }}
-          MYSQL_PASSWORD: ${{ secrets.SQL_PASSWORD }}
-          MYSQL_DATABASE: ${{ secrets.DATABASE }}
-          MYSQL_ROOT_PASSWORD: ${{ secrets.MYSQL_ROOT_PASSWORD }}
-          MYSQL_HOST: db
-        ports:
-          - 3320:3306
+    # services:
+      # db:
+      #   image: mariadb:latest
+      #   env:
+      #     MYSQL_USER: ${{ secrets.SQL_USER }}
+      #     MYSQL_PASSWORD: ${{ secrets.SQL_PASSWORD }}
+      #     MYSQL_DATABASE: ${{ secrets.DATABASE }}
+      #     MYSQL_ROOT_PASSWORD: ${{ secrets.MYSQL_ROOT_PASSWORD }}
+      #     MYSQL_HOST: db
+      #   ports:
+      #     - 3320:3306
 
-        options: --health-cmd="mysqladmin ping" --health-interval=5s --health-timeout=2s --health-retries=3
+      #   options: --health-cmd="mysqladmin ping" --health-interval=5s --health-timeout=2s --health-retries=3
 
     steps:
-      - uses: actions/checkout@v3.1.0
-      - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v4.3.0
-        with:
-          python-version: ${{ matrix.python-version }}
+      # - uses: actions/checkout@v3.1.0
+      # - name: Set up Python ${{ matrix.python-version }}
+      #   uses: actions/setup-python@v4.3.0
+      #   with:
+      #     python-version: ${{ matrix.python-version }}
 
-      - name: Install dependencies
-        run: |
-          cd correspondencia
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt
+      # - name: Install dependencies
+      #   run: |
+      #     cd correspondencia
+      #     python -m pip install --upgrade pip
+      #     pip install -r requirements.txt
 
-      - name: Setup test database
-        run: |
-          export SECRET_KEY=test-secret-key
-          export DEBUG=${{ secrets.DEBUG }}
+      # - name: Setup test database
+      #   run: |
+      #     export DEBUG=${{ secrets.DEBUG }}
 
-      - name: Run migrations
-        run: |
-          cd correspondencia
-          export SECRET_KEY=test-secret-key
-          export DEBUG=${{ secrets.DEBUG }}
-          export ALLOWED_HOSTS=localhost
-          export GITHUB_WORKFLOW=True
-          python manage.py makemigrations
-          python manage.py migrate
-          python manage.py migrate --run-syncdb
-          python manage.py check
-          ls -la
+      # - name: Run migrations
+      #   run: |
+      #     cd correspondencia
+      #     export DEBUG=${{ secrets.DEBUG }}
+      #     python manage.py makemigrations
+      #     python manage.py migrate
+      #     python manage.py migrate --run-syncdb
+      #     python manage.py check
+      #     ls -la
       - uses: actions/checkout@v3.1.0
       - name: Build the images and start the containers
         run: |
           ls -la
-          export GITHUB_WORKFLOW=True
           docker-compose -f docker-compose.yml build
           docker-compose -f docker-compose.yml up -d
 
