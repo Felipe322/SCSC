@@ -48,14 +48,13 @@ jobs:
 
       - name: Run migrations
         run: |
+          cd correspondencia
           echo "----------------------------------"
-
+          sudo service mysql restart
           echo "----------------------------------"
           echo "----------------------------------"
           sudo service mysql status
           echo "----------------------------------"
-          cd correspondencia
-          export DEBUG=${{ secrets.DEBUG }}
           python manage.py makemigrations
           python manage.py migrate
           python manage.py migrate --run-syncdb
