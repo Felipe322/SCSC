@@ -75,7 +75,7 @@ DATABASES = {
         'NAME': f'{os.environ.get("DATABASE")}',                
         'USER': f'{os.environ.get("SQL_USER")}',                   
         'PASSWORD': f'{os.environ.get("SQL_PASSWORD")}',           
-        'HOST': 'db',              
+        'HOST': 'mariadb',              
         'PORT': 3306,
     }
 }
