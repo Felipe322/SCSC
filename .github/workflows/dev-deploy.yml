@@ -27,11 +27,11 @@ jobs:
         image: mariadb:latest
         env:
           MYSQL_USER: ${{ secrets.SQL_USER }}
-          MYSQL_PASSWORD: ${{ secrets.SQL_PASSWORD }}
-          MYSQL_DATABASE: ${{ secrets.DATABASE }}
-          MYSQL_ROOT_PASSWORD: ${{ secrets.MYSQL_ROOT_PASSWORD }}
-        ports:
-          - 3320
+        #   MYSQL_PASSWORD: ${{ secrets.SQL_PASSWORD }}
+        #   MYSQL_DATABASE: ${{ secrets.DATABASE }}
+        #   MYSQL_ROOT_PASSWORD: ${{ secrets.MYSQL_ROOT_PASSWORD }}
+        # ports:
+        #   - 3320
 
     steps:
       - uses: actions/checkout@v3.1.0
@@ -45,18 +45,6 @@ jobs:
           cd correspondencia
           python -m pip install --upgrade pip
           pip install -r requirements.txt
-
-      - name: Setup test database
-        env: 
-          DATABASE: ${{ secrets.DATABASE }}
-          SQL_USER: ${{ secrets.SQL_USER }}
-          SQL_PASSWORD: ${{ secrets.SQL_PASSWORD }}
-          SQL_HOST: ${{ secrets.SQL_HOST }}
-          SQL_PORT: ${{ secrets.SQL_PORT }}
-          MYSQL_ROOT_PASSWORD: ${{ secrets.MYSQL_ROOT_PASSWORD }}
-
-        run: |
-          export DEBUG=${{ secrets.DEBUG }}
 
       - name: Run migrations
         run: |
