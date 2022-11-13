@@ -66,12 +66,15 @@ jobs:
       - name: Build the images and start the containers
         run: |
           ls -la
-          docker-compose build
           docker-compose up -d db
           sleep 4
           docker-compose ps
           docker-compose up -d
           docker-compose ps
+          docker exec -it correspondencia_app bash
+          mig
+          sleep 2
+          echo "-------------------------------------"
 
       - name: Stop containers
         if: always()
