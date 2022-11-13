@@ -30,7 +30,7 @@ jobs:
           MYSQL_PASSWORD: ${{ secrets.SQL_PASSWORD }}
           MYSQL_DATABASE: ${{ secrets.DATABASE }}
           MYSQL_ROOT_PASSWORD: ${{ secrets.MYSQL_ROOT_PASSWORD }}
-          MYSQL_HOST: "db"
+          MYSQL_LOCALHOST: db
         ports:
           - 3320:3306
 
