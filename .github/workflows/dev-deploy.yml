@@ -66,9 +66,13 @@ jobs:
       - name: Build the images and start the containers
         run: |
           ls -la
-          docker-compose -f docker-compose.yml build
-          docker-compose -f docker-compose.yml up -d
+          docker-compose build
+          docker-compose up -d db
+          sleep 4
+          docker-compose ps
+          docker-compose up -d
+          docker-compose ps
 
       - name: Stop containers
         if: always()
-        run: docker-compose -f "docker-compose.yml" down
+        run: docker-compose down
