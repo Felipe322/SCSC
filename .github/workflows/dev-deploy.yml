@@ -43,6 +43,9 @@ jobs:
       - name: Install dependencies
         run: |
           echo "----------------------------------"
+          sudo service mysql restart
+          echo "----------------------------------"
+          echo "----------------------------------"
           sudo service mysql status
           echo "----------------------------------"
           cd correspondencia
