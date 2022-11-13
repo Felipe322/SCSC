@@ -31,7 +31,7 @@ jobs:
           MYSQL_DATABASE: ${{ secrets.DATABASE }}
           MYSQL_ROOT_PASSWORD: ${{ secrets.MYSQL_ROOT_PASSWORD }}
         ports:
-          - 3321:3306
+          - 3320:3306
         
         options: --health-cmd="mysqladmin ping" --health-interval=5s --health-timeout=2s --health-retries=3
 
@@ -52,8 +52,7 @@ jobs:
         run: |
           export SECRET_KEY=test-secret-key
           export DEBUG=${{ secrets.DEBUG }}
-          docker-compose -f docker-compose.yml up -d db
-
+          docker-compose ps
       - name: Run migrations
         run: |
           cd correspondencia
