@@ -71,7 +71,7 @@ WSGI_APPLICATION = 'SCSC.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': f'{os.environ.get("SQL_ENGINE")}',
+        'ENGINE': 'django.db.backends.mysql',
         'NAME': f'{os.environ.get("DATABASE")}',                
         'USER': f'{os.environ.get("SQL_USER")}',                   
         'PASSWORD': f'{os.environ.get("SQL_PASSWORD")}',           
