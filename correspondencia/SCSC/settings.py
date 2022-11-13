@@ -71,12 +71,12 @@ WSGI_APPLICATION = 'SCSC.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': f'{os.environ.get("SQL_ENGINE")}',
+        'ENGINE': 'django.db.backends.mysql',
         'NAME': f'{os.environ.get("DATABASE")}',                
         'USER': f'{os.environ.get("SQL_USER")}',                   
         'PASSWORD': f'{os.environ.get("SQL_PASSWORD")}',           
-        'HOST': f'{os.environ.get("SQL_HOST")}',              
-        'PORT': f'{os.environ.get("SQL_PORT")}',
+        'HOST': 'db',              
+        'PORT': 3306,
     }
 }
 

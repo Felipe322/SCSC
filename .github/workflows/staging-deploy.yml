@@ -1,0 +1,32 @@
+name: Deploy to GitHub Actions
+
+on:
+  push:
+    branches:
+      - "staging"
+
+permissions:
+  contents: read
+
+jobs:
+
+  deploy:
+
+    name: Deployment
+    runs-on: ubuntu-latest
+    environment: staging
+
+    steps:
+      - uses: actions/checkout@v3.1.0
+      - name: Build the images and start the containers
+        run: |
+          ls -la
+          docker-compose up -d
+          docker-compose ps
+          echo "-------------------------------------"
+          sleep 5
+          docker-compose ps
+
+      - name: Stop containers
+        if: always()
+        run: docker-compose down
