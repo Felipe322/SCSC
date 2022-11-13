@@ -23,7 +23,7 @@ jobs:
         python-version: [3.9]
 
     services:
-      mariadb:
+      db:
         image: mariadb:latest
         env:
           MYSQL_USER: ${{ secrets.SQL_USER }}
@@ -52,10 +52,6 @@ jobs:
         run: |
           export SECRET_KEY=test-secret-key
           export DEBUG=${{ secrets.DEBUG }}
-          docker-compose ps
-          docker-compose -f docker-compose.yml up -d
-          sleep 4
-          docker-compose ps
 
       - name: Run migrations
         run: |
