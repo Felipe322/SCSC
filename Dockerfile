@@ -27,9 +27,6 @@ EXPOSE 8000
 RUN python3 manage.py makemigrations usuarios
 RUN python3 manage.py makemigrations ficha
 
-RUN python3 manage.py migrate
-
-
 # Crea un alias llamado run para correr Django.
 RUN echo 'alias mig="python3 manage.py migrate"' >> ~/.bashrc
 
