@@ -75,7 +75,7 @@ DATABASES = {
         'NAME': f'{os.environ.get("DATABASE")}',                
         'USER': f'{os.environ.get("SQL_USER")}',                   
         'PASSWORD': f'{os.environ.get("SQL_PASSWORD")}',           
-        'HOST': f'{os.environ.get("SQL_HOST")}',              
+        'HOST': 'db',              
         'PORT': 3306,
     }
 }
