@@ -52,6 +52,7 @@ jobs:
         run: |
           export SECRET_KEY=test-secret-key
           export DEBUG=${{ secrets.DEBUG }}
+          docker-compose -f docker-compose.yml up -d db
       - name: Run migrations
         run: |
           cd correspondencia
