@@ -71,7 +71,7 @@ jobs:
           docker-compose ps
           docker-compose up -d
           docker-compose ps
-          docker exec -it correspondencia_app bash
+          winpty docker exec -it correspondencia_app bash
           mig
           sleep 2
           echo "-------------------------------------"
