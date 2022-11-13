@@ -44,11 +44,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          ls -la
-          pwd
           cd correspondencia
-          pwd
-          ls -la
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
@@ -58,6 +54,7 @@ jobs:
           export DEBUG=${{ secrets.DEBUG }}
       - name: Run migrations
         run: |
+          cd correspondencia
           export SECRET_KEY=test-secret-key
           export DEBUG=${{ secrets.DEBUG }}
           export ALLOWED_HOSTS=localhost
@@ -66,10 +63,11 @@ jobs:
           python manage.py migrate
           python manage.py migrate --run-syncdb
           python manage.py check
-
+          ls -la
       - uses: actions/checkout@v3.1.0
       - name: Build the images and start the containers
         run: |
+          ls -la
           export GITHUB_WORKFLOW=True
           docker-compose -f docker-compose.yml build
           docker-compose -f docker-compose.yml up -d
