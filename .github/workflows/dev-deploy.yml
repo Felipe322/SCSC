@@ -49,7 +49,7 @@ jobs:
       - name: Run migrations
         run: |
           echo "----------------------------------"
-          sudo service mysql restart
+
           echo "----------------------------------"
           echo "----------------------------------"
           sudo service mysql status
