@@ -42,8 +42,6 @@ jobs:
             sleep 1
           done  
 
-    steps:
-      - uses: actions/checkout@v3.1.0
       - name: Build the images and start the containers
         run: |
           ls -la
