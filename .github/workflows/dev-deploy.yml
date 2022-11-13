@@ -71,4 +71,5 @@ jobs:
           docker-compose ps
 
       - name: Stop containers
-          run: docker-compose down
+        if: always()
+        run: docker-compose down
