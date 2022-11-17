@@ -16,9 +16,9 @@ class FichaForm(forms.ModelForm):
 
         widgets = {
             'id_ficha' : forms.TextInput(attrs={'class':'form-control'}),
-            'fecha' : forms.DateInput(attrs={'type':'date'}),
+            'fecha' : forms.DateInput(format='%d %B %Y', attrs={'class': 'form-control', 'type': 'date'}),
             'num_documento' : forms.TextInput(attrs={'class':'form-control'}),
-            'fecha_documento' : forms.DateInput(attrs={'type':'date'}),
+            'fecha_documento' : forms.DateInput(format='%d %B %Y', attrs={'class': 'form-control', 'type': 'date'}),
             'dependencia' : forms.Select(attrs={'class':'form-control'}),
             'nombre_firma' : forms.Textarea(attrs={'class':'form-control','rows': 2}),
             'asunto' : forms.Textarea(attrs={'class':'form-control','rows': 3}),

@@ -13,7 +13,7 @@ from usuarios.models import Ajustes, Usuario
 from .forms import AreaForm, FichaForm, DependenciaForm, FichaUserForm
 from .models import Area, Ficha, Dependencia
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from django.views.generic import ListView, DetailView
+from django.views.generic import ListView
 from django.views.generic.edit import CreateView, UpdateView
 from django.urls import reverse_lazy
 from django.contrib.auth.decorators import login_required, permission_required
@@ -24,7 +24,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMix
 from django.core.mail import EmailMessage
 from django.template.loader import render_to_string
 
-# Crea un Ajustes, solo de podrá modificar este.
+# Crea un Ajustes, solo se podrá modificar este.
 def ajustes():
     ajustes = Ajustes(titulo='Sistema de Control y Seguimiento de Correspondencias', subtitulo='Desarrollado por LABSOL')
     ajustes.save()
