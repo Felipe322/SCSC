@@ -305,16 +305,6 @@ def elimina_area(request, pk):
     area.delete()
     return redirect('lista_area')
 
-class AreaDetalle(LoginRequiredMixin, PermissionRequiredMixin, DetailView):
-    permission_required = 'ficha.view_area'
-    model = Area
-    template_name = 'area/detalle_area.html'
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context.update(ajustes())
-        return context
-
 
 # CRUD  de dependencia
 
