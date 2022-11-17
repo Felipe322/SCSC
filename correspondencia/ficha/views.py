@@ -244,16 +244,6 @@ def fichaPDF(request, pk):
     buffer.seek(0)
     return FileResponse(buffer, as_attachment=False, filename= f'ficha_{pk}.pdf')
 
-class FichaDetalle(LoginRequiredMixin, PermissionRequiredMixin, DetailView):
-    permission_required = ('ficha.view_ficha', 'ficha.change_ficha')
-    model = Ficha
-    template_name = 'ficha/detalle_ficha.html'
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context.update(ajustes())
-        return context
-
 @login_required(login_url="login")
 @permission_required(["ficha.views_ficha", "ficha.delete_ficha"])
 def elimina_ficha(request, pk):
@@ -344,18 +334,6 @@ class DependenciaEditar(LoginRequiredMixin, PermissionRequiredMixin, UpdateView)
         context = super().get_context_data(**kwargs)
         context.update(ajustes())
         return context
-
-
-class DependenciaDetalle(LoginRequiredMixin, PermissionRequiredMixin, DetailView):
-    permission_required = 'ficha.view_dependencia'
-    model = Dependencia
-    template_name = 'dependencia/detalle_dependencia.html'
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context.update(ajustes())
-        return context
-
 
 @login_required(login_url="login")
 @permission_required(["ficha.view_dependencia", "ficha.delete_dependencia"])

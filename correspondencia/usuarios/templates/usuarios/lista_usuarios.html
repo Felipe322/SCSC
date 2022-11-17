@@ -34,7 +34,6 @@
                 <td>{{usuario.last_login}}</td>
                 <td>
                   <a href="{% url 'usuarios:editar' usuario.id %}" class="btn btn-info">Editar</a>
-                  {% comment %} <a href="{% url 'usuarios:detalle' area.id %}" class="btn btn-info">Detalles</a> {% endcomment %}
                   <button 
                   onclick="eliminaAreaModal(`{% url 'usuarios:eliminar' usuario.id %}` , '{{usuario.email}}', '{{usuario.username}}')"
                   type="button" class="btn btn-danger" data-toggle="modal"
