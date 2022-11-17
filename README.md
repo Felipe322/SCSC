@@ -8,6 +8,9 @@
    $ cd SCSC
    ```
 
+-  **Es necesario crear el archivo *.env* dentro de la carpeta  /correspondencias y declarar las variables como en el archivo *.env.example* con valores de la base de datos y un correo válido.**
+
+
 - Instalamos Docker. La manera recomendada para implementar este sistema es utilizando [Docker](https://www.docker.com/), para instalarlo puedes seguir las instrucciones para cada sistema operativo haciendo clic [aquí](https://docs.docker.com/install/). Antes de continuar con los siguientes comandos es necesario tomar en cuenta que las pruebas se realizaron bajo la versión 20.10.18 de Docker y Docker Compose version v2.10.2. 
 
 
