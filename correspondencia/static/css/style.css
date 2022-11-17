@@ -3,7 +3,7 @@ body {
   background-color: #fcfcfc; }
 
 p {
-  color: #b3b3b3;
+  color: #000000;
   font-weight: 300; }
 
 h1, h2, h3, h4, h5, h6,
@@ -16,7 +16,7 @@ a {
   transition: .3s all ease; }
   a, a:hover {
     text-decoration: none !important; }
-
+    b3b3b3
 h2 {
   font-size: 20px; }
 
