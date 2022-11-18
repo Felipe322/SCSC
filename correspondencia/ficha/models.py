@@ -7,7 +7,7 @@ class Ficha(models.Model):
 
     PRIORIDAD_CHOICES = (("1", "Alta"),("2", "Media"),("3", "Baja"))
 
-    id_ficha = models.TextField(primary_key=True, verbose_name="No. de Ficha")
+    id_ficha = models.AutoField(primary_key=True, verbose_name="No. de Ficha")
     fecha = models.DateField(default=datetime.now, verbose_name="Fecha")
     num_documento = models.CharField(max_length=200, verbose_name="Número del Documento")
     fecha_documento = models.DateField(default=datetime.now, verbose_name="Fecha del Documento")
@@ -18,7 +18,7 @@ class Ficha(models.Model):
     instruccion = models.TextField(max_length=800, verbose_name="Instrucción")
     prioridad = models.CharField(max_length=6, choices=PRIORIDAD_CHOICES, verbose_name="Prioridad de la ficha", default="3")
     resolucion = models.TextField(max_length=800, verbose_name="Resolución", default="Sin resolución")
-    fecha_recibido = models.DateField(default=datetime.now, verbose_name="Fecha y Firma de quién recibe")
+    fecha_recibido = models.DateField(default=datetime.now, verbose_name="Fecha de ficha firmada")
     estatus = models.BooleanField(default=False, verbose_name="Estátus")
     pdf_dependencia = models.FileField(upload_to='pdfs/', verbose_name="PDF de la dependencia")
 

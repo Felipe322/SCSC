@@ -13544,7 +13544,7 @@ svg text {
 .form-control {
   background: #fff;
   border: 1px solid #eaeaea;
-  color: #454545; }
+  color: #000000; }
   .form-control:hover, .form-control:focus, .form-control.active {
     box-shadow: none;
     background: #fff;
