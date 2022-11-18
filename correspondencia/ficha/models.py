@@ -1,5 +1,3 @@
-from email.policy import default
-from enum import unique
 from django.db import models
 from datetime import datetime
 
@@ -20,9 +18,9 @@ class Ficha(models.Model):
     instruccion = models.TextField(max_length=800, verbose_name="Instrucción")
     prioridad = models.CharField(max_length=6, choices=PRIORIDAD_CHOICES, verbose_name="Prioridad de la ficha", default="3")
     resolucion = models.TextField(max_length=800, verbose_name="Resolución", default="Sin resolución")
-    fecha_recibido = models.DateField(default=datetime.now, verbose_name="Fecha y Firma de quién recibe")
+    fecha_recibido = models.DateField(default=datetime.now, verbose_name="Fecha de ficha firmada")
     estatus = models.BooleanField(default=False, verbose_name="Estátus")
-    pdf_dependencia = models.FileField(upload_to='pdfs/')
+    pdf_dependencia = models.FileField(upload_to='pdfs/', verbose_name="PDF de la dependencia")
 
     def __str__(self):
         return self.num_documento

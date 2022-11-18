@@ -13,7 +13,7 @@ from usuarios.models import Ajustes, Usuario
 from .forms import AreaForm, FichaForm, DependenciaForm, FichaUserForm
 from .models import Area, Ficha, Dependencia
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from django.views.generic import ListView, DetailView
+from django.views.generic import ListView
 from django.views.generic.edit import CreateView, UpdateView
 from django.urls import reverse_lazy
 from django.contrib.auth.decorators import login_required, permission_required
@@ -24,7 +24,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMix
 from django.core.mail import EmailMessage
 from django.template.loader import render_to_string
 
-# Crea un Ajustes, solo de podrá modificar este.
+# Crea un Ajustes, solo se podrá modificar este.
 def ajustes():
     ajustes = Ajustes(titulo='Sistema de Control y Seguimiento de Correspondencias', subtitulo='Desarrollado por LABSOL')
     ajustes.save()
@@ -244,16 +244,6 @@ def fichaPDF(request, pk):
     buffer.seek(0)
     return FileResponse(buffer, as_attachment=False, filename= f'ficha_{pk}.pdf')
 
-class FichaDetalle(LoginRequiredMixin, PermissionRequiredMixin, DetailView):
-    permission_required = ('ficha.view_ficha', 'ficha.change_ficha')
-    model = Ficha
-    template_name = 'ficha/detalle_ficha.html'
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context.update(ajustes())
-        return context
-
 @login_required(login_url="login")
 @permission_required(["ficha.views_ficha", "ficha.delete_ficha"])
 def elimina_ficha(request, pk):
@@ -305,16 +295,6 @@ def elimina_area(request, pk):
     area.delete()
     return redirect('lista_area')
 
-class AreaDetalle(LoginRequiredMixin, PermissionRequiredMixin, DetailView):
-    permission_required = 'ficha.view_area'
-    model = Area
-    template_name = 'area/detalle_area.html'
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context.update(ajustes())
-        return context
-
 
 # CRUD  de dependencia
 
@@ -354,18 +334,6 @@ class DependenciaEditar(LoginRequiredMixin, PermissionRequiredMixin, UpdateView)
         context = super().get_context_data(**kwargs)
         context.update(ajustes())
         return context
-
-
-class DependenciaDetalle(LoginRequiredMixin, PermissionRequiredMixin, DetailView):
-    permission_required = 'ficha.view_dependencia'
-    model = Dependencia
-    template_name = 'dependencia/detalle_dependencia.html'
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context.update(ajustes())
-        return context
-
 
 @login_required(login_url="login")
 @permission_required(["ficha.view_dependencia", "ficha.delete_dependencia"])
