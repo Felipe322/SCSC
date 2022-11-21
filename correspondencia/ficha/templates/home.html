@@ -17,6 +17,21 @@
 
 <h1 class="titulo">Fichas de control y seguimiento de correspondencias</h1>
 <h3 class="subtitulo">Fichas en proceso de confirmación</h3>
+
+<div class="searchBox">
+  <input class="searchInput" list="fichas" type="text" placeholder="Buscar">
+  <datalist id="fichas">
+    {% for ficha in fichas %}
+      <option value="{{ ficha.area_turnada}}"></option>
+    {% endfor %}
+  </datalist>
+  <button class="searchButton">
+    <i class="fa fa-search"></i>
+  </button>
+</div>
+<br>
+<br>
+<br>
 <section class="ftco-section">
     <div class="container">
         <div class="row">
