@@ -4,12 +4,8 @@ from ficha.models import Area
 
 
 class Usuario(User):
-    foto = models.ImageField("Foto de perfil", blank=True, null=True)
-    area = models.ForeignKey(Area, on_delete=models.CASCADE, verbose_name="Area")
+    area = models.OneToOneField(Area, on_delete=models.CASCADE, verbose_name="Area")
     puesto = models.CharField(max_length=100, verbose_name="Puesto")
-
-    def email_to_str(self):
-        return self.email
 
     def __str__(self):
         return self.last_name + ' ' + self.first_name
