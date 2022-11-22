@@ -107,7 +107,7 @@ def crear(request):
             ## Enviar correo
             dominio = get_current_site(request)
             ficha = request.POST
-            # id_ficha = str(ficha.pk)
+            id_ficha = str(ficha['id_ficha'])
             ficha_fecha = ficha['fecha']
             ficha_asunto = ficha['asunto']
             ficha_instruccion = ficha['instruccion']
@@ -117,7 +117,7 @@ def crear(request):
             mensaje = render_to_string('asignacion_ficha.html',
                 {
                     'usuario': usuario,
-                    # 'id_ficha': id_ficha,
+                    'id_ficha': id_ficha,
                     'ficha_fecha': ficha_fecha,
                     'ficha_asunto': ficha_asunto,
                     'ficha_instruccion': ficha_instruccion,
@@ -158,7 +158,7 @@ def editar_ficha(request, pk):
                 ficha.estatus = True
                 ficha.save()
                 request_ficha = request.POST
-                id_ficha = str(ficha.pk)
+                id_ficha = str(request_ficha['id_ficha'])
                 num_documento = request_ficha['num_documento']
                 asunto_ficha = request_ficha['asunto']
                 dominio = get_current_site(request)
@@ -194,7 +194,6 @@ def editar_ficha(request, pk):
 
 
 @login_required(login_url="login")
-@permission_required("ficha.views_ficha")
 def fichaPDF(request, pk):
     # Create a file-like buffer to receive PDF data.
     buffer = io.BytesIO()
