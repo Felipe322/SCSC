@@ -19,7 +19,7 @@ class FichaForm(forms.ModelForm):
                 ]
 
         widgets = {
-            'id_ficha' : forms.TextInput(attrs={'class':'form-control'}),
+            'id_ficha': forms.TextInput(attrs={'class':'form-control'}),
             'fecha': forms.TextInput(attrs={'class':'form-control', 'type':'date'}),
             'num_documento' : forms.TextInput(attrs={'class':'form-control'}),
             'fecha_documento' : forms.TextInput(attrs={'class':'form-control', 'type':'date'}),
@@ -31,7 +31,7 @@ class FichaForm(forms.ModelForm):
             'prioridad' : forms.Select(attrs={'class':'form-control'}),
             'pdf_dependencia': forms.ClearableFileInput(attrs={'class':'form-control', 'readonly':'readonly'})
         }
-
+    
 class FichaUserForm(forms.ModelForm):
 
     class Meta:

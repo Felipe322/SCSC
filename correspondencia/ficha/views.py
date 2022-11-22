@@ -86,8 +86,17 @@ def lista(request):
 @login_required(login_url="login")
 @permission_required(["ficha.views_ficha", "ficha.add_ficha"])
 def crear(request):
-    form = FichaForm()
+
+    ultima_ficha = { "id_ficha": 1}
+    if Ficha.objects.filter(id_ficha=1).exists():
+        ultima_ficha = {
+            "id_ficha": int(str(Ficha.objects.latest('id_ficha'))) + 1 
+        }
+
+    form = FichaForm(initial=ultima_ficha)
+    
     if request.method == 'POST':
+
         form = FichaForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
@@ -101,7 +110,7 @@ def crear(request):
             ficha_instruccion = ficha['instruccion']
             dependencia = ficha['dependencia']
             area = ficha['area_turnada']
-            usuario = Usuario.objects.get(area=area) #TODO válidar que solo sea uno!
+            usuario = Usuario.objects.get(area=area)
             mensaje = render_to_string('asignacion_ficha.html',
                 {
                     'usuario': usuario,
@@ -150,10 +159,11 @@ def editar_ficha(request, pk):
                 num_documento = request_ficha['num_documento']
                 asunto_ficha = request_ficha['asunto']
                 dominio = get_current_site(request)
-                ##Enviar correo de notificación de firmado.
+
+                # Enviar correo de notificación de firmado.
                 if request_ficha['resolucion'] != "" and request_ficha['resolucion'] != "Sin resolución" and request_ficha['fecha_recibido'] != None:
                     area = request_ficha['area_turnada']
-                    usuario = Usuario.objects.get(area=area) #TODO válidar que solo sea uno!
+                    usuario = Usuario.objects.get(area=area)
                     mensaje = render_to_string('ficha_recibida.html',
                         {
                             'usuario': usuario,
