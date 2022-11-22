@@ -119,7 +119,7 @@ def editar_ajustes(request, id):
     ajustes_elemento = get_object_or_404(Ajustes, id=id)
     form = AjustesForm(instance=ajustes_elemento)
     if request.method == 'POST':
-        form = AjustesForm(request.POST, instance=ajustes_elemento)
+        form = AjustesForm(request.POST, request.FILES, instance=ajustes_elemento)
         if form.is_valid():
             form.save()
             return redirect('home')
