@@ -1,28 +1,29 @@
 import io
 import os.path
-from django.http import FileResponse
-from reportlab.pdfgen import canvas
 
-from reportlab.platypus import Table, TableStyle
-from reportlab.lib.units import cm
-from reportlab.lib import colors
-
-from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth.decorators import login_required, permission_required
+from django.contrib.auth.mixins import (LoginRequiredMixin,
+                                        PermissionRequiredMixin)
 from django.contrib.sites.shortcuts import get_current_site
-from usuarios.models import Ajustes, Usuario
-from .forms import AreaForm, FichaForm, DependenciaForm, FichaUserForm
-from .models import Area, Ficha, Dependencia
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.core.mail import EmailMessage
+from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
+from django.http import FileResponse
+from django.shortcuts import get_object_or_404, redirect, render
+from django.template.loader import render_to_string
+from django.urls import reverse_lazy
 from django.views.generic import ListView
 from django.views.generic.edit import CreateView, UpdateView
-from django.urls import reverse_lazy
-from django.contrib.auth.decorators import login_required, permission_required
-from reportlab.lib.pagesizes import letter, landscape
-from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
+from reportlab.lib import colors
+from reportlab.lib.pagesizes import landscape, letter
+from reportlab.lib.units import cm
+from reportlab.pdfgen import canvas
+from reportlab.platypus import Table, TableStyle
 
+from usuarios.models import Ajustes, Usuario
 
-from django.core.mail import EmailMessage
-from django.template.loader import render_to_string
+from .forms import AreaForm, DependenciaForm, FichaForm, FichaUserForm
+from .models import Area, Dependencia, Ficha
+
 
 # Crea un Ajustes, solo se podrá modificar este.
 def ajustes():

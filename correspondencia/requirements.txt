@@ -19,3 +19,4 @@ webencodings==0.5.1
 zopfli==0.2.1
 reportlab==3.6.11
 python-dotenv==0.21.0
+isort==5.10.1
