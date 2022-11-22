@@ -46,6 +46,7 @@
                             <th>Asunto</th>
                           <th>Prioridad</th>
                           <th>Estatus</th>
+                          <th>PDF</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -78,7 +79,12 @@
                               {% else %}
                                 <span class="alta">Sin atender</span>
                               {% endif %}
-                          </td>     
+                          </td>   
+                          <td>
+                            <a href="{% url 'pdf' ficha.id_ficha %}" target="_blank">
+                              <i class="fa fa-file-pdf-o" style="font-size:35px;color:red"></i>
+                            </a>
+                          </td>      
                         </tr>
                         {% endfor %}
                       </tbody>

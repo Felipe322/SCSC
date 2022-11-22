@@ -1,5 +1,4 @@
 from django import forms
-from django.contrib.auth.forms import AuthenticationForm
 
 from ficha.models import Area
 from .models import Ajustes, Usuario

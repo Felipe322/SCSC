@@ -39,7 +39,7 @@
                             <th>Ficha y firma de quien recibe</th>
                             <th>Prioridad</th>
                             <th>Estatus</th>
-                            <th>Editar</th> 
+                            <th>Opciones</th> 
                         </tr>
                       </thead>
                       <tbody>
@@ -97,8 +97,10 @@
                                     </button>
                                 </td>
                                 <td>
-                                    <a href="{% url 'pdf' ficha.id_ficha %}" class="btn btn-info" target="_blank">PDF</a>
-                                </td>
+                                  <a href="{% url 'pdf' ficha.id_ficha %}" target="_blank">
+                                    <i class="fa fa-file-pdf-o" style="font-size:35px;color:red"></i>
+                                  </a>
+                                </td> 
                             </td>
                         </tr>
                         {% endfor %}

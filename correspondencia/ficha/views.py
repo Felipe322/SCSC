@@ -27,8 +27,10 @@ from .models import Area, Dependencia, Ficha
 
 # Crea un Ajustes, solo se podrá modificar este.
 def ajustes():
-    ajustes = Ajustes(titulo='Sistema de Control y Seguimiento de Correspondencias', subtitulo='Desarrollado por LABSOL')
-    ajustes.save()
+
+    if not Ajustes.objects.filter(id=1).exists():
+        ajustes = Ajustes(titulo='Sistema de Control y Seguimiento de Correspondencias', subtitulo='Desarrollado por LABSOL')
+        ajustes.save()
 
     ajustes = Ajustes.objects.filter()[:1].get()
     titulo = ajustes
