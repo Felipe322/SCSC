@@ -24,6 +24,8 @@ from usuarios.models import Ajustes, Usuario
 from .forms import AreaForm, DependenciaForm, FichaForm, FichaUserForm
 from .models import Area, Dependencia, Ficha
 
+from .filters import FichaFilter, FichaFilterHome, FichaFilterUser
+
 
 # Crea un Ajustes, solo se podrá modificar este.
 def ajustes():
@@ -41,8 +43,13 @@ def ajustes():
 
 @login_required(login_url="login")
 def home(request):
+
     if request.user.is_superuser:
-        fichas = Ficha.objects.all().order_by("-id_ficha").order_by("estatus").order_by("prioridad")
+        fichas = Ficha.objects.all().order_by("-id_ficha").order_by("-estatus").order_by("prioridad")
+
+        filtro = FichaFilterHome(request.GET, queryset=fichas)
+        fichas = filtro.qs
+
         paginator = Paginator(fichas, 4)
         page_number = request.GET.get('page')
         page_obj = paginator.get_page(page_number)
@@ -52,13 +59,17 @@ def home(request):
             fichas = paginator.page(1)
         except EmptyPage:
             fichas = paginator.page(paginator.num_pages)
-        context = {'fichas':fichas, 'page_obj':page_obj}
+        context = {'fichas':fichas, 'page_obj':page_obj, 'filtro':filtro}
         context.update(ajustes())
         return render(request, 'home.html', context)
     else:
         usuario = Usuario.objects.get(username=request.user)
         area = Area.objects.get(nombre=usuario.area)
         fichas = Ficha.objects.filter(area_turnada_id=area.id).order_by("-id_ficha").order_by("estatus").order_by("prioridad")
+
+        filtro = FichaFilterUser(request.GET, queryset=fichas)
+        fichas = filtro.qs
+
         paginator = Paginator(fichas, 4)
         page_number = request.GET.get('page')
         page_obj = paginator.get_page(page_number)
@@ -68,7 +79,7 @@ def home(request):
             fichas = paginator.page(1)
         except EmptyPage:
             fichas = paginator.page(paginator.num_pages)
-        context = {'fichas':fichas, 'page_obj':page_obj}
+        context = {'fichas':fichas, 'page_obj':page_obj, 'filtro':filtro}
         context.update(ajustes())
         return render(request, 'home.html', context)
 
@@ -79,10 +90,14 @@ def home(request):
 @permission_required("ficha.views_ficha")
 def lista(request):
     fichas = Ficha.objects.all().order_by("-id_ficha").order_by("estatus").order_by("prioridad")
+
+    filtro = FichaFilter(request.GET, queryset=fichas)
+    fichas = filtro.qs
+
     paginator = Paginator(fichas, 10)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
-    context = {'fichas':fichas, 'page_obj':page_obj}
+    context = {'fichas':fichas, 'page_obj':page_obj, 'filtro':filtro}
     context.update(ajustes())
     return render(request, 'ficha/lista_fichas.html', context)
 
