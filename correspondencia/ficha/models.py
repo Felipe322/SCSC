@@ -8,7 +8,7 @@ class Ficha(models.Model):
     PRIORIDAD_CHOICES = (("1", "Alta"),("2", "Media"),("3", "Baja"))
     ESTATUS_CHOICES = (("1", "Atendido"),("2", "Sin atender"))
 
-    id_ficha = models.IntegerField(primary_key=True, verbose_name="No. de Ficha")
+    id_ficha = models.IntegerField(primary_key=True, max_length=6, verbose_name="No. de Ficha")
     fecha = models.DateField(default=datetime.now, verbose_name="Fecha")
     num_documento = models.CharField(max_length=200, verbose_name="Número del Documento")
     fecha_documento = models.DateField(default=datetime.now, verbose_name="Fecha del Documento")

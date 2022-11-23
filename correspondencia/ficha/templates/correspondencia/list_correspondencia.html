@@ -12,32 +12,32 @@
 {% block contenido %}
 
 <center><h1 class="app-page-title">Correspondencia</h1> </center>
-<a href="{% url 'pdf_correspondencia' %}" target="_blank">
-  <i class="fa fa-file-pdf-o" style="font-size:48px;color:red"></i>
-</a>
 <hr>
-
 <br>
+<p style="padding: 0px 10px 10px;"><b>Consulta la correspondencia completa: </b>  <a href="{% url 'pdf_correspondencia' %}" target="_blank">
+  <i class="fa fa-file-pdf-o" style="font-size:40px;color:red"></i>
+</a></p>
+
 
 <div class="row">
   <div class="col">
     <div class="tabs">
-        {% for dependencia in dependencias %}
-            <div class="tab">
-                <input type="checkbox" id="{{dependencia.pk}}">
-                <label class="tab-label" for="{{dependencia.pk}}">{{dependencia.nombre}} ({{dependencia.siglas}})</label>
-                {% for ficha in fichas %}
+      {% for dependencia in dependencias %}
+        <div class="tab">
+          <input type="checkbox" id="{{dependencia.pk}}">
+          <label class="tab-label" for="{{dependencia.pk}}">{{dependencia.nombre}} ({{dependencia.siglas}})</label>
+            <div class="tab-content">
+              <div class="row">
+                <div class="col-sm">
+                  {% for ficha in fichas %}
                     {% if ficha.dependencia.pk == dependencia.pk %}
-                    <div class="tab-content">
-                      <div class="row">
-                        <div class="col-xs-12 col-md-8">
-                          <button type="button" class="buton btn btn-lg">{{ficha.id_ficha}}</button>
-                        </div>
-                      </div>
-                    </div>
+                      <a style="background: #1a252f; color: #ffff; margin-right: 6px; margin-bottom: 6px;" class="btn" href="{% url 'pdf' ficha.id_ficha %}" target="_blank">{{ficha.id_ficha}} </a>
                     {% endif  %}
-                {% endfor %}
+                  {% endfor %}
+                </div>
+              </div>
             </div>
+        </div>
         {% endfor %}
     </div>
   </div>
