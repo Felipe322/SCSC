@@ -1,5 +1,4 @@
 from django import forms
-from django.contrib.auth.forms import AuthenticationForm
 
 from ficha.models import Area
 from .models import Ajustes, Usuario
@@ -8,7 +7,7 @@ class UsuarioForm(forms.ModelForm):
     class Meta:
         model = Usuario
 
-        area = forms.ModelMultipleChoiceField(queryset=Area.objects.all(), required=True, widget=forms.CheckboxSelectMultiple)
+        area = forms.ModelMultipleChoiceField(queryset=Area.objects.all().filter(), required=True, widget=forms.CheckboxSelectMultiple)
 
         fields = ('first_name','last_name','username','email','password','area','puesto')
 
@@ -29,6 +28,10 @@ class UsuarioForm(forms.ModelForm):
             user.save()
         return user
 
+    # def __init__(self, *args, **kwargs):
+    #     super(UsuarioForm, self).__init__(*args, **kwargs)
+    #     self.fields['area'].queryset = Usuario.objects.filter(area__isnull=True)
+
 class AjustesForm(forms.ModelForm):
     class Meta:
         model = Ajustes
@@ -38,6 +41,5 @@ class AjustesForm(forms.ModelForm):
         widgets = {
             'titulo': forms.TextInput(attrs={'class':'form-control', 'placeholder':'Nombre'}),
             'subtitulo': forms.TextInput(attrs={'class':'form-control', 'placeholder':'Apellido'}),
-            # 'logo': forms.ImageField()
         }
 

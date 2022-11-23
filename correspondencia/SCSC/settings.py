@@ -27,6 +27,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_filters',
     'crispy_forms',
     'usuarios',
     'ficha'
@@ -126,16 +127,15 @@ USE_L10N = True
 
 USE_TZ = True
 
-DATE_FORMAT = "dd-mm-YYYY"
+DATE_INPUT_FORMATS = ('%d %B %Y')
 
 LOGIN_URL = reverse_lazy('login')
 LOGIN_REDIRECT_URL = reverse_lazy('home')
 LOGOUT_REDIRECT_URL = reverse_lazy('login')
 
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-
 # We have to read the email and password from .env file.
 # It is for security.
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST_USER = f'{os.environ.get("USER_EMAIL")}'
 EMAIL_HOST_PASSWORD = f'{os.environ.get("PASS_EMAIL")}'
 EMAIL_USE_TLS = True

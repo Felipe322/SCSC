@@ -2,108 +2,107 @@
 {% load static %}
 
 {% block css %}
-    <link rel="stylesheet" href="{% static 'css/estilo_personal.css' %}">
+  <link rel="stylesheet" href="{% static 'css/estilo_personal.css' %}">
 	<link href='https://fonts.googleapis.com/css?family=Roboto:400,100,300,700' rel='stylesheet' type='text/css'>
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="{% static 'css/style3.css' %}">
+  <link rel="stylesheet" href="{% static 'css/style_2.css' %}"> 
 {% endblock css %}
 
 {% block titulo %}
-    Correspondencias
+    Fichas
 {% endblock titulo %}
 
 {% block contenido %}
 
 <h1 class="titulo">Fichas de control y seguimiento de correspondencias</h1>
-<h3 class="subtitulo">Fichas en proceso de confirmación</h3>
-<section class="ftco-section">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-2">
-                <div class="table-wrap">
-                    <table class="table table-responsive-xl">
-                      <thead>
-                        <tr>
-                            <!-- <th>&nbsp;</th> -->
-                            
-                            <th>No. de ficha</th>
-                            <th>Fecha</th>
-                            <th>Número de Documento</th>
-                            <th>Fecha del Documento</th>
-                            <th>Dependencia Procedente</th>
-                            <th>Nombre de quien firma</th>
-                            <th>Asunto</th>
-                            <th>Area a la que se turna</th>
-                            <th>Instrucción</th>
-                            <th>Resolución</th>
-                            <th>Ficha y firma de quien recibe</th>
-                            <th>Prioridad</th>
-                            <th>Estatus</th>
-                            <th>Editar</th> 
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {% for ficha in fichas %}
-                        <tr class="alert" role="alert">
-                            
-                            <td>
-                                {{ficha.id_ficha}}
-                            </td>
-                            <td>
-                                {{ficha.fecha}}
-                            </td>
-                            <td>
-                                {{ficha.num_documento}}
-                            </td>
-                            <td>
-                                {{ficha.fecha_documento}}
-                            </td>
-                            <td>
-                                {{ficha.dependencia}}
-                            </td>
-                            <td>
-                                {{ficha.nombre_firma}}
-                            </td>
-                            <td>
-                                {{ficha.asunto}}
-                            </td>
-                            <td>
-                                {{ficha.area_turnada}}
-                            </td>
-                            <td>
-                                {{ficha.instruccion}}
-                            </td>
-                            <td>
-                                {{ficha.resolucion}}
-                            </td>
-                            <td>
-                                {{ficha.fecha_recibido}}
-                            </td>
-                            <td>
-                                {{ficha.prioridad}}
-                            </td>
+<h3 class="subtitulo">Total de fichas asignadas</h3>
 
-                          <td class="status"><span class="active">Activo</span></td>                          
-                            <td>
-                                <td>
-                                    <a href="{% url 'editar' ficha.id_ficha %}" class="btn btn-warning">Editar</a>
-                                </td>
-                                <td>
-                                    <button 
-                                        onclick="eliminaFichaModal(`{% url 'eliminar' ficha.id_ficha %}` , '{{ficha.num_documento}}')"
-                                        type="button" class="btn btn-danger" data-toggle="modal"
-                                        data-target="#eliminarFichaModal">
-                                            Eliminar
-                                    </button>
-                                </td>
-                                <td>
-                                    <a href="{% url 'pdf' ficha.id_ficha %}" class="btn btn-info" target="_blank">PDF</a>
-                                </td>
-                            </td>
-                        </tr>
-                        {% endfor %}
-                      </tbody>
-                    </table>
+<div class="row">
+  <div class="col">
+    <div class="card card-body">
+      <form method="get">
+        {{filtro.form}}
+        <button class="btn btn-primary" type="submit">
+          Buscar
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<section class="ftco-section">
+  <div class="container">
+      <div class="row">
+          <div class="col-md-2">
+              <div class="table-wrap2">
+                  <table class="table table-responsive-xl">
+                    <thead>
+                      <tr>
+                          <th>No. de ficha</th>
+                          <th>Fecha</th>
+                          <th>Número de Documento</th>
+                          <th>Area a la que se turna</th>
+                          <th>Asunto</th>
+                        <th>Prioridad</th>
+                        <th>Estatus</th>
+                        <th>PDF</th>
+                        <th>Opciones</th> 
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {% for ficha in fichas %}
+                      <tr class="alert" role="alert">
+                          <td>
+                              {{ficha.id_ficha}}
+                          </td>
+                          <td>
+                              {{ficha.fecha}}
+                          </td>
+                          <td>
+                            {{ficha.num_documento}}
+                          </td>
+                          <td>
+                              {{ficha.area_turnada}}
+                          </td>
+                          <td>
+                              {{ficha.asunto}}
+                          </td>
+                          <td class="prioridad"> 
+                              {% if ficha.prioridad == "1" %}
+                                <span class="alta">Alta</span>
+                              {% elif ficha.prioridad == "2" %}
+                                <span class="media">Media</span>
+                              {% elif ficha.prioridad == "3" %}
+                                <span class="baja">Baja</span>
+                              {% endif %}
+                          </td>
+                          <td class="prioridad">
+                            {% if ficha.estatus == "1" %}
+                              <span class="baja">Atendido</span>
+                            {% else %}
+                              <span class="alta">Sin atender</span>
+                            {% endif %}
+                        </td>   
+                        <td>
+                          <a href="{% url 'pdf' ficha.id_ficha %}" target="_blank">
+                            <i class="fa fa-file-pdf-o" style="font-size:35px;color:red"></i>
+                          </a>
+                        </td>  
+                        <td>
+                          <a href="{% url 'editar' ficha.id_ficha %}" class="btn btn-warning">Editar</a>
+                      </td>
+                      <td>
+                          <button 
+                              onclick="eliminaFichaModal(`{% url 'eliminar' ficha.id_ficha %}` , '{{ficha.num_documento}}')"
+                              type="button" class="btn btn-danger" data-toggle="modal"
+                              data-target="#eliminarFichaModal">
+                                  Eliminar
+                          </button>
+                      </td>    
+                      </tr>
+                      {% endfor %}
+                    </tbody>
+                  </table>
                     <nav aria-label="...">
                         <ul class="pagination">
                           <li class="page-item disabled"><span class="step-links"></li>
@@ -143,9 +142,9 @@
         <div class="modal-footer">
           <form id="formEliminar" method="post">
             {% csrf_token %}
-            <button class="btn btn-danger" type="submit">Sí, si quiero</button>
+            <button class="btn btn-danger" type="submit">Aceptar</button>
           </form>
-          <button type="submit" class="btn btn-success" data-dismiss="modal">Mejor no</button>
+          <button type="submit" class="btn btn-success" data-dismiss="modal">Cancelar</button>
         </div>
       </div>
     </div>
@@ -154,9 +153,5 @@
 {% endblock contenido %}
 
 {% block js %}
-    <!-- <script src="{% static 'js/jquery.min.js' %}"></script>
-    <script src="{% static 'js/popper.js' %}"></script>
-    <script src="{% static 'js/bootstrap.min.js' %}"></script>
-    <script src="{% static 'js/main.js' %}"></script> -->
     <script src="{% static 'js/funciones.js' %}"></script>
 {% endblock js %}

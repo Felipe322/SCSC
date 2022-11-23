@@ -34,7 +34,6 @@
                 <td>{{usuario.last_login}}</td>
                 <td>
                   <a href="{% url 'usuarios:editar' usuario.id %}" class="btn btn-info">Editar</a>
-                  {% comment %} <a href="{% url 'usuarios:detalle' area.id %}" class="btn btn-info">Detalles</a> {% endcomment %}
                   <button 
                   onclick="eliminaAreaModal(`{% url 'usuarios:eliminar' usuario.id %}` , '{{usuario.email}}', '{{usuario.username}}')"
                   type="button" class="btn btn-danger" data-toggle="modal"
@@ -83,9 +82,9 @@
       <div class="modal-footer">
         <form id="formEliminar" method="post">
           {% csrf_token %}
-          <button class="btn btn-danger" type="submit">Sí, si quiero</button>
+          <button class="btn btn-danger" type="submit">Aceptar</button>
         </form>
-        <button type="submit" class="btn btn-success" data-dismiss="modal">Mejor no</button>
+        <button type="submit" class="btn btn-success" data-dismiss="modal">Cancelar</button>
       </div>
     </div>
   </div>
