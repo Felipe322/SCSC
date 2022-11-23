@@ -1,21 +1,24 @@
-from django.views.generic import ListView, CreateView, UpdateView, DeleteView, TemplateView
+from django.contrib import messages
+from django.contrib.auth.decorators import login_required, permission_required
+from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.mixins import (LoginRequiredMixin,
+                                        PermissionRequiredMixin)
+from django.contrib.auth.views import LoginView
+from django.contrib.sites.shortcuts import get_current_site
+from django.core.mail import EmailMessage
+from django.shortcuts import get_object_or_404, redirect, render
+from django.template.loader import render_to_string
+from django.urls import reverse_lazy
+from django.utils.encoding import force_bytes
+from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
+from django.views.generic import (CreateView, DeleteView, ListView,
+                                  TemplateView, UpdateView)
+
 from ficha.views import ajustes
 from usuarios.forms import AjustesForm, UsuarioForm
-from django.urls import reverse_lazy
-from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth.decorators import login_required, permission_required
-from django.utils.decorators import method_decorator
 from usuarios.models import Ajustes, Usuario
-from django.contrib.auth.views import LoginView
-from django.contrib.auth.forms import AuthenticationForm
-from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
-from django.contrib.sites.shortcuts import get_current_site
-from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
-from django.utils.encoding import force_bytes
+
 from .token import token_activacion
-from django.core.mail import EmailMessage
-from django.template.loader import render_to_string
-from django.contrib import messages
 
 
 class Login(LoginView):
@@ -47,6 +50,9 @@ class UsuarioCrear(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
         user.is_staff = True
         user.save()
 
+        ajustes = Ajustes.objects.filter()[:1].get()
+        logo_email = ajustes.logo_email
+
         dominio = get_current_site(self.request)
         uid = urlsafe_base64_encode(force_bytes(user.id))
         token = token_activacion.make_token(user)
@@ -55,7 +61,8 @@ class UsuarioCrear(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
                 'usuario': user,
                 'dominio': dominio,
                 'uid': uid,
-                'token': token
+                'token': token,
+                'logo_email': logo_email
             }
         )
         asunto = 'Activación de cuenta'
@@ -116,7 +123,7 @@ def editar_ajustes(request, id):
     ajustes_elemento = get_object_or_404(Ajustes, id=id)
     form = AjustesForm(instance=ajustes_elemento)
     if request.method == 'POST':
-        form = AjustesForm(request.POST, instance=ajustes_elemento)
+        form = AjustesForm(request.POST, request.FILES, instance=ajustes_elemento)
         if form.is_valid():
             form.save()
             return redirect('home')

@@ -2,15 +2,14 @@
 {% load static %}
 
 {% block css %}
-    <link rel="stylesheet" href="{% static 'css/estilo_personal.css' %}">
+  <link rel="stylesheet" href="{% static 'css/estilo_personal.css' %}">
 	<link href='https://fonts.googleapis.com/css?family=Roboto:400,100,300,700' rel='stylesheet' type='text/css'>
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-   <link rel="stylesheet" href="{% static 'css/style_2.css' %}"> 
-     <!-- <link rel="stylesheet" href="{% static 'css/style3.css' %}"> -->
+  <link rel="stylesheet" href="{% static 'css/style_2.css' %}"> 
 {% endblock css %}
 
 {% block titulo %}
-    Correspondencias
+    Fichas en proceso
 {% endblock titulo %}
 
 {% block contenido %}
@@ -18,20 +17,19 @@
 <h1 class="titulo">Fichas de control y seguimiento de correspondencias</h1>
 <h3 class="subtitulo">Fichas en proceso de confirmación</h3>
 
-<div class="searchBox">
-  <input class="searchInput" list="fichas" type="text" placeholder="Buscar">
-  <datalist id="fichas">
-    {% for ficha in fichas %}
-      <option value="{{ ficha.area_turnada}}"></option>
-    {% endfor %}
-  </datalist>
-  <button class="searchButton">
-    <i class="fa fa-search"></i>
-  </button>
+<div class="row">
+  <div class="col">
+    <div class="card card-body">
+      <form method="get">
+        {{filtro.form}}
+        <button class="btn btn-primary" type="submit">
+          Buscar
+        </button>
+      </form>
+    </div>
+  </div>
 </div>
-<br>
-<br>
-<br>
+
 <section class="ftco-section">
     <div class="container">
         <div class="row">
@@ -46,6 +44,7 @@
                             <th>Asunto</th>
                           <th>Prioridad</th>
                           <th>Estatus</th>
+                          <th>PDF</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -73,12 +72,17 @@
                                 {% endif %}
                             </td>
                             <td class="prioridad">
-                              {% if ficha.estatus %}
+                              {% if ficha.estatus == "1" %}
                                 <span class="baja">Atendido</span>
                               {% else %}
                                 <span class="alta">Sin atender</span>
                               {% endif %}
-                          </td>     
+                          </td>   
+                          <td>
+                            <a href="{% url 'pdf' ficha.id_ficha %}" target="_blank">
+                              <i class="fa fa-file-pdf-o" style="font-size:35px;color:red"></i>
+                            </a>
+                          </td>      
                         </tr>
                         {% endfor %}
                       </tbody>
@@ -111,10 +115,3 @@
 </section>
 
 {% endblock contenido %}
-
-{% block js %}
-    <!-- <script src="{% static 'js/jquery.min.js' %}"></script>
-    <script src="{% static 'js/popper.js' %}"></script>
-    <script src="{% static 'js/bootstrap.min.js' %}"></script>
-    <script src="{% static 'js/main.js' %}"></script> -->
-{% endblock js %}

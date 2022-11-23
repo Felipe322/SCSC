@@ -1,33 +1,38 @@
 import io
 import os.path
-from django.http import FileResponse
-from reportlab.pdfgen import canvas
 
-from reportlab.platypus import Table, TableStyle
-from reportlab.lib.units import cm
-from reportlab.lib import colors
-
-from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth.decorators import login_required, permission_required
+from django.contrib.auth.mixins import (LoginRequiredMixin,
+                                        PermissionRequiredMixin)
 from django.contrib.sites.shortcuts import get_current_site
-from usuarios.models import Ajustes, Usuario
-from .forms import AreaForm, FichaForm, DependenciaForm, FichaUserForm
-from .models import Area, Ficha, Dependencia
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.core.mail import EmailMessage
+from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
+from django.http import FileResponse
+from django.shortcuts import get_object_or_404, redirect, render
+from django.template.loader import render_to_string
+from django.urls import reverse_lazy
 from django.views.generic import ListView
 from django.views.generic.edit import CreateView, UpdateView
-from django.urls import reverse_lazy
-from django.contrib.auth.decorators import login_required, permission_required
-from reportlab.lib.pagesizes import letter, landscape
-from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
+from reportlab.lib import colors
+from reportlab.lib.pagesizes import landscape, letter
+from reportlab.lib.units import cm
+from reportlab.pdfgen import canvas
+from reportlab.platypus import Table, TableStyle
 
+from usuarios.models import Ajustes, Usuario
 
-from django.core.mail import EmailMessage
-from django.template.loader import render_to_string
+from .forms import AreaForm, DependenciaForm, FichaForm, FichaUserForm
+from .models import Area, Dependencia, Ficha
+
+from .filters import FichaFilter, FichaFilterHome, FichaFilterUser
+
 
 # Crea un Ajustes, solo se podrá modificar este.
 def ajustes():
-    ajustes = Ajustes(titulo='Sistema de Control y Seguimiento de Correspondencias', subtitulo='Desarrollado por LABSOL')
-    ajustes.save()
+
+    if not Ajustes.objects.filter(id=1).exists():
+        ajustes = Ajustes(titulo='Sistema de Control y Seguimiento de Correspondencias', subtitulo='Desarrollado por LABSOL')
+        ajustes.save()
 
     ajustes = Ajustes.objects.filter()[:1].get()
     titulo = ajustes
@@ -38,8 +43,13 @@ def ajustes():
 
 @login_required(login_url="login")
 def home(request):
+
     if request.user.is_superuser:
-        fichas = Ficha.objects.all().order_by("-id_ficha").order_by("estatus").order_by("prioridad")
+        fichas = Ficha.objects.all().order_by("-id_ficha").order_by("-estatus").order_by("prioridad")
+
+        filtro = FichaFilterHome(request.GET, queryset=fichas)
+        fichas = filtro.qs
+
         paginator = Paginator(fichas, 4)
         page_number = request.GET.get('page')
         page_obj = paginator.get_page(page_number)
@@ -49,13 +59,17 @@ def home(request):
             fichas = paginator.page(1)
         except EmptyPage:
             fichas = paginator.page(paginator.num_pages)
-        context = {'fichas':fichas, 'page_obj':page_obj}
+        context = {'fichas':fichas, 'page_obj':page_obj, 'filtro':filtro}
         context.update(ajustes())
         return render(request, 'home.html', context)
     else:
         usuario = Usuario.objects.get(username=request.user)
         area = Area.objects.get(nombre=usuario.area)
         fichas = Ficha.objects.filter(area_turnada_id=area.id).order_by("-id_ficha").order_by("estatus").order_by("prioridad")
+
+        filtro = FichaFilterUser(request.GET, queryset=fichas)
+        fichas = filtro.qs
+
         paginator = Paginator(fichas, 4)
         page_number = request.GET.get('page')
         page_obj = paginator.get_page(page_number)
@@ -65,7 +79,7 @@ def home(request):
             fichas = paginator.page(1)
         except EmptyPage:
             fichas = paginator.page(paginator.num_pages)
-        context = {'fichas':fichas, 'page_obj':page_obj}
+        context = {'fichas':fichas, 'page_obj':page_obj, 'filtro':filtro}
         context.update(ajustes())
         return render(request, 'home.html', context)
 
@@ -76,10 +90,14 @@ def home(request):
 @permission_required("ficha.views_ficha")
 def lista(request):
     fichas = Ficha.objects.all().order_by("-id_ficha").order_by("estatus").order_by("prioridad")
+
+    filtro = FichaFilter(request.GET, queryset=fichas)
+    fichas = filtro.qs
+
     paginator = Paginator(fichas, 10)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
-    context = {'fichas':fichas, 'page_obj':page_obj}
+    context = {'fichas':fichas, 'page_obj':page_obj, 'filtro':filtro}
     context.update(ajustes())
     return render(request, 'ficha/lista_fichas.html', context)
 
@@ -104,7 +122,7 @@ def crear(request):
             ## Enviar correo
             dominio = get_current_site(request)
             ficha = request.POST
-            # id_ficha = str(ficha.pk)
+            id_ficha = str(ficha['id_ficha'])
             ficha_fecha = ficha['fecha']
             ficha_asunto = ficha['asunto']
             ficha_instruccion = ficha['instruccion']
@@ -114,7 +132,7 @@ def crear(request):
             mensaje = render_to_string('asignacion_ficha.html',
                 {
                     'usuario': usuario,
-                    # 'id_ficha': id_ficha,
+                    'id_ficha': id_ficha,
                     'ficha_fecha': ficha_fecha,
                     'ficha_asunto': ficha_asunto,
                     'ficha_instruccion': ficha_instruccion,
@@ -155,7 +173,7 @@ def editar_ficha(request, pk):
                 ficha.estatus = True
                 ficha.save()
                 request_ficha = request.POST
-                id_ficha = str(ficha.pk)
+                id_ficha = str(request_ficha['id_ficha'])
                 num_documento = request_ficha['num_documento']
                 asunto_ficha = request_ficha['asunto']
                 dominio = get_current_site(request)
@@ -191,7 +209,6 @@ def editar_ficha(request, pk):
 
 
 @login_required(login_url="login")
-@permission_required("ficha.views_ficha")
 def fichaPDF(request, pk):
     # Create a file-like buffer to receive PDF data.
     buffer = io.BytesIO()

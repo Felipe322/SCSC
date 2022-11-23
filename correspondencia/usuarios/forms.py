@@ -1,5 +1,4 @@
 from django import forms
-from django.contrib.auth.forms import AuthenticationForm
 
 from ficha.models import Area
 from .models import Ajustes, Usuario
@@ -42,6 +41,5 @@ class AjustesForm(forms.ModelForm):
         widgets = {
             'titulo': forms.TextInput(attrs={'class':'form-control', 'placeholder':'Nombre'}),
             'subtitulo': forms.TextInput(attrs={'class':'form-control', 'placeholder':'Apellido'}),
-            # 'logo': forms.ImageField()
         }
 
