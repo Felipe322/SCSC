@@ -6,6 +6,7 @@ class Ficha(models.Model):
     readonly_fields=('resolucion')
 
     PRIORIDAD_CHOICES = (("1", "Alta"),("2", "Media"),("3", "Baja"))
+    ESTATUS_CHOICES = (("1", "Atendido"),("2", "Sin atender"))
 
     id_ficha = models.IntegerField(primary_key=True, verbose_name="No. de Ficha")
     fecha = models.DateField(default=datetime.now, verbose_name="Fecha")
@@ -19,8 +20,8 @@ class Ficha(models.Model):
     prioridad = models.CharField(max_length=6, choices=PRIORIDAD_CHOICES, verbose_name="Prioridad de la ficha", default="3")
     resolucion = models.TextField(max_length=800, verbose_name="Resolución", default="Sin resolución")
     fecha_recibido = models.DateField(default=datetime.now, verbose_name="Fecha de ficha firmada")
-    estatus = models.BooleanField(default=False, verbose_name="Estátus")
-    pdf_dependencia = models.FileField(upload_to='pdfs/', verbose_name="PDF de la dependencia")
+    estatus = models.CharField(max_length=12, choices=ESTATUS_CHOICES, default="2")
+    pdf_dependencia = models.FileField(upload_to='pdfs/', verbose_name="PDF de la dependencia", blank=True, null=True)
 
     def __str__(self):
         return str(self.id_ficha)
