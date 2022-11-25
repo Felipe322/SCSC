@@ -130,3 +130,6 @@ def editar_ajustes(request, id):
     context = {'form': form}
     context.update(ajustes())
     return render(request, 'editar_ajustes.html', context)
+
+def info(request):
+    return render(request, 'info.html')
