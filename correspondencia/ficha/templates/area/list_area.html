@@ -2,11 +2,12 @@
 {% load static %}
 
 {% block titulo %}
-    Listado de areas
+    Listado de áreas
 {% endblock titulo %}
 
 {% block contenido %}
-<center><h1 class="app-page-title">Lista de areas</h1> </center>
+<center><h1 class="app-page-title">Lista de áreas</h1> </center>
+<a href="{% url 'crear_area' %}" class="btn btn-success">Agregar área</a>
 <div class="app-card app-card-orders-table shadow-sm mb-5">
     <hr>
     <br>
