@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.urls import path, include
 from django.contrib.auth.views import LogoutView
-from usuarios.views import Login
+from usuarios.views import Login, info
 from ficha.views import home, correspondencia, pdf_correspondencia
 from django.conf.urls.static import static
 from django.conf import settings
@@ -17,6 +17,7 @@ urlpatterns = [
     path('correspondencia/', correspondencia, name="correspondencia"),
     path('correspondencia/pdf', pdf_correspondencia, name="pdf_correspondencia"),
     path('usuarios/', include('usuarios.urls')),
+    path('info/', info, name='info'),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
