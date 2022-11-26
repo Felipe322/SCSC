@@ -6,6 +6,8 @@
 	<link href='https://fonts.googleapis.com/css?family=Roboto:400,100,300,700' rel='stylesheet' type='text/css'>
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
   <link rel="stylesheet" href="{% static 'css/style_2.css' %}"> 
+  <link rel="stylesheet" href="{% static 'css/style_table.css' %}"> 
+
 {% endblock css %}
 
 {% block titulo %}
@@ -36,8 +38,9 @@
       <div class="row">
           <div class="col-md-2">
               <div class="table-wrap2">
-                  <table class="table table-responsive-xl">
-                    <thead>
+                <table class="table">
+                  <thead class="thead-dark">
+                    <thead class="thead-dark">
                       <tr>
                           <th>No. de ficha</th>
                           <th>Fecha</th>
@@ -46,7 +49,6 @@
                           <th>Asunto</th>
                         <th>Prioridad</th>
                         <th>Estatus</th>
-                        <th>PDF</th>
                         <th>Opciones</th> 
                       </tr>
                     </thead>
@@ -86,19 +88,18 @@
                         </td>   
                         <td>
                           <a href="{% url 'pdf' ficha.id_ficha %}" target="_blank">
-                            <i class="fa fa-file-pdf-o" style="font-size:35px;color:red"></i>
+                            <i class="fa fa-file-pdf-o" style="font-size:25px;color:red"></i>
                           </a>
                         </td>  
                         <td>
-                          <a href="{% url 'editar' ficha.id_ficha %}" class="btn btn-warning">Editar</a>
+                          <a title="Editar ficha" href="{% url 'editar' ficha.id_ficha %}"  style="color: blue; font-size:25px;" class="fa fa-edit"></a>
                       </td>
                       <td>
-                          <button 
-                              onclick="eliminaFichaModal(`{% url 'eliminar' ficha.id_ficha %}` , '{{ficha.num_documento}}')"
-                              type="button" class="btn btn-danger" data-toggle="modal"
-                              data-target="#eliminarFichaModal">
-                                  Eliminar
-                          </button>
+                        <a title="Eliminar ficha"
+                            onclick="eliminaFichaModal(`{% url 'eliminar' ficha.id_ficha %}` , '{{ficha.num_documento}}')"
+                            type="button" data-toggle="modal" class="fa fa-trash" style="color: red; font-size:25px;"
+                            data-target="#eliminarFichaModal">
+                        </a>
                       </td>    
                       </tr>
                       {% endfor %}

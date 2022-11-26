@@ -29,6 +29,7 @@
             <div class="tab-content">
               <div class="row">
                 <div class="col-sm">
+                  <small><b>* No. de fichas relacionadas con esta dependencia (PDF de cada ficha).<b></small><br><br>
                   {% for ficha in fichas %}
                     {% if ficha.dependencia.pk == dependencia.pk %}
                       <a style="background: #1a252f; color: #ffff; margin-right: 6px; margin-bottom: 6px;" class="btn" href="{% url 'pdf' ficha.id_ficha %}" target="_blank">{{ficha.id_ficha}} </a>

@@ -6,6 +6,7 @@
 	<link href='https://fonts.googleapis.com/css?family=Roboto:400,100,300,700' rel='stylesheet' type='text/css'>
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
   <link rel="stylesheet" href="{% static 'css/style_2.css' %}"> 
+  <link rel="stylesheet" href="{% static 'css/style_table.css' %}"> 
 {% endblock css %}
 
 {% block titulo %}
@@ -35,13 +36,13 @@
         <div class="row">
             <div class="col-md-2">
                 <div class="table-wrap2">
-                    <table class="table table-responsive-xl">
-                      <thead>
+                    <table class="table table-border">
+                      <thead class="thead-dark">
                         <tr>
-                            <th>No. de ficha</th>
-                            <th>Fecha</th>
-                            <th>Area a la que se turna</th>
-                            <th>Asunto</th>
+                          <th>No. de ficha</th>
+                          <th>Fecha</th>
+                          <th>Area a la que se turna</th>
+                          <th>Asunto</th>
                           <th>Prioridad</th>
                           <th>Estatus</th>
                           <th>PDF</th>
@@ -49,7 +50,8 @@
                       </thead>
                       <tbody>
                         {% for ficha in fichas %}
-                        <tr class="alert" role="alert">
+                        <div >
+                        <tr onclick="location.href='/fichas/editar/1'" class="alert" role="alert">
                             <td>
                                 {{ficha.id_ficha}}
                             </td>
@@ -84,6 +86,7 @@
                             </a>
                           </td>      
                         </tr>
+                      </div>
                         {% endfor %}
                       </tbody>
                     </table>

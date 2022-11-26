@@ -170,7 +170,7 @@ def editar_ficha(request, pk):
         if request.method == 'POST':
             form = FichaUserForm(request.POST, instance=ficha)    
             if form.is_valid():
-                ficha.estatus = True
+                ficha.estatus = "1"
                 ficha.save()
                 request_ficha = request.POST
                 id_ficha = str(request_ficha['id_ficha'])

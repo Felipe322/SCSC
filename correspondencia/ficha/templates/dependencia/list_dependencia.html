@@ -9,6 +9,8 @@
 <center><h1 class="app-page-title">Lista de dependencias</h1> </center>
 <a href="{% url 'crear_dependencia' %}" class="btn btn-success">Agregar dependencia</a>
 
+
+<section class="ftco-section">
 <div class="app-card app-card-orders-table shadow-sm mb-5">
     <hr>
     <br>
@@ -16,7 +18,7 @@
         <thead>
             <th>Nombre</th>
             <th>Siglas</th>
-            <th></th>
+            <th>Opciones</th>
         </thead>
         <tbody>
             {% for dependencia in object_list  %}
@@ -26,13 +28,12 @@
                 <td>{{dependencia.nombre}}</td>
                 <td>{{dependencia.siglas}}</td>
                 <td>
-                  <a href="{% url 'editar_dependencia' dependencia.id %}" class="btn btn-info">Editar </a>
-                  <button 
+                  <a title="Editar dependencia" href="{% url 'editar_dependencia' dependencia.id %}" style="color: blue; font-size:30px;" class="fa fa-edit"></a>
+                  <a 
                       onclick="eliminaDependenciaModal(`{% url 'eliminar_dependencia' dependencia.id %}` , '{{dependencia.nombre}}', '{{dependencia.siglas}}')"
-                      type="button" class="btn btn-danger" data-toggle="modal"
+                      type="button" class="fa fa-trash" style="color: red; font-size:30px; padding-left:35px;" data-toggle="modal" title="Eliminar dependencia"
                       data-target="#eliminarDependenciaModal">
-                        Eliminar
-                  </button>
+                </a>
               </td>
             </a>
           </div>
@@ -82,7 +83,7 @@
     </div>
   </div>
 </div>
-
+</section>
 {% endblock contenido %}
 
 
