@@ -50,8 +50,7 @@
                       </thead>
                       <tbody>
                         {% for ficha in fichas %}
-                        <div >
-                        <tr onclick="location.href='/fichas/editar/1'" class="alert" role="alert">
+                        <tr onclick="location.href='{% url 'editar' ficha.id_ficha %}'" class="alert" role="alert">
                             <td>
                                 {{ficha.id_ficha}}
                             </td>
