@@ -51,7 +51,7 @@
                     </thead>
                     <tbody>
                       {% for ficha in fichas %}
-                      <tr class="alert" role="alert">
+                      <tr onclick="location.href='{% url 'editar' ficha.id_ficha %}'" class="alert" role="alert">
                           <td>
                               {{ficha.id_ficha}}
                           </td>
