@@ -50,20 +50,20 @@
                       </thead>
                       <tbody>
                         {% for ficha in fichas %}
-                        <tr onclick="location.href='{% url 'editar' ficha.id_ficha %}'" class="alert" role="alert">
-                            <td>
+                        <tr class="alert" role="alert">
+                            <td onclick="location.href='{% url 'editar' ficha.id_ficha %}'">
                                 {{ficha.id_ficha}}
                             </td>
-                            <td>
+                            <td onclick="location.href='{% url 'editar' ficha.id_ficha %}'">
                                 {{ficha.fecha}}
                             </td>
-                            <td>
+                            <td onclick="location.href='{% url 'editar' ficha.id_ficha %}'">
                                 {{ficha.area_turnada}}
                             </td>
-                            <td>
+                            <td onclick="location.href='{% url 'editar' ficha.id_ficha %}'">
                                 {{ficha.asunto}}
                             </td>
-                            <td class="prioridad"> 
+                            <td onclick="location.href='{% url 'editar' ficha.id_ficha %}'" class="prioridad"> 
                                 {% if ficha.prioridad == "1" %}
                                   <span class="alta">Alta</span>
                                 {% elif ficha.prioridad == "2" %}
@@ -72,7 +72,7 @@
                                   <span class="baja">Baja</span>
                                 {% endif %}
                             </td>
-                            <td class="prioridad">
+                            <td onclick="location.href='{% url 'editar' ficha.id_ficha %}'" class="prioridad">
                               {% if ficha.estatus == "1" %}
                                 <span class="baja">Atendido</span>
                               {% else %}
