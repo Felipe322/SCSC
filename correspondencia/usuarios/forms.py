@@ -42,4 +42,3 @@ class AjustesForm(forms.ModelForm):
             'titulo': forms.TextInput(attrs={'class':'form-control', 'placeholder':'Nombre'}),
             'subtitulo': forms.TextInput(attrs={'class':'form-control', 'placeholder':'Apellido'}),
         }
-
