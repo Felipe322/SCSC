@@ -165,12 +165,12 @@ def editar_ficha(request, pk):
             if form.is_valid():
                 form.save()
                 return redirect('lista')
-    else:
+    elif request.user.is_staff:
         form = FichaUserForm(instance=ficha)
         if request.method == 'POST':
             form = FichaUserForm(request.POST, instance=ficha)    
             if form.is_valid():
-                ficha.estatus = True
+                ficha.estatus = "1"
                 ficha.save()
                 request_ficha = request.POST
                 id_ficha = str(request_ficha['id_ficha'])
@@ -210,11 +210,24 @@ def editar_ficha(request, pk):
 
 @login_required(login_url="login")
 def fichaPDF(request, pk):
+    # Permisssion_denied_message
+
+    #Obtiene el área de la ficha.
+    ficha = get_object_or_404(Ficha, id_ficha=pk)
+    area = ficha.area_turnada
+
+    # Obtiene el usuario logeado.
+    # Compara si el usuario no es admin.
+    # Permite acceso solo si las fichas pertenecen a ese usuario por medio del area.
+    if not request.user.is_superuser:
+        usuario_logeado = request.user.pk
+        usuario = Usuario.objects.get(pk=usuario_logeado)
+        if usuario.area != area:
+            return redirect('login')
+
     # Create a file-like buffer to receive PDF data.
     buffer = io.BytesIO()
-
-    ficha = get_object_or_404(Ficha, id_ficha=pk)
-    
+   
     # Create the PDF object, using the buffer as its "file."
     pdf = canvas.Canvas(buffer)
 
