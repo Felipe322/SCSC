@@ -1,4 +1,5 @@
 import io
+import os
 import os.path
 
 from django.contrib.auth.decorators import login_required, permission_required
@@ -192,7 +193,7 @@ def editar_ficha(request, pk):
                         }
                     )
                     asunto = 'Se ha recibido la respuesta de la ficha ' + id_ficha
-                    to = 'scsc.labsol@gmail.com' #Change that no static
+                    to = f'{os.environ.get("USER_EMAIL")}'
                     email = EmailMessage(
                         asunto,
                         mensaje,
