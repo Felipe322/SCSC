@@ -109,7 +109,7 @@
                         <ul class="pagination">
                           <li class="page-item disabled"><span class="step-links"></li>
                             {% if page_obj.has_previous %}
-                              <span><a class="page-link" href="?page=1">&laquo; Primera</a></span>
+                              <span><a class="page-link" href="?page=1">&laquo;Primera</a></span>
                               <span><a class="page-link" href="?page={{ page_obj.previous_page_number }}">Anterior</a></span>
                             {% endif %}
                             {% for page_actual in  page_obj.paginator.page_range %}
@@ -121,7 +121,7 @@
                             {% endfor %}
                             {% if page_obj.has_next %}
                                 <span><a class="page-link" href="?page={{ page_obj.next_page_number }}">Siguiente</a></span>
-                                <span><a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">Última &raquo;</a></span>
+                                <span><a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">Última&raquo;</a></span>
                             {% endif %}
                         </span>
                         </ul>
