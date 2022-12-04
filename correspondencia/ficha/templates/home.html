@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load widget_tweaks %}
 {% load static %}
 
 {% block css %}
@@ -12,7 +13,6 @@
 {% block titulo %}
     Fichas en proceso
 {% endblock titulo %}
-
 {% block contenido %}
 
 <h1 class="titulo">Fichas de control y seguimiento de correspondencias</h1>
@@ -23,10 +23,37 @@
   <div class="col">
     <div class="card card-body">
       <form method="get">
-        {{filtro.form}}
-        <button class="btn btn-primary" type="submit">
-          Buscar
-        </button>
+        <div class="col-10">
+          <small>Busca fichas por los siguientes filtros: </small>
+          <div class="row">
+            <div class="col-4">
+              {% if perms.ficha.view_ficha %}
+                <b>{{ filtro.form.area_turnada.label_tag }}</b>
+                {% render_field filtro.form.area_turnada class="form-select form-select-sm" %}
+              {% else %}
+                <b>{{ filtro.form.dependencia.label_tag }}</b>
+                {% render_field filtro.form.dependencia class="form-select form-select-sm" %}
+              {% endif %}
+            </div>
+            {% if perms.ficha.view_ficha %}
+            {% else %}
+              <div class="col-3">
+                <b>{{ filtro.form.estatus.label_tag }}</b>
+                {% render_field filtro.form.estatus class="form-select form-select-sm" %}
+            </div>
+            {% endif %}
+
+            <div class="col-3">
+              <b>{{ filtro.form.prioridad.label_tag }}</b>
+              {% render_field filtro.form.prioridad class="form-select form-select-sm" %}
+            </div>
+            <div class="col-2">
+              <button style="margin-top:13%; margin-left: 10%; background-color: #bb4433; border-color: #bb4433;" class="btn btn-primary" type="submit">
+                Filtrar
+              </button>
+            </div>
+          </div>
+        </div>
       </form>
     </div>
   </div>
