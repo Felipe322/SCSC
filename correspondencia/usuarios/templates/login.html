@@ -19,9 +19,9 @@
         <div class="container ">
             <div class="row cdvfdfd">
                 <div class="login-box">
-                        <div class=" log-det">
+                        <div class="log-det">
                             <div class="small-logo">Iniciar sesión</div>
-                            <p class="dfmn">Ingrese sus credenciales para entrar <br>al sistema</p>
+                            <p class="dfmn">Ingresa tus credenciales para entrar <br>al sistema</p>
                             <form method="POST">
                                 {% csrf_token %}
                             <div class="text-box-cont">
@@ -37,16 +37,19 @@
                                         <span class="input-group-text" id="basic-addon1"><i class="fas fa-lock"></i></span>
                                     </div>
                                     <input type="password" class="form-control" placeholder="Contraseña" aria-label="Contraseña" aria-describedby="basic-addon1" name="password" required>
-                                </div>
-                            <br>
-                                
+                                </div>                                
                                 <div class="input-group center">
                                     <button class="btn btn-danger btn-round">INGRESAR</button>
                                 </div> 
-                                 <div class="row">
-                                    <p class="small-info"><b> Contacte al administrador si no tiene una cuenta.*</b> <br><br>
-                                        <a href="{% url 'info' %}" target="_blank"><span class="icon-help mr-3"></span><b>Contacto</b></a></p>
-                                </div>   
+                                   <center><small class="dfmn">
+                                    <a href="{% url 'info' %}"><b>¿Olvidaste tu contraseña?</b></a>
+                                    </small></center>
+                                <p class="small-info">
+                                    <b>Contacta al administrador si no tienes una cuenta.</b><br><br>
+                                </p>
+                                <center><small class="dfmn">
+                                    <a href="{% url 'info' %}" target="_blank"><span class="icon-help mr-3"></span><b>Contacto</b></a>
+                                </small></center>
                             </div>
                             {% if form.errors %}
                             <div class="alert alert-danger alert-dismissible" role="alert">

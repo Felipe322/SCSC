@@ -271,8 +271,9 @@ body {
     margin-bottom: 20px;
     margin-top: 10px; }
   .log-det .small-info {
-    font-size: .9rem;
-    border-top: 1px solid #cccccc73;
+    font-size: .85rem;
+    border-top: 1.6px solid #c0bebe73;
+    size: 10px;
     padding-top: 20px;
     margin-bottom: 5px; }
   .log-det .btn {
