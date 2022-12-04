@@ -32,7 +32,7 @@
                   <a title="Editar área" href="{% url 'editar_area' area.id %}" style="color: blue; font-size:30px;" class="fa fa-edit"></a>
                   <a 
                   onclick="eliminaAreaModal(`{% url 'eliminar_area' area.id %}` , '{{area.nombre}}', '{{area.siglas}}')"
-                  type="button" class="fa fa-trash" style="color: red; font-size:30px; padding-left:35px;" data-toggle="modal" title="Editar área"
+                  type="button" class="fa fa-trash" style="color: red; font-size:30px; padding-left:35px;" data-toggle="modal" title="Eliminar área"
                   data-target="#eliminarAreaModal">
                 </a>
               </td>

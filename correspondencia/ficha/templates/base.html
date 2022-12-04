@@ -113,9 +113,10 @@
                         <div class="header-left"></div>
                         <ul class="navbar-nav header-right">
                             <li class="nav-item dropdown header-profile">
-                              <a href="{% url 'logout' %}" class="btn btn-warning btn-lg">
-                                <i class="fa fa-sign-out" aria-hidden="true"></i>
-                                Cerrar sesión
+                              <small title="Usuario: {{user.get_username}}" style="font-size: small; color: #000;"> <b>{{ user.first_name }} {{ user.last_name }} ({{user.get_username}})</b></small>
+                              <i title="Usuario: {{user.get_username}}" class="fa fa-user fa-2x" aria-hidden="true" style="padding-right: 30px; padding-left: 10px; color: #bb4433;;"></i>
+                              <a title="Cerrar sesión" href="{% url 'logout' %}" class="btn btn-warning btn-lg">
+                                <i class="fa fa-sign-out fa-1x" aria-hidden="true"></i>
                               </a>
                             </li>
                         </ul>

@@ -19,8 +19,8 @@
             <th>Usuario</th>
             <th>Nombre</th>
             <th>Email</th>
-            <th>Area</th>
-            <th>Ultima actividad</th>
+            <th>Área</th>
+            <th>Última actividad</th>
             <th>Opciones</th>
         </thead>
         <tbody>
@@ -34,13 +34,12 @@
                 <td>{{usuario.area}}</td>
                 <td>{{usuario.last_login}}</td>
                 <td>
-                  <a href="{% url 'usuarios:editar' usuario.id %}" class="btn btn-info">Editar</a>
-                  <button 
-                  onclick="eliminaAreaModal(`{% url 'usuarios:eliminar' usuario.id %}` , '{{usuario.email}}', '{{usuario.username}}')"
-                  type="button" class="btn btn-danger" data-toggle="modal"
-                  data-target="#eliminarAreaModal">
-                    Eliminar
-                  </button>
+                  <a title="Editar usuario" href="{% url 'usuarios:editar' usuario.id %}" style="color: blue; font-size:30px;" class="fa fa-edit"></a>
+                  <a
+                    onclick="eliminaAreaModal(`{% url 'usuarios:eliminar' usuario.id %}` , '{{usuario.email}}', '{{usuario.username}}')"
+                    type="button" class="fa fa-trash" style="color: red; font-size:30px; padding-left:35px;" data-toggle="modal" title="Eliminar usuario"
+                    data-target="#eliminarUsuarioModal">
+                  </a>
               </td>
             </a>
           </div>
@@ -71,7 +70,7 @@
   </nav>
 </div>
   
-<div class="modal fade" id="eliminarAreaModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="eliminarUsuarioModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
