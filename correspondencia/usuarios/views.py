@@ -1,4 +1,6 @@
 from django.contrib import messages
+from django.contrib.messages.views import SuccessMessageMixin
+
 from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.mixins import (LoginRequiredMixin,
@@ -13,6 +15,7 @@ from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 from django.views.generic import (CreateView, DeleteView, ListView,
                                   TemplateView, UpdateView)
+from django.contrib import messages
 
 from ficha.views import ajustes
 from usuarios.forms import AjustesForm, UsuarioForm
@@ -30,6 +33,7 @@ class UsuarioLista(LoginRequiredMixin, PermissionRequiredMixin, ListView):
     permission_required = 'usuarios.view_usuario'
     model = Usuario
     paginate_by = 5
+    queryset = Usuario.objects.all().order_by('-pk')
     template_name = 'usuarios/lista_usuarios.html'
 
     def get_context_data(self, **kwargs):
@@ -37,10 +41,11 @@ class UsuarioLista(LoginRequiredMixin, PermissionRequiredMixin, ListView):
         context.update(ajustes())
         return context
 
-class UsuarioCrear(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
+class UsuarioCrear(LoginRequiredMixin, PermissionRequiredMixin, SuccessMessageMixin, CreateView):
     permission_required = ('usuarios.view_usuario', 'usuarios.add_usuario')
     model = Usuario
     form_class = UsuarioForm
+    success_message = "Usuario creado correctamente."
     template_name = 'usuarios/crear_usuarios.html'
     success_url = reverse_lazy('usuarios:lista')
 
@@ -82,10 +87,11 @@ class UsuarioCrear(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
         context.update(ajustes())
         return context
 
-class UsuarioEditar(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
+class UsuarioEditar(LoginRequiredMixin, PermissionRequiredMixin, SuccessMessageMixin, UpdateView):
     permission_required = ('usuarios.view_usuario', 'usuarios.change_usuario')
     model = Usuario
     form_class = UsuarioForm
+    success_message = "Usuario editado correctamente."
     template_name = 'usuarios/editar_usuarios.html'
     success_url = reverse_lazy('usuarios:lista')
 
@@ -94,12 +100,13 @@ class UsuarioEditar(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
         context.update(ajustes())
         return context
 
-class UsuarioEliminar(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
+class UsuarioEliminar(LoginRequiredMixin, PermissionRequiredMixin, SuccessMessageMixin, DeleteView):
     permission_required = ('usuarios.view_usuario', 'usuarios.delete_usuario')
     model = Usuario
+    success_message = "Usuario eliminado correctamente."
     success_url = reverse_lazy('usuarios:lista')
 
-class ActivarCuenta(TemplateView):
+class ActivarCuenta(TemplateView, SuccessMessageMixin):
     def get(self, request, *args, **kwargs):
         try:
             uid = urlsafe_base64_decode(kwargs['uid64'])
@@ -126,7 +133,11 @@ def editar_ajustes(request, id):
         form = AjustesForm(request.POST, request.FILES, instance=ajustes_elemento)
         if form.is_valid():
             form.save()
+            messages.success(request, 'Ajustes actualizados correctamente.')
             return redirect('home')
     context = {'form': form}
     context.update(ajustes())
     return render(request, 'editar_ajustes.html', context)
+
+def info(request):
+    return render(request, 'info.html')

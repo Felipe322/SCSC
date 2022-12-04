@@ -1,11 +1,11 @@
 {% extends 'base.html' %}
 
 {% block titulo %}
-    Agregar area
+    Agregar área
 {% endblock titulo %}
 
 {% block contenido %}
-<center><h1>Agregar area</h1> </center>
+<center><h1>Agregar área</h1> </center>
     <form method="post">
         {% csrf_token %}
         {{form.as_p}}

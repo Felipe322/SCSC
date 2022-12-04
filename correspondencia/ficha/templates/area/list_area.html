@@ -2,19 +2,24 @@
 {% load static %}
 
 {% block titulo %}
-    Listado de areas
+    Listado de áreas
 {% endblock titulo %}
 
 {% block contenido %}
-<center><h1 class="app-page-title">Lista de areas</h1> </center>
+<center><h1 class="app-page-title">Lista de áreas</h1> </center>
+
+<a href="{% url 'crear_area' %}" class="btn btn-success">Agregar área</a>
+
 <div class="app-card app-card-orders-table shadow-sm mb-5">
     <hr>
     <br>
     <table class="table">
+    {% include 'mensaje.html' %}
+
         <thead>
             <th>Nombre</th>
             <th>Siglas</th>
-            <th></th>
+            <th>Opciones</th>
         </thead>
         <tbody>
             {% for area in object_list  %}
@@ -24,13 +29,12 @@
                 <td>{{area.nombre}}</td>
                 <td>{{area.siglas}}</td>
                 <td>
-                  <a href="{% url 'editar_area' area.id %}" class="btn btn-info">Editar</a>
-                  <button 
+                  <a title="Editar área" href="{% url 'editar_area' area.id %}" style="color: blue; font-size:30px;" class="fa fa-edit"></a>
+                  <a 
                   onclick="eliminaAreaModal(`{% url 'eliminar_area' area.id %}` , '{{area.nombre}}', '{{area.siglas}}')"
-                  type="button" class="btn btn-danger" data-toggle="modal"
+                  type="button" class="fa fa-trash" style="color: red; font-size:30px; padding-left:35px;" data-toggle="modal" title="Editar área"
                   data-target="#eliminarAreaModal">
-                    Eliminar
-                  </button>
+                </a>
               </td>
             </a>
           </div>
