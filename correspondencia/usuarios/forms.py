@@ -9,24 +9,16 @@ class UsuarioForm(forms.ModelForm):
 
         area = forms.ModelMultipleChoiceField(queryset=Area.objects.all().filter(), required=True, widget=forms.CheckboxSelectMultiple)
 
-        fields = ('first_name','last_name','username','email','password','area','puesto')
+        fields = ('first_name','last_name','username','email','area','puesto')
 
         widgets = {
-            'first_name': forms.TextInput(attrs={'class':'form-control', 'placeholder':'Nombre'}),
-            'last_name': forms.TextInput(attrs={'class':'form-control', 'placeholder':'Apellido'}),
+            'first_name': forms.TextInput(attrs={'class':'form-control', 'placeholder':'Nombre(s)'}),
+            'last_name': forms.TextInput(attrs={'class':'form-control', 'placeholder':'Apellido(s)'}),
             'username': forms.TextInput(attrs={'class':'form-control', 'placeholder':'Usuario'}),
             'email': forms.TextInput(attrs={'class':'form-control', 'placeholder':'Email'}),
-            'password': forms.PasswordInput(attrs={'class':'form-control', 'placeholder':'Contraseña'}),
             'area' : forms.Select(attrs={'class':'form-control', 'placeholder':'Area a la que pertenece el usuario'}),
             'puesto' : forms.TextInput(attrs={'class':'form-control', 'placeholder':'Puesto del usuario'})
         }
-
-    def save(self, commit=True):
-        user = super(UsuarioForm, self).save(commit=False)
-        user.set_password(self.cleaned_data['password'])
-        if commit:
-            user.save()
-        return user
 
     # def __init__(self, *args, **kwargs):
     #     super(UsuarioForm, self).__init__(*args, **kwargs)

@@ -149,17 +149,30 @@
                                     </tr>
                                 </table>
                             </td>
-                        </tr> <!-- COPY -->
+                        </tr>
                         <tr>
                             <td bgcolor="#ffffff" align="left" style="padding: 0px 30px 0px 30px; color: #666666; font-family: 'Lato', Helvetica, Arial, sans-serif; font-size: 18px; font-weight: 400; line-height: 25px;">
-                                <p align="justify" >Para completar tu registro, debes dar click en el botón de Activar cuenta e <b>ingresar con tu Nombre de usuario y Contraseña asignados.</b></p>
+                                <p align="justify" ><b>Para completar tu registro, debes dar click en el botón de Activar cuenta e ingresar tu correo electrónico</b>, posteriormente recibiras un correo electrónico con indicaciones para asignar una contraseña a tu cuenta y activarla correctamente.</p>
                             </td>
-                        </tr> <!-- COPY -->
+                        </tr>
                         <tr>
                             <td bgcolor="#ffffff" align="left" style="padding: 20px 30px 20px 30px; color: #666666; font-family: 'Lato', Helvetica, Arial, sans-serif; font-size: 18px; font-weight: 400; line-height: 25px;">
                                 <small style="margin: 0;">O puedes dar click <a href="http://{{dominio}}{% url 'usuarios:activar' uid64=uid token=token %}" target="_blank" style="color: #b43;">aquí.</a></small>
                             </td>
                         </tr>
+                        <tr>
+                            <td bgcolor="#ffffff" align="left" style="padding: 1px 30px 20px 30px; color: #666666; font-family: 'Lato', Helvetica, Arial, sans-serif; font-size: 18px; font-weight: 400; line-height: 25px;">
+                                <small style="margin: 0;">Nombre de usuario: <b>{{username}}</b></small><br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td bgcolor="#ffffff" align="left" style="padding: 3px 30px 28px 30px; color: #666666; font-family: 'Lato', Helvetica, Arial, sans-serif; font-size: 18px; font-weight: 400; line-height: 25px;">
+                                <hr>
+                                <p align="justify"><b> Es necesario que cambies tu contraseña.</b></p>
+                                <small style="margin: 0;">Puedes cambiarla aquí: <a href="http://{{dominio}}{% url 'reset_password' %}" target="_blank" style="color: #b43;">¿Olvidaste tu contraseña?</a></b><small>
+                            </td>
+                        </tr>
+
                         <tr>
                             <td bgcolor="#ffffff" align="left" style="padding: 0px 30px 20px 30px; color: #666666; font-family: 'Lato', Helvetica, Arial, sans-serif; font-size: 18px; font-weight: 400; line-height: 25px;">
                                 <small style="margin: 0;">Si tienes alguna duda, favor de contactar al administrador del sistema.</small>
