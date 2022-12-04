@@ -1,6 +1,8 @@
 import io
+import os
 import os.path
 
+from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth.mixins import (LoginRequiredMixin,
                                         PermissionRequiredMixin)
@@ -18,6 +20,7 @@ from reportlab.lib.pagesizes import landscape, letter
 from reportlab.lib.units import cm
 from reportlab.pdfgen import canvas
 from reportlab.platypus import Table, TableStyle
+from django.contrib import messages
 
 from usuarios.models import Ajustes, Usuario
 
@@ -45,7 +48,7 @@ def ajustes():
 def home(request):
 
     if request.user.is_superuser:
-        fichas = Ficha.objects.all().order_by("-id_ficha").order_by("-estatus").order_by("prioridad")
+        fichas = Ficha.objects.filter(estatus="2").order_by("prioridad")
 
         filtro = FichaFilterHome(request.GET, queryset=fichas)
         fichas = filtro.qs
@@ -65,7 +68,7 @@ def home(request):
     else:
         usuario = Usuario.objects.get(username=request.user)
         area = Area.objects.get(nombre=usuario.area)
-        fichas = Ficha.objects.filter(area_turnada_id=area.id).order_by("-id_ficha").order_by("estatus").order_by("prioridad")
+        fichas = Ficha.objects.filter(area_turnada_id=area.id).order_by("prioridad").order_by("-estatus")
 
         filtro = FichaFilterUser(request.GET, queryset=fichas)
         fichas = filtro.qs
@@ -89,12 +92,12 @@ def home(request):
 @login_required(login_url="login")
 @permission_required("ficha.views_ficha")
 def lista(request):
-    fichas = Ficha.objects.all().order_by("-id_ficha").order_by("estatus").order_by("prioridad")
+    fichas = Ficha.objects.all().order_by("-id_ficha").order_by("estatus")
 
     filtro = FichaFilter(request.GET, queryset=fichas)
     fichas = filtro.qs
 
-    paginator = Paginator(fichas, 10)
+    paginator = Paginator(fichas, 5)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
     context = {'fichas':fichas, 'page_obj':page_obj, 'filtro':filtro}
@@ -105,6 +108,7 @@ def lista(request):
 @permission_required(["ficha.views_ficha", "ficha.add_ficha"])
 def crear(request):
 
+    # Obtiene el ID de la ficha a crear. Si existe una sigue con la utlima más 1.
     ultima_ficha = { "id_ficha": 1}
     if Ficha.objects.filter(id_ficha=1).exists():
         ultima_ficha = {
@@ -118,6 +122,8 @@ def crear(request):
         form = FichaForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
+            if request.user.is_superuser:
+                messages.success(request, 'Ficha asignada correctamente.')
 
             ## Enviar correo
             dominio = get_current_site(request)
@@ -151,6 +157,8 @@ def crear(request):
             email.send()
 
             return redirect('home')
+        # else:
+        #     messages.error(request, 'Error al asignadar una ficha.')
     context = {'form':form}
     context.update(ajustes())
     return render(request, 'ficha/crear_ficha.html', context)
@@ -164,6 +172,7 @@ def editar_ficha(request, pk):
             form = FichaForm(request.POST, instance=ficha)
             if form.is_valid():
                 form.save()
+                messages.success(request, 'Ficha editada correctamente.')
                 return redirect('lista')
     elif request.user.is_staff:
         form = FichaUserForm(instance=ficha)
@@ -172,6 +181,7 @@ def editar_ficha(request, pk):
             if form.is_valid():
                 ficha.estatus = "1"
                 ficha.save()
+                messages.success(request, 'Ficha contestada correctamente.')
                 request_ficha = request.POST
                 id_ficha = str(request_ficha['id_ficha'])
                 num_documento = request_ficha['num_documento']
@@ -192,7 +202,7 @@ def editar_ficha(request, pk):
                         }
                     )
                     asunto = 'Se ha recibido la respuesta de la ficha ' + id_ficha
-                    to = 'scsc.labsol@gmail.com' #Change that no static
+                    to = f'{os.environ.get("USER_EMAIL")}'
                     email = EmailMessage(
                         asunto,
                         mensaje,
@@ -298,16 +308,18 @@ class AreaList(LoginRequiredMixin, PermissionRequiredMixin, ListView):
     model = Area
     paginate_by = 5
     template_name = 'area/list_area.html'
+    queryset = Area.objects.all().order_by('-pk')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context.update(ajustes())
         return context
 
-class AreaCrear(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
+class AreaCrear(LoginRequiredMixin, PermissionRequiredMixin, SuccessMessageMixin, CreateView):
     permission_required = ('ficha.view_area', 'ficha.add_area')
     model = Area
     form_class = AreaForm
+    success_message = "Area agregada correctamente."
     template_name = 'area/crear_area.html'
     success_url = reverse_lazy('lista_area')
 
@@ -316,10 +328,11 @@ class AreaCrear(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
         context.update(ajustes())
         return context
 
-class AreaEditar(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
+class AreaEditar(LoginRequiredMixin, PermissionRequiredMixin, SuccessMessageMixin, UpdateView):
     permission_required = ('ficha.view_area', 'ficha.change_area')
     model = Area
     form_class = AreaForm
+    success_message = "Area editada correctamente."
     template_name = 'area/editar_area.html'
     success_url = reverse_lazy('lista_area')
 
@@ -342,6 +355,7 @@ class DependenciaList(LoginRequiredMixin, PermissionRequiredMixin, ListView):
     permission_required = 'ficha.view_dependencia'
     model = Dependencia
     paginate_by = 5
+    queryset = Dependencia.objects.all().order_by('-pk')
     template_name = 'dependencia/list_dependencia.html'
 
     def get_context_data(self, **kwargs):
@@ -349,11 +363,11 @@ class DependenciaList(LoginRequiredMixin, PermissionRequiredMixin, ListView):
         context.update(ajustes())
         return context
 
-
-class DependenciaCrear(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
+class DependenciaCrear(LoginRequiredMixin, PermissionRequiredMixin, SuccessMessageMixin, CreateView):
     permission_required = ('ficha.view_dependencia', 'ficha.add_dependencia')
     model = Dependencia
     form_class = DependenciaForm
+    success_message = "Dependencia agregada correctamente."
     template_name = 'dependencia/crear_dependencia.html'
     success_url = reverse_lazy('lista_dependencia')
 
@@ -362,11 +376,11 @@ class DependenciaCrear(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
         context.update(ajustes())
         return context
 
-
-class DependenciaEditar(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
+class DependenciaEditar(LoginRequiredMixin, PermissionRequiredMixin, SuccessMessageMixin, UpdateView):
     permission_required = ('ficha.view_dependencia', 'ficha.change_dependencia')
     model = Dependencia
     form_class = DependenciaForm
+    success_message = "Dependencia editada correctamente."
     template_name = 'dependencia/editar_dependencia.html'
     success_url = reverse_lazy('lista_dependencia')
 
