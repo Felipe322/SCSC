@@ -12,7 +12,7 @@ class FichaForm(forms.ModelForm):
 
         fields = '__all__'
 
-        exclude =[
+        exclude = [
                     'resolucion',
                     'estatus',
                     'fecha_recibido',
@@ -42,7 +42,7 @@ class FichaUserForm(forms.ModelForm):
 
         fields = '__all__'
 
-        exclude =[
+        exclude = [
             'estatus',
         ]
 

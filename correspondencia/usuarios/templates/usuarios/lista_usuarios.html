@@ -19,8 +19,8 @@
             <th>Usuario</th>
             <th>Nombre</th>
             <th>Email</th>
-            <th>Area</th>
-            <th>Ultima actividad</th>
+            <th>Área</th>
+            <th>Última actividad</th>
             <th>Opciones</th>
         </thead>
         <tbody>
@@ -34,13 +34,12 @@
                 <td>{{usuario.area}}</td>
                 <td>{{usuario.last_login}}</td>
                 <td>
-                  <a href="{% url 'usuarios:editar' usuario.id %}" class="btn btn-info">Editar</a>
-                  <button 
-                  onclick="eliminaAreaModal(`{% url 'usuarios:eliminar' usuario.id %}` , '{{usuario.email}}', '{{usuario.username}}')"
-                  type="button" class="btn btn-danger" data-toggle="modal"
-                  data-target="#eliminarAreaModal">
-                    Eliminar
-                  </button>
+                  <a title="Editar usuario" href="{% url 'usuarios:editar' usuario.id %}" style="color: blue; font-size:30px;" class="fa fa-edit"></a>
+                  <a
+                    onclick="eliminaAreaModal(`{% url 'usuarios:eliminar' usuario.id %}` , '{{usuario.email}}', '{{usuario.username}}')"
+                    type="button" class="fa fa-trash" style="color: red; font-size:30px; padding-left: 5px;" data-toggle="modal" title="Eliminar usuario"
+                    data-target="#modal">
+                  </a>
               </td>
             </a>
           </div>
@@ -48,48 +47,10 @@
             {% endfor %}
         </tbody>
     </table>
-  <nav aria-label="...">
-    <ul class="pagination">
-      <li class="page-item disabled"><span class="step-links"></li>
-        {% if page_obj.has_previous %}
-          <span><a class="page-link" href="?page=1">&laquo; Primera</a></span>
-          <span><a class="page-link" href="?page={{ page_obj.previous_page_number }}">Anterior</a></span>
-        {% endif %}
-        {% for page_actual in  page_obj.paginator.page_range %}
-          {% if page_actual == page_obj.number %}
-            <span class="page-item active" aria-current="page" ><a class="page-link" href="?page={{ page_actual }}">{{ page_actual }}</a></span>
-          {% else %}
-            <span><a class="page-link" href="?page={{ page_actual }}">{{ page_actual }}</a></span>
-          {% endif %}
-        {% endfor %}
-        {% if page_obj.has_next %}
-            <span><a class="page-link" href="?page={{ page_obj.next_page_number }}">Siguiente</a></span>
-            <span><a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">Última &raquo;</a></span>
-        {% endif %}
-    </span>
-    </ul>
-  </nav>
+    {% include 'paginado.html' %}
 </div>
-  
-<div class="modal fade" id="eliminarAreaModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Confirmación</h5>
-        <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body" id="modalCuerpo">
-      </div>
-      <div class="modal-footer">
-        <form id="formEliminar" method="post">
-          {% csrf_token %}
-          <button class="btn btn-danger" type="submit">Aceptar</button>
-        </form>
-        <button type="submit" class="btn btn-success" data-dismiss="modal">Cancelar</button>
-      </div>
-    </div>
-  </div>
-</div>
+
+{% include 'modal.html' %}
 
 {% endblock contenido %}
 

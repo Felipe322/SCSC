@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load widget_tweaks %}
 {% load static %}
 
 {% block css %}
@@ -16,23 +17,79 @@
 
 {% block contenido %}
 
+<script>
+  function muestraFiltro() {
+    var x = document.getElementById("filtro");
+    if (x.style.display === "none") {
+        x.style.display = "block";
+    } else {
+        x.style.display = "none";
+    }
+}
+</script>
+
 <h1 class="titulo">Fichas de control y seguimiento de correspondencias</h1>
 <h3 class="subtitulo">Total de fichas asignadas</h3>
 
+<button onclick="muestraFiltro()" class="btn btn-light" style="border-color: #bb4433; position: relative;left: 92%; ">
+  <i class="icon-search" style="color:#bb4433"> Filtrar</i> 
+</button>
+
 <div class="row">
-  <div class="col">
-    <div class="card card-body">
-      <form method="get">
-        {{filtro.form}}
-        <button class="btn btn-primary" type="submit">
-          Buscar
-        </button>
-      </form>
+  {% include 'mensaje.html' %}
+    <div class="col" id="filtro" style="display: none;">
+      <div class="card card-body">
+        <form method="get">
+          <div class="col-12">
+            <small>Busca fichas por los siguientes filtros: </small>
+            <div class="row">
+              <div class="col-2">
+                <b>{{ filtro.form.id_ficha.label_tag }}</b>
+                {% render_field filtro.form.id_ficha class="form-control form-control-sm" %}
+              </div>
+              <div class="col-3">
+                <b>{{ filtro.form.area_turnada.label_tag }}</b>
+                {% render_field filtro.form.area_turnada class="form-select form-select-sm" %}
+              </div>
+              <div class="col-3">
+                <b>{{ filtro.form.dependencia.label_tag }}</b>
+                {% render_field filtro.form.dependencia class="form-select form-select-sm" %}
+              </div>
+                <div class="col-2">
+                  <b>{{ filtro.form.estatus.label_tag }}</b>
+                  {% render_field filtro.form.estatus class="form-select form-select-sm" %}
+                <br>
+                </div>
+              <div class="col-3">
+                <b>{{ filtro.form.prioridad.label_tag }}</b>
+                {% render_field filtro.form.prioridad class="form-select form-select-sm" %}
+              </div>
+              <div class="col-3">
+                <b>{{ filtro.form.fecha_inicio.label_tag }}</b>
+                {% render_field filtro.form.fecha_inicio class="form-control form-control-sm" type="date" %}
+              </div>
+              <div class="col-3">
+                <b>{{ filtro.form.fecha_fin.label_tag }}</b>
+                {% render_field filtro.form.fecha_fin class="form-control form-control-sm" type="date" %}
+                <br>
+              </div>
+              <div class="col-5">
+                <b>{{ filtro.form.asunto.label_tag }}</b>
+                {% render_field filtro.form.asunto class="form-control form-control-sm" %}
+              </div>
+              <div class="col-2">
+                <button style="margin-top:13%; margin-left: 10%; background-color: #bb4433; border-color: #bb4433;" class="btn btn-primary" type="submit">
+                  Filtrar
+                </button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
     </div>
   </div>
-</div>
-<a href="{% url 'crear' %}" class="btn btn-success">Agregar ficha</a>
 
+<a href="{% url 'crear' %}" class="btn btn-success">Agregar ficha</a>
 <section class="ftco-section">
   <div class="container">
       <div class="row">
@@ -40,13 +97,12 @@
               <div class="table-wrap2">
                 <table class="table">
                   <thead class="thead-dark">
-                    <thead class="thead-dark">
                       <tr>
-                          <th>No. de ficha</th>
-                          <th>Fecha</th>
-                          <th>Número de Documento</th>
-                          <th>Area a la que se turna</th>
-                          <th>Asunto</th>
+                        <th>No. de ficha</th>
+                        <th>Fecha</th>
+                        <th>Número de Documento</th>
+                        <th>Área a la que se turna</th>
+                        <th>Asunto</th>
                         <th>Prioridad</th>
                         <th>Estatus</th>
                         <th>Opciones</th> 
@@ -80,77 +136,40 @@
                               {% endif %}
                           </td>
                           <td onclick="location.href='{% url 'editar' ficha.id_ficha %}'" class="prioridad">
+                          <div style="width: 140%;">
                             {% if ficha.estatus == "1" %}
                               <span class="baja">Atendido</span>
                             {% else %}
                               <span class="alta">Sin atender</span>
                             {% endif %}
+                          </div>
                         </td>   
-                        <td>
-                          <a href="{% url 'pdf' ficha.id_ficha %}" target="_blank">
-                            <i class="fa fa-file-pdf-o" style="font-size:25px;color:red"></i>
+                        <td> 
+                          <div style="width: 150%;">
+                          <a title="PDF de ficha" href="{% url 'pdf' ficha.id_ficha %}" target="_blank" >
+                            <i class="fa fa-file-pdf-o" style="font-size:25px; color:red;"></i>
                           </a>
-                        </td>  
-                        <td>
-                          <a title="Editar ficha" href="{% url 'editar' ficha.id_ficha %}"  style="color: blue; font-size:25px;" class="fa fa-edit"></a>
-                      </td>
-                      <td>
-                        <a title="Eliminar ficha"
+                          &nbsp;
+                          <a title="Editar ficha" href="{% url 'editar' ficha.id_ficha %}" style="color: blue; font-size:25px;" class="fa fa-edit"></a>
+                          &nbsp;
+                          <a title="Eliminar ficha"
                             onclick="eliminaFichaModal(`{% url 'eliminar' ficha.id_ficha %}` , '{{ficha.num_documento}}')"
                             type="button" data-toggle="modal" class="fa fa-trash" style="color: red; font-size:25px;"
-                            data-target="#eliminarFichaModal">
-                        </a>
-                      </td>    
+                            data-target="#modal">
+                          </a>
+                        </div>
+                        </td> 
                       </tr>
                       {% endfor %}
                     </tbody>
                   </table>
-                    <nav aria-label="...">
-                        <ul class="pagination">
-                          <li class="page-item disabled"><span class="step-links"></li>
-                            {% if page_obj.has_previous %}
-                              <span><a class="page-link" href="?page=1">&laquo;Primera</a></span>
-                              <span><a class="page-link" href="?page={{ page_obj.previous_page_number }}">Anterior</a></span>
-                            {% endif %}
-                            {% for page_actual in  page_obj.paginator.page_range %}
-                              {% if page_actual == page_obj.number %}
-                                <span class="page-item active" aria-current="page" ><a class="page-link" href="?page={{ page_actual }}">{{ page_actual }}</a></span>
-                              {% else %}
-                                <span><a class="page-link" href="?page={{ page_actual }}">{{ page_actual }}</a></span>
-                              {% endif %}
-                            {% endfor %}
-                            {% if page_obj.has_next %}
-                                <span><a class="page-link" href="?page={{ page_obj.next_page_number }}">Siguiente</a></span>
-                                <span><a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">Última&raquo;</a></span>
-                            {% endif %}
-                        </span>
-                        </ul>
-                      </nav>
+                  {% include 'paginado.html' %}
                 </div>
             </div>
         </div>
     </div>
 </section>
-
-<div class="modal fade" id="eliminarFichaModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Confirmación</h5>
-          <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body" id="modalCuerpo">
-        </div>
-        <div class="modal-footer">
-          <form id="formEliminar" method="post">
-            {% csrf_token %}
-            <button class="btn btn-danger" type="submit">Aceptar</button>
-          </form>
-          <button type="submit" class="btn btn-success" data-dismiss="modal">Cancelar</button>
-        </div>
-      </div>
-    </div>
-  </div>
+{% include 'modal.html' %}
 
 {% endblock contenido %}
 

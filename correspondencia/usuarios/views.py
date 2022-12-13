@@ -1,3 +1,4 @@
+import secrets
 from django.contrib import messages
 from django.contrib.messages.views import SuccessMessageMixin
 
@@ -22,6 +23,8 @@ from usuarios.forms import AjustesForm, UsuarioForm
 from usuarios.models import Ajustes, Usuario
 
 from .token import token_activacion
+
+from django.contrib.auth.hashers import make_password
 
 
 class Login(LoginView):
@@ -51,8 +54,13 @@ class UsuarioCrear(LoginRequiredMixin, PermissionRequiredMixin, SuccessMessageMi
 
     def form_valid(self, form):
         user = form.save(commit=False)
-        user.is_active = False
+        user.is_active = True
         user.is_staff = True
+
+        # Genera contraseña temporal aleatoria para el usuario creado.
+        password_generada = ''.join(secrets.choice('926alph017abet') for i in range(12)).upper()
+        user.password = make_password(password_generada)
+
         user.save()
 
         ajustes = Ajustes.objects.filter()[:1].get()
@@ -64,6 +72,7 @@ class UsuarioCrear(LoginRequiredMixin, PermissionRequiredMixin, SuccessMessageMi
         mensaje = render_to_string('confirmar_cuenta.html',
             {
                 'usuario': user,
+                'username': user.username,
                 'dominio': dominio,
                 'uid': uid,
                 'token': token,
@@ -118,11 +127,11 @@ class ActivarCuenta(TemplateView, SuccessMessageMixin):
         if user and token_activacion.check_token(user, token):
             user.is_active = True
             user.save()
-            messages.success(self.request, 'Cuenta activada con éxito')
+            messages.success(self.request, 'Cuenta activada con éxito.')
         else:
-            messages.error(self.request, 'Token inválido, contacta al administrador')
+            messages.error(self.request, 'Token inválido, contacta al administrador.')
 
-        return redirect('login')
+        return redirect('reset_password')
 
 @login_required(login_url="login")
 @permission_required(["usuarios.change_ajustes", "usuarios.delete_ajustes", "usuarios.view_ajustes", "usuarios.add_ajustes"])

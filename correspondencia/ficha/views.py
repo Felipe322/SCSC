@@ -100,6 +100,13 @@ def lista(request):
     paginator = Paginator(fichas, 5)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
+    try:
+        fichas = paginator.page(page_number)
+    except PageNotAnInteger:
+        fichas = paginator.page(1)
+    except EmptyPage:
+        fichas = paginator.page(paginator.num_pages)
+
     context = {'fichas':fichas, 'page_obj':page_obj, 'filtro':filtro}
     context.update(ajustes())
     return render(request, 'ficha/lista_fichas.html', context)
@@ -135,6 +142,7 @@ def crear(request):
             dependencia = ficha['dependencia']
             area = ficha['area_turnada']
             usuario = Usuario.objects.get(area=area)
+            dependencia_model = Dependencia.objects.get(pk=dependencia)
             mensaje = render_to_string('asignacion_ficha.html',
                 {
                     'usuario': usuario,
@@ -142,7 +150,7 @@ def crear(request):
                     'ficha_fecha': ficha_fecha,
                     'ficha_asunto': ficha_asunto,
                     'ficha_instruccion': ficha_instruccion,
-                    'dependencia': dependencia,
+                    'dependencia': dependencia_model.nombre,
                     'dominio' : dominio
                 }
             )
