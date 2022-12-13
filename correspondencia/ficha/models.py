@@ -37,8 +37,5 @@ class Area(models.Model):
     nombre = models.CharField(max_length=200, verbose_name="Nombre", unique=True)
     siglas = models.CharField(max_length=20, verbose_name="Siglas", unique=True)
 
-    def to_string(self):
-        return self.nombre + ' (' + self.siglas +')'
-
     def __str__(self):
         return self.nombre 

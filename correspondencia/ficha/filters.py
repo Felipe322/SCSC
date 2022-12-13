@@ -6,7 +6,7 @@ from .models import *
 class FichaFilterHome(django_filters.FilterSet):
     class Meta:
         model = Ficha
-        fields = ('area_turnada', 'prioridad')
+        fields = ('area_turnada', 'prioridad', 'estatus')
 
 class FichaFilterUser(django_filters.FilterSet):
     class Meta:

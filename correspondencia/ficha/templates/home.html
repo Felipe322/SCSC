@@ -15,12 +15,24 @@
 {% endblock titulo %}
 {% block contenido %}
 
+<script>
+  function muestraFiltro() {
+    var x = document.getElementById("filtro");
+    if (x.style.display === "none") {
+        x.style.display = "block";
+    } else {
+        x.style.display = "none";
+    }
+}
+</script>
+
 <h1 class="titulo">Fichas de control y seguimiento de correspondencias</h1>
 <h3 class="subtitulo">Fichas en proceso de confirmación</h3>
 
+<button onclick="muestraFiltro()" class="btn btn-light" style="border-color: #bb4433; position: relative;left: 83%; "><i class="icon-search" style="color:#bb4433"> Filtrar</i> </button>
 <div class="row">
 {% include 'mensaje.html' %}
-  <div class="col">
+  <div class="col" id="filtro" style="display: none;">
     <div class="card card-body">
       <form method="get">
         <div class="col-10">
@@ -35,17 +47,13 @@
                 {% render_field filtro.form.dependencia class="form-select form-select-sm" %}
               {% endif %}
             </div>
-            {% if perms.ficha.view_ficha %}
-            {% else %}
-              <div class="col-3">
-                <b>{{ filtro.form.estatus.label_tag }}</b>
-                {% render_field filtro.form.estatus class="form-select form-select-sm" %}
-            </div>
-            {% endif %}
-
             <div class="col-3">
               <b>{{ filtro.form.prioridad.label_tag }}</b>
               {% render_field filtro.form.prioridad class="form-select form-select-sm" %}
+            </div>
+            <div class="col-3">
+              <b>{{ filtro.form.estatus.label_tag }}</b>
+              {% render_field filtro.form.estatus class="form-select form-select-sm" %}
             </div>
             <div class="col-2">
               <button style="margin-top:13%; margin-left: 10%; background-color: #bb4433; border-color: #bb4433;" class="btn btn-primary" type="submit">
@@ -58,6 +66,7 @@
     </div>
   </div>
 </div>
+<br>
 
 <section class="ftco-section">
     <div class="container">
@@ -100,12 +109,14 @@
                                   <span class="baja">Baja</span>
                                 {% endif %}
                             </td>
-                            <td onclick="location.href='{% url 'editar' ficha.id_ficha %}'" class="prioridad">
+                            <td style="margin:1px;" onclick="location.href='{% url 'editar' ficha.id_ficha %}'" class="prioridad">
+                              <div style="width: 190%;">
                               {% if ficha.estatus == "1" %}
                                 <span class="baja">Atendido</span>
                               {% else %}
                                 <span class="alta">Sin atender</span>
                               {% endif %}
+                              </div>
                           </td>   
                           <td>
                             <a href="{% url 'pdf' ficha.id_ficha %}" target="_blank">
@@ -117,27 +128,7 @@
                         {% endfor %}
                       </tbody>
                     </table>
-                    <nav aria-label="...">
-                        <ul class="pagination">
-                          <li class="page-item disabled"><span class="step-links"></li>
-                            {% if page_obj.has_previous %}
-                              <span><a class="page-link" href="?page=1">&laquo;Primera</a></span>
-                              <span><a class="page-link" href="?page={{ page_obj.previous_page_number }}">Anterior</a></span>
-                            {% endif %}
-                            {% for page_actual in  page_obj.paginator.page_range %}
-                              {% if page_actual == page_obj.number %}
-                                <span class="page-item active" aria-current="page" ><a class="page-link" href="?page={{ page_actual }}">{{ page_actual }}</a></span>
-                              {% else %}
-                                <span><a class="page-link" href="?page={{ page_actual }}">{{ page_actual }}</a></span>
-                              {% endif %}
-                            {% endfor %}
-                            {% if page_obj.has_next %}
-                                <span><a class="page-link" href="?page={{ page_obj.next_page_number }}">Siguiente</a></span>
-                                <span><a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">Última&raquo;</a></span>
-                            {% endif %}
-                        </span>
-                        </ul>
-                      </nav>
+                    {% include 'paginado.html' %}
                 </div>
             </div>
         </div>
