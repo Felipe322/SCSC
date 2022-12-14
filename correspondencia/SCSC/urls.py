@@ -28,7 +28,7 @@ urlpatterns = [
 
     # Correspondencia
     path('correspondencia/', correspondencia, name="correspondencia"),
-    path('correspondencia/pdf', pdf_correspondencia, name="pdf_correspondencia"),
+    path('correspondencia/pdf/<int:anio>', pdf_correspondencia, name="pdf_correspondencia"),
 
     # Usuarios
     path('usuarios/', include('usuarios.urls')),

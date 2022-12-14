@@ -418,7 +418,7 @@ def correspondencia(request):
 
 @login_required(login_url="login")
 @permission_required("ficha.view_dependencia")
-def pdf_correspondencia(request):
+def pdf_correspondencia(request, anio):
     # Create a file-like buffer to receive PDF data.
     buffer = io.BytesIO()
 
@@ -431,12 +431,11 @@ def pdf_correspondencia(request):
     #Establecemos el tamaño de letra en 13 y el tipo de letra Helvetica
     pdf.setFont("Helvetica", 20)
     #Dibujamos una cadena en la ubicación X,Y especificada
-    pdf.drawString(250, 520, u"CORRESPONDENCIA 2022")
+    pdf.drawString(250, 520, u"CORRESPONDENCIA " + str(anio))
 
     # Agrega imagen a PDF
     imagen = os.path.join(os.path.dirname(os.path.abspath(__file__)), '../static/images/logo-cozcyt.png')
     pdf.drawImage(imagen, 30, 500, width=200, preserveAspectRatio=True, mask='auto')
-
 
     #Creamos una tupla de encabezados para neustra tabla
     encabezados = [(dependencia.nombre) for dependencia in Dependencia.objects.all()]
@@ -449,7 +448,7 @@ def pdf_correspondencia(request):
     #TODO NOT COMPLETED
     fichas_dep = []
     for dependencia in Dependencia.objects.all():
-        for ficha in Ficha.objects.all():
+        for ficha in fichas:
             if dependencia.pk == ficha.dependencia.pk:
                 fichas_dep.append([ficha.id_ficha])
         detalles += (fichas_dep)
@@ -480,4 +479,4 @@ def pdf_correspondencia(request):
     # FileResponse sets the Content-Disposition header so that browsers
     # present the option to save the file.
     buffer.seek(0)
-    return FileResponse(buffer, as_attachment=False, filename= f'correspondencia_2022.pdf')
+    return FileResponse(buffer, as_attachment=False, filename= f'correspondencia_%s.pdf' % anio)

@@ -11,13 +11,102 @@
 
 {% block contenido %}
 
-<center><h1 class="app-page-title">Correspondencia</h1> </center>
-<hr>
-<br>
-<p style="padding: 0px 10px 10px;"><b>Consulta la correspondencia completa: </b>  <a href="{% url 'pdf_correspondencia' %}" target="_blank">
-  <i class="fa fa-file-pdf-o" style="font-size:40px;color:red"></i>
-</a></p>
+<script>
 
+  function anioPDF() {
+    var anio22 = document.getElementById("anio2022");
+    var anio23 = document.getElementById("anio2023");
+    var anio24 = document.getElementById("anio2024");
+    var anio25 = document.getElementById("anio2025");
+    var anio26 = document.getElementById("anio2026");
+
+    var anio = document.getElementById("anio").value;
+
+    document.getElementById("anioSelected").innerHTML = anio;
+    if (anio==="2022") {
+      anio22.style.display = "block";
+      anio23.style.display = "none";
+      anio24.style.display = "none";
+      anio25.style.display = "none";
+      anio26.style.display = "none";
+    } else if (anio==="2023"){
+      anio22.style.display = "none";
+      anio23.style.display = "block";
+      anio24.style.display = "none";
+      anio25.style.display = "none";
+      anio26.style.display = "none";
+    } else if (anio==="2024"){
+      anio22.style.display = "none";
+      anio23.style.display = "none";
+      anio24.style.display = "block";
+      anio25.style.display = "none";
+      anio26.style.display = "none";
+    } else if (anio==="2025"){
+      anio22.style.display = "none";
+      anio23.style.display = "none";
+      anio24.style.display = "none";
+      anio25.style.display = "block";
+      anio26.style.display = "none";
+    } else if (anio==="2026"){
+      anio22.style.display = "none";
+      anio23.style.display = "none";
+      anio24.style.display = "none";
+      anio25.style.display = "none";
+      anio26.style.display = "block";
+    }
+  }
+</script>
+
+<center><h1 class="app-page-title">Correspondencia anual</h1></center>
+<hr>
+<br> 
+<div class="select" style="position: relative; left: 75%;">
+  <small><b>Año del PDF a consultar: &nbsp;</b></small>
+  <select id="anio">
+    <option onclick="anioPDF()" value="2022"><b>2022</b></option>
+    <option onclick="anioPDF()" value="2023"><b>2023</b></option>
+    <option onclick="anioPDF()" value="2024"><b>2024</b></option>
+    <option onclick="anioPDF()" value="2025"><b>2025</b></option>
+    <option onclick="anioPDF()" value="2026"><b>2026</b></option>
+  </select>
+</div>
+
+<div class="col-10">
+  <div class="row">
+
+    <div class="col-8">
+      <p style="padding: 8px 0px 10px 0px;"><b>Consulta la correspondencia completa del <u><span id="anioSelected">2022</span></u> en el siguente PDF: </b></p>
+    </div>
+
+    <div class="col-2">
+      <div style="display:block;" id="anio2022">
+        <a href="{% url 'pdf_correspondencia' anio=2022 %}" target="_blank">
+          <i class="fa fa-file-pdf-o" style="font-size:35px; color:red"></i>
+        </a>
+      </div>
+      <div style="display:none;" id="anio2023">
+        <a href="{% url 'pdf_correspondencia' anio=2023 %}" target="_blank">
+          <i class="fa fa-file-pdf-o" style="font-size:35px; color:red"></i>
+        </a>
+      </div>
+      <div style="display:none;" id="anio2024">
+        <a href="{% url 'pdf_correspondencia' anio=2024 %}" target="_blank">
+          <i class="fa fa-file-pdf-o" style="font-size:35px; color:red"></i>
+        </a>
+      </div>
+      <div style="display:none;" id="anio2025">
+        <a href="{% url 'pdf_correspondencia' anio=2025 %}" target="_blank">
+          <i class="fa fa-file-pdf-o" style="font-size:35px; color:red"></i>
+        </a>
+      </div>
+      <div style="display:none;" id="anio2026">
+        <a href="{% url 'pdf_correspondencia' anio=2026 %}" target="_blank">
+          <i class="fa fa-file-pdf-o" style="font-size:35px; color:red"></i>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
 
 <div class="row">
   <div class="col">
