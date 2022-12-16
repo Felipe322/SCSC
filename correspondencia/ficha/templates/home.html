@@ -98,7 +98,7 @@
                                 {{ficha.area_turnada}}
                             </td>
                             <td onclick="location.href='{% url 'editar' ficha.id_ficha %}'">
-                                {{ficha.asunto}}
+                                {{ficha.asunto_muestra}}
                             </td>
                             <td onclick="location.href='{% url 'editar' ficha.id_ficha %}'" class="prioridad"> 
                                 {% if ficha.prioridad == "1" %}

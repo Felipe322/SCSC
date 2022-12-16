@@ -23,6 +23,12 @@ class Ficha(models.Model):
     estatus = models.CharField(max_length=12, choices=ESTATUS_CHOICES, default="2")
     pdf_dependencia = models.FileField(upload_to='pdfs/', verbose_name="PDF de la dependencia", blank=True, null=True)
 
+    def asunto_muestra(self):
+        asunto_temp = self.asunto
+        if len(asunto_temp) > 20:
+            asunto_temp = asunto_temp[0:20] + '...'
+        return asunto_temp
+
     def __str__(self):
         return str(self.id_ficha)
 

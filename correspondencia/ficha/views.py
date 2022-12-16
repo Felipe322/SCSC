@@ -138,7 +138,15 @@ def crear(request):
             id_ficha = str(ficha['id_ficha'])
             ficha_fecha = ficha['fecha']
             ficha_asunto = ficha['asunto']
+            # Muestra solo los primeros 50 caracteres.
+            if len(ficha_asunto) > 50:
+                ficha_asunto = ficha_asunto[0:50] + '...'
+
             ficha_instruccion = ficha['instruccion']
+            # Muestra solo los primeros 50 caracteres.
+            if len(ficha_instruccion) > 50:
+                ficha_instruccion = ficha_instruccion[0:50] + '...'
+
             dependencia = ficha['dependencia']
             area = ficha['area_turnada']
             usuario = Usuario.objects.get(area=area)
@@ -150,7 +158,7 @@ def crear(request):
                     'ficha_fecha': ficha_fecha,
                     'ficha_asunto': ficha_asunto,
                     'ficha_instruccion': ficha_instruccion,
-                    'dependencia': dependencia_model.nombre,
+                    'dependencia': dependencia_model.nombre + ' (' + dependencia_model.siglas + ')',
                     'dominio' : dominio
                 }
             )
@@ -194,6 +202,11 @@ def editar_ficha(request, pk):
                 id_ficha = str(request_ficha['id_ficha'])
                 num_documento = request_ficha['num_documento']
                 asunto_ficha = request_ficha['asunto']
+
+                # Muestra solo los primeros 50 caracteres.
+                if len(asunto_ficha) > 50:
+                    asunto_ficha = asunto_ficha[0:50] + '...'
+
                 dominio = get_current_site(request)
 
                 # Enviar correo de notificación de firmado.
@@ -248,6 +261,10 @@ def fichaPDF(request, pk):
    
     # Create the PDF object, using the buffer as its "file."
     pdf = canvas.Canvas(buffer)
+
+    # Título de la pestaña del navegador.
+    pdf.setTitle(u"Ficha No. " + str(pk))
+
 
     #Establecemos el tamaño de letra en 13 y el tipo de letra Helvetica
     pdf.setFont("Helvetica", 13)
@@ -422,11 +439,16 @@ def pdf_correspondencia(request, anio):
     # Create a file-like buffer to receive PDF data.
     buffer = io.BytesIO()
 
-    # dependencias = Dependencia.objects.all()
-    fichas = Ficha.objects.all()
-    
+    dependencias = Dependencia.objects.all()
+
+    # Obtiene solo las fichas del año seleccionado.
+    ficha_anio = Ficha.objects.filter(fecha_documento__year = anio)
+
     # Create the PDF object, using the buffer as its "file."
     pdf = canvas.Canvas(buffer, pagesize=landscape(letter))
+
+    # Título de la pestaña del navegador.
+    pdf.setTitle(u"CORRESPONDENCIA " + str(anio))
 
     #Establecemos el tamaño de letra en 13 y el tipo de letra Helvetica
     pdf.setFont("Helvetica", 20)
@@ -447,8 +469,8 @@ def pdf_correspondencia(request, anio):
 
     #TODO NOT COMPLETED
     fichas_dep = []
-    for dependencia in Dependencia.objects.all():
-        for ficha in fichas:
+    for dependencia in dependencias:
+        for ficha in ficha_anio:
             if dependencia.pk == ficha.dependencia.pk:
                 fichas_dep.append([ficha.id_ficha])
         detalles += (fichas_dep)
