@@ -10,7 +10,7 @@
 {% endblock titulo %}
 
 {% block contenido %}
-
+{% comment %} 
 <script>
 
   function anioPDF() {
@@ -55,12 +55,12 @@
       anio26.style.display = "block";
     }
   }
-</script>
+</script> {% endcomment %}
 
 <center><h1 class="app-page-title">Correspondencia anual</h1></center>
 <hr>
 <br> 
-<div class="select" style="position: relative; left: 75%;">
+{% comment %} <div class="select" style="position: relative; left: 75%;">
   <small><b>Año del PDF a consultar: &nbsp;</b></small>
   <select id="anio">
     <option onclick="anioPDF()" value="2022"><b>2022</b></option>
@@ -69,16 +69,16 @@
     <option onclick="anioPDF()" value="2025"><b>2025</b></option>
     <option onclick="anioPDF()" value="2026"><b>2026</b></option>
   </select>
-</div>
+</div> {% endcomment %}
 
 <div class="col-10">
   <div class="row">
 
     <div class="col-8">
-      <p style="padding: 8px 0px 10px 0px;"><b>Consulta la correspondencia completa del <u><span id="anioSelected">2022</span></u> en el siguente PDF: </b></p>
+      <p style="padding: 8px 0px 10px 0px;"><b>Consulta la correspondencia completa por cada dependencia del <u><span id="anioSelected">2023:</span></u></b></p>
     </div>
 
-    <div class="col-2">
+    {% comment %} <div class="col-2">
       <div style="display:block;" id="anio2022">
         <a href="{% url 'pdf_correspondencia' anio=2022 %}" target="_blank">
           <i class="fa fa-file-pdf-o" style="font-size:35px; color:red"></i>
@@ -104,7 +104,7 @@
           <i class="fa fa-file-pdf-o" style="font-size:35px; color:red"></i>
         </a>
       </div>
-    </div>
+    </div> {% endcomment %}
   </div>
 </div>
 

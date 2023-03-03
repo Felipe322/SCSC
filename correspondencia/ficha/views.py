@@ -1,5 +1,6 @@
 import io
 import os
+import secrets
 import os.path
 
 from django.contrib.messages.views import SuccessMessageMixin
@@ -9,7 +10,9 @@ from django.contrib.auth.mixins import (LoginRequiredMixin,
 from django.contrib.sites.shortcuts import get_current_site
 from django.core.mail import EmailMessage
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
-from django.http import FileResponse
+from django.http import FileResponse, HttpResponse
+from django.template.loader import get_template
+from xhtml2pdf import pisa
 from django.shortcuts import get_object_or_404, redirect, render
 from django.template.loader import render_to_string
 from django.urls import reverse_lazy
@@ -19,8 +22,9 @@ from reportlab.lib import colors
 from reportlab.lib.pagesizes import landscape, letter
 from reportlab.lib.units import cm
 from reportlab.pdfgen import canvas
-from reportlab.platypus import Table, TableStyle
+from reportlab.platypus import Table, TableStyle, Paragraph
 from django.contrib import messages
+from django.views import View
 
 from usuarios.models import Ajustes, Usuario
 
@@ -238,6 +242,63 @@ def editar_ficha(request, pk):
     return render(request, 'ficha/editar_ficha.html', context)
 
 
+def render_to_pdf(ruta_template, context_dict={}):
+    template = get_template(ruta_template)
+    html = template.render(context_dict)
+    resultado = io.BytesIO()
+    pdf = pisa.pisaDocument(io.BytesIO(html.encode("ISO-8859-1")), resultado)
+
+    if not pdf.err:
+        response = HttpResponse(resultado.getvalue(), content_type='application/pdf')
+        response['Content-Disposition'] = 'attachment; filename="hol_agol.pdf"'
+        return response
+    return None
+
+# @login_required(login_url="login")
+# def ficha_pdf(request, pk):
+
+#     #Obtiene el área de la ficha.
+#     ficha = get_object_or_404(Ficha, id_ficha=pk)
+#     area = ficha.area_turnada
+
+#     # Obtiene el usuario logeado.
+#     # Compara si el usuario no es admin.
+#     # Permite acceso solo si las fichas pertenecen a ese usuario por medio del area.
+#     if not request.user.is_superuser:
+#         usuario_logeado = request.user.pk
+#         usuario = Usuario.objects.get(pk=usuario_logeado)
+#         if usuario.area != area:
+#             return redirect('login')
+
+#     datos_ficha = {
+#         "num_ficha": str(pk),
+#         "fecha": str(ficha.fecha), 
+#         "num_doc": str(ficha.num_documento), 
+#         "fecha_doc": str(ficha.fecha_documento), 
+#         "dependencia": str(ficha.dependencia), 
+#         "firma": str(ficha.nombre_firma), 
+#         "asunto": str(ficha.asunto), 
+#         "area": str(ficha.area_turnada), 
+#         "instruccion": str(ficha.instruccion), 
+#         "resolucion": str(ficha.resolucion), 
+#         "fecha_firma": str(ficha.fecha_recibido)
+#     }
+    
+#     pdf = render_to_pdf('ficha/pdf_test.html', datos_ficha)
+#     return HttpResponse(pdf, content_type='application/pdf')
+
+def pdf_estilo(ficha_atrib):
+    if len(ficha_atrib) > 48:
+        aux = 0
+        caneda = ""
+        for caracter in ficha_atrib:
+            caneda += caracter
+            aux += 1
+            if aux%48==0:
+                caneda += "\n"
+        return caneda
+    else:
+        return ficha_atrib
 
 @login_required(login_url="login")
 def fichaPDF(request, pk):
@@ -265,7 +326,6 @@ def fichaPDF(request, pk):
     # Título de la pestaña del navegador.
     pdf.setTitle(u"Ficha No. " + str(pk))
 
-
     #Establecemos el tamaño de letra en 13 y el tipo de letra Helvetica
     pdf.setFont("Helvetica", 13)
     #Dibujamos una cadena en la ubicación X,Y especificada
@@ -278,23 +338,31 @@ def fichaPDF(request, pk):
     #Creamos una tupla de encabezados para neustra tabla
     encabezados = ('                                   ', 'No. de ficha: ' + str(ficha.id_ficha))
 
+    ficha_dependencia = pdf_estilo(str(ficha.dependencia))
+    ficha_asunto = pdf_estilo(str(ficha.asunto))
+    ficha_area = pdf_estilo(str(ficha.area_turnada))
+    ficha_instruccion = pdf_estilo(str(ficha.instruccion))
+    ficha_resolucion = pdf_estilo(str(ficha.resolucion))
+
+
     #Creamos una lista de tuplas que van a contener la tabla
     fecha = (['Fecha: \n', str(ficha.fecha) + '\n'])
     num_doc = ('Numero de Documento: \n', str(ficha.num_documento) + '\n')
     fecha_doc = ('Fecha del Documento: \n', str(ficha.fecha_documento) + '\n')
-    dependencia = ('Dependencia Procedente:\n\n ', str(ficha.dependencia) + '\n\n')
-    firma = ('Nombre de quién firma:\n ', str(ficha.nombre_firma) + '\n')
-    asunto = ('Asunto:\n\n\n\n ', str(ficha.asunto) + '\n\n\n\n')
-    area = ('Area del COZCYT a la que se turna: \n\n\n', str(ficha.area_turnada)+ '\n\n\n')
-    instruccion = ('Instrucción: \n\n\n\n', str(ficha.instruccion) + '\n\n\n\n')
-    resolucion = ('Resolucion:\n\n\n\n ', str(ficha.resolucion) + '\n\n\n\n')
-    fecha_firma = ('Fecha y Firma de quién recibe:\n\n\n\n ', str(ficha.fecha_recibido)+ '\n\n\n\n')
+    dependencia = ('Dependencia Procedente:\n\n ', ficha_dependencia + '\n\n')
+    firma_nombre = ('Nombre de quién firma:\n ', str(ficha.nombre_firma) + '\n')
+    asunto = ('Asunto:\n\n\n\n\n\n ', ficha_asunto + '\n\n\n\n\n\n')
+    area = ('Area del COZCYT a la que se turna: \n\n\n', ficha_area+ '\n\n\n')
+    instruccion = ('Instrucción: \n\n\n\n', ficha_instruccion + '\n\n\n\n')
+    resolucion = ('Resolucion:\n\n\n\n ', ficha_resolucion + '\n\n\n\n')
+    fecha_firma = ('Fecha de recepción:\n ', str(ficha.fecha_recibido)+ '\n')
+    firma = ('Firma digital de quién recibe:\n ', str(secrets.token_hex(20))+ '\n')
 
-    detalles = [fecha] + [num_doc] + [fecha_doc] + [dependencia] + [firma] + [asunto] + [area] + [instruccion] + [resolucion] + [fecha_firma]
+    detalles = [fecha] + [num_doc] + [fecha_doc] + [dependencia] + [firma_nombre] + [asunto] + [area] + [instruccion] + [resolucion] + [fecha_firma] + [firma]
 
-    #Establecemos el tamaño de cada una de las columnas de la tabla
+    # Establecemos el tamaño de cada una de las columnas de la tabla
     detalle_orden = Table([encabezados] + detalles, colWidths=[6.3 * cm, 10 * cm])
-    #Aplicamos estilos a las celdas de la tabla
+    # Aplicamos estilos a las celdas de la tabla
     detalle_orden.setStyle(TableStyle(
         [
             #La primera fila(encabezados) va a estar centrada
@@ -307,8 +375,8 @@ def fichaPDF(request, pk):
     ))
     # Establecemos el tamaño de la hoja que ocupará la tabla 
     detalle_orden.wrapOn(pdf, 80, 500)
-    #Definimos la coordenada donde se dibujará la tabla
-    detalle_orden.drawOn(pdf, 69, 190)
+    # Definimos la coordenada donde se dibujará la tabla
+    detalle_orden.drawOn(pdf, 69, 170)
 
     # Close the PDF object cleanly, and we're done.
     pdf.showPage()

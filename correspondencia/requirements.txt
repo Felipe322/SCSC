@@ -22,3 +22,4 @@ python-dotenv==0.21.0
 isort==5.10.1
 django-filter==22.1 
 django-widget-tweaks==1.4.12
+xhtml2pdf==0.2.8 

@@ -1,0 +1,93 @@
+{% comment %} {% load static %}
+<html>
+
+<head>
+    <style>
+        td{
+            height: auto;
+            width: 310px;
+            margin-left: 5px;
+            margin-top: 50px;
+            }
+        table,td {
+            border: 1px solid black;
+            align: center;
+        } 
+        @page {
+            size: a4 portrait;
+            @frame header_frame {           /* Static Frame */
+                -pdf-frame-content: header_content;
+                left: 70pt; width: 512pt; top: 50pt; height: 40pt;
+            }
+            @frame content_frame {          /* Content Frame */
+                left: 70pt; width: 512pt; top: 90pt; height: 632pt;
+            }
+            @frame footer_frame {           /* Another static Frame */
+                -pdf-frame-content: footer_content;
+                left: 70pt; width: 512pt; top: 772pt; height: 20pt;
+            }
+        }
+    </style>
+    <title>Ficha No. {{num_ficha}}</title>
+    </head>
+    
+    <body>
+
+        <div id="header_content">
+        <font face="Helvetica" size="4">
+            <h1 style="text-align: center; font-weight: normal;">FICHA DE CONTROL Y SEGUIMIENTO DE CORRESPONDENCIA</h1>
+        </font>
+        </div>
+    
+        <table>
+                <tr>
+                    <td  style="height: 25px;"></td>
+                    <td><p style="text-align: center; font-size: 5; padding-top:7px;">No. de ficha: {{num_ficha}}</p></td>
+                </tr>
+                <tr>
+                    <td style="height: 40px;"><p style="font-size: 4;">Fecha:</td>
+                    <td><p style="font-size: 4;">{{fecha}}</p></td>
+                </tr>
+                <tr>
+                    <td style="height: 40px;"><p style="font-size: 4;">Numero de Documento:</td>
+                    <td align="top"><p style="font-size: 4;">{{num_doc}}</p></td>
+                </tr>
+                <tr>
+                    <td style="height: 40px;"><p style="font-size: 4;">Fecha del Documento:</td>
+                    <td><p style="font-size: 4;">{{fecha_doc}}</p></td>
+                </tr>
+                <tr>
+                    <td style="height: 70px;"><p style="font-size: 4;">Dependencia Procedente:</td>
+                    <td><p style="font-size: 4;">{{dependencia}}</p></td>
+                </tr>
+                <tr>
+                    <td style="height: 60px;"><p style="font-size: 4;">Nombre de quién firma:</td>
+                    <td><p style="font-size: 4;">{{firma}}</p></td>
+                </tr>
+                <tr>
+                    <td style="height: 140px;"><p style="font-size: 4;">Asunto:</td>
+                    <td valign="top"><p style="font-size: 4;">{{asunto}}</p></td>
+                </tr>
+                <tr>
+                    <td style="height: 70px;"><p style="font-size: 4;">Area del COZCYT a la que se turna:</td>
+                    <td><p style="font-size: 4;">{{area}}</p></td>
+                </tr>
+                <tr>
+                    <td style="height: 100px;"><p style="font-size: 4;">Instrucción:</td>
+                    <td><p style="font-size: 4;">{{instruccion}}</p></td>
+                </tr>
+                <tr>
+                    <td style="height: 100px;"><p style="font-size: 4;">Resolucion:</td>
+                    <td><p style="font-size: 4;">{{resolucion}}</p></td>
+                </tr>
+                <tr>
+                    <td style="height: 40px;"><p style="font-size: 4;">Fecha de recibído:</td>
+                    <td><p style="font-size: 4;">{{fecha_firma}}</p></td>
+                </tr>
+                <tr>
+                    <td style="height: 60px;"><p style="font-size: 4;">Firma digital de quién recibe:</td>
+                    <td><p style="font-size: 4;">Ejemplo de firma electrónica</p></td>
+                </tr>
+        </table>
+    </body>
+    </html> {% endcomment %}

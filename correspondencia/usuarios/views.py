@@ -64,7 +64,7 @@ class UsuarioCrear(LoginRequiredMixin, PermissionRequiredMixin, SuccessMessageMi
         user.save()
 
         ajustes = Ajustes.objects.filter()[:1].get()
-        logo_email = ajustes.logo_email
+        # logo_email = ajustes.logo_email
 
         dominio = get_current_site(self.request)
         uid = urlsafe_base64_encode(force_bytes(user.id))
@@ -76,7 +76,7 @@ class UsuarioCrear(LoginRequiredMixin, PermissionRequiredMixin, SuccessMessageMi
                 'dominio': dominio,
                 'uid': uid,
                 'token': token,
-                'logo_email': logo_email
+                # 'logo_email': logo_email
             }
         )
         asunto = 'Activación de cuenta'

@@ -5,7 +5,7 @@ services:
   db:
     image: mariadb
     container_name: db-scsc
-    #restart: always
+    restart: always
     environment:
       MYSQL_DATABASE: correspondencia
       MYSQL_USER: correspondenciauser
@@ -19,7 +19,7 @@ services:
       context: .
       dockerfile: ./Dockerfile
     container_name: correspondencia_app
-    #restart: always
+    restart: always
     depends_on:
       - db
     ports:
